@@ -1,0 +1,29 @@
+@use '../../../../config/breakpoints';
+@use '../../../../local/fonts';
+
+.nav {
+    font-size: fonts.$medium;
+    font-weight: 600;
+    color: var(--white);
+    padding: 10px 30px;
+}
+
+.nav__top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav__logo {
+    color: var(--yellow);
+}
+
+.nav__right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    
+    .fa-solid {
+        cursor: pointer;
+    }
+}
