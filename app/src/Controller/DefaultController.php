@@ -6,16 +6,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class MainController extends AbstractController
+class DefaultController extends AbstractController
 {
     #[Route(
-        '/',
-        name: 'app_main',
+        '/{react}',
+        name: 'app_default',
         methods: ['GET'],
-        priority: 1
+        requirements: ['react' => '^(?!api).+'],
+        defaults: ['react' => 'null']
     )]
     public function index(): Response
     {
-        return $this->render('home/index.html.twig',);
+        return $this->render('index.html.twig',);
     }
 }
