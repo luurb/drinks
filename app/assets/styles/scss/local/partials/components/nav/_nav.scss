@@ -5,12 +5,12 @@
     font-size: fonts.$medium;
     font-weight: 600;
     color: var(--white);
-    height: 50px;
     max-width: 1440px;
     position: relative;
     display: flex;
     justify-content: space-between;
-    padding: 10px 5vw;
+    align-items: center;
+    padding: 15px 5vw;
     margin: 0 auto;
 
     .fa-solid {
