@@ -1,5 +1,6 @@
 @use '../../../../config/breakpoints';
 @use '../../../fonts';
+@use '../../../animations';
 
 .home {
     width: 100vw;
@@ -53,11 +54,24 @@
     max-width: 500px;
     font-size: fonts.$regular;
     font-weight: 500;
-    color: var(--grey);
+    color: var(--black);
     background: var(--white);
     padding: 5px;
     border-radius: 20px;
     box-shadow: 0 10px 5px var(--violet);
+}
+
+.home__search-product {
+    width: fit-content;
+    overflow: hidden; 
+    padding-right: 2px;
+    border-right: .2em solid var(--yellow);
+    white-space: nowrap; 
+    margin: 0 auto; 
+    letter-spacing: .1em;
+    animation: 
+        typing 2.5s steps(15, end),
+        blink-caret .75s step-end infinite;
 }
 
 .home__products {
