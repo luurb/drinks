@@ -5,9 +5,15 @@
     font-size: fonts.$medium;
     font-weight: 600;
     color: var(--white);
+    height: 50px;
+    position: relative;
     display: flex;
     justify-content: space-between;
     padding: 10px 30px;
+
+    .fa-solid {
+        cursor: pointer;
+    }
 }
 
 .nav__logo {
@@ -15,12 +21,25 @@
 }
 
 .nav__right {
+    width: 100%;
+    display: none;
+    position: absolute;
+    top: 50px;
+    left: 0;
+}
+
+.nav__link {
+    color: var(--white);
+}
+
+#nav {
+    display: none;
+}
+
+#nav:checked ~ .nav__right {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 20px;
-    
-    .fa-solid {
-        cursor: pointer;
-    }
+
 }

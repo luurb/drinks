@@ -1,19 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Najlepsze drinki - NieTylkoMohito{% endblock %}
-
-{% block javascripts %}
+{% block title %}Najlepsze drinki - NieTylkoMohito
 {% endblock %}
 
+{% block javascripts %}{% endblock %}
+
 {% block body %}
-    <div class="home">
-        <nav class="nav">
-            <div class="nav__logo">
-                NieTylkoMohito
-            </div>
-            <div class="nav__right">
-                <i class="fa-solid fa-bars"></i>
-            </div>
-        </nav>
-    </div>
+	<div class="home">
+		<nav class="nav">
+			<div class="nav__logo">
+				NieTylkoMohito
+			</div>
+			<input type="checkbox" id="nav">
+			<label for="nav">
+				<i class="fa-solid fa-bars"></i>
+			</label>
+			<div class="nav__right">
+				<a class="nav__link" href="/drinki">Drinki</a>
+				<div class="nav__link-box">
+					<a class="nav__link" href="/login">
+						<i class="fa-solid fa-martini-glass"></i>
+						<span class="nav__link">Mój bar</span>
+					</a>
+				</div>
+			</div>
+		</nav>
+	</div>
 {% endblock %}
