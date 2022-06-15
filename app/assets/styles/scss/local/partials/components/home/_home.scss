@@ -1,4 +1,5 @@
 @use '../../../../config/breakpoints';
+@use '../../../fonts';
 
 .home {
     width: 100vw;
@@ -6,6 +7,88 @@
     background-size: cover;
     background-position: center;
     background-image: url(../../../../../../../public/images/home-mobile.png);
+}
+
+.home__main {
+    font-size: fonts.$big;
+    font-weight: 600;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+    top: 90px;
+    padding: 5vw;
+    color: var(--white);
+}
+
+.home__main-text {
+    width: 100%;
+    text-align: center;
+    line-height: 150%;
+    letter-spacing: 2px;
+}
+
+.home__bottom-text {
+    font-size: fonts.$medium;
+    line-height: 150%;
+}
+
+.home__search {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding-top: 45px;
+}
+
+.home__search-header {
+    border-bottom: 7px solid var(--yellow);
+}
+
+.home__search-box {
+    width: 100%;
+    max-width: 500px;
+    font-size: fonts.$regular;
+    font-weight: 500;
+    color: var(--grey);
+    background: var(--white);
+    padding: 5px;
+    border-radius: 20px;
+    box-shadow: 0 10px 5px var(--violet);
+}
+
+.home__products {
+    font-size: fonts.$regular;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.home__li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.home__disk {
+    height: 8px;
+    width: 8px;
+    background: var(--white);
+    border-radius: 50%;
+}
+
+.home__search-button {
+    font-size: fonts.$medium;
+    color: var(--yellow);
+    background: var(--violet);
+    padding: 8px 30px;
+    border-radius: 20px;
 }
 
 @media (min-width: breakpoints.$tablet) {
