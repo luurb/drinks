@@ -6,10 +6,12 @@
     font-weight: 600;
     color: var(--white);
     height: 50px;
+    max-width: 1440px;
     position: relative;
     display: flex;
     justify-content: space-between;
-    padding: 10px 30px;
+    padding: 10px 5vw;
+    margin: 0 auto;
 
     .fa-solid {
         cursor: pointer;
@@ -42,4 +44,18 @@
     align-items: center;
     gap: 20px;
 
+}
+
+@media (min-width: breakpoints.$tablet) {
+    .fa-bars {
+        display: none;
+    }
+
+    .nav__right {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 20px;
+        position: unset;
+    }
 }
