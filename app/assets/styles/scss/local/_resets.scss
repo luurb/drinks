@@ -11,3 +11,9 @@ html {
     font-family: fonts.$poppins;
     font-size: 9px;
 }
+
+@media (min-width: breakpoints.$desktop-small) {
+    html {
+        font-size: 12px;
+    }
+}
