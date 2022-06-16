@@ -1,0 +1,11 @@
+@use '../../../../config/breakpoints';
+@use '../../../../local/fonts';
+
+.drinks {
+    width: 100vw;
+    height: 100%;
+    padding: 10px 5vw;
+    background-size: cover;
+    background-position: center;
+    background-image: url(../../../../../../../public/images/skulls.png);
+}
