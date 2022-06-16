@@ -18,6 +18,15 @@
     }
 }
 
+.nav__main {
+    background: var(--violet);
+
+    .nav__right {
+        background: var(--violet);
+        padding-bottom: 15px;
+    }
+}
+
 .nav__logo {
     color: var(--yellow);
 }
@@ -32,6 +41,9 @@
 
 .nav__link {
     color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 #nav {
@@ -57,5 +69,11 @@
         align-items: center;
         gap: 40px;
         position: unset;
+    }
+
+    .nav__main {
+        .nav__right {
+            padding-bottom: 0;
+        }
     }
 }
