@@ -1,0 +1,19 @@
+@use '../../../../config/breakpoints';
+@use '../../../../local/fonts';
+
+.info {
+    font-size: fonts.$medium;
+    font-weight: 600;
+    color: var(--white);
+    width: 100vw;
+    height: 250px;
+    padding: 5vw;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    line-height: 150%;
+    letter-spacing: 2px;
+    background-size: cover;
+    background-position: center;
+    background-image: url(../../../../../../../public/images/palm-trees.jpg);
+}
