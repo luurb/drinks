@@ -2,6 +2,7 @@
 @use '../../../../../local/fonts';
 
 .search {
+    font-size: fonts.$small;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -22,8 +23,24 @@
 
 .search__input,
 .search__result {
-    font-size: fonts.$small;
     padding: 5px 15px;
     text-align: center;
     --webkit-apperance: none;
+}
+
+.search__products-box {
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.search__product {
+    font-size: fonts.$v-small;
+    background: var(--white);
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px var(--grey);
 }
