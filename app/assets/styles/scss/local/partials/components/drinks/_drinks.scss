@@ -23,3 +23,9 @@
   gap: 5px;
   cursor: pointer;
 }
+
+.drinks__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
