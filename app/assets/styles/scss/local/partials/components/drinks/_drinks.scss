@@ -1,0 +1,24 @@
+@use '../../../../config/breakpoints';
+@use '../../../../local/fonts';
+
+.drinks {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.drinks__top {
+  font-size: fonts.$regular;
+  font-weight: 500;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.drinks__sort-box {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
