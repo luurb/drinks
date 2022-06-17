@@ -20,6 +20,7 @@
 .drink__name {
     font-size: fonts.$regular;
     font-weight: 500;
+    cursor: pointer;
 }
 
 .drink__social-wrapper{
@@ -52,6 +53,7 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
+    cursor: pointer;
 }
 
 .drink__img {
