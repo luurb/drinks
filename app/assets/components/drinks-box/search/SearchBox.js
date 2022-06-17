@@ -1,8 +1,12 @@
-import React from 'react'
+import React from 'react';
+import Input from './Input';
+import SearchResult from './SearchResult';
 
 const SearchBox = () => {
   return (
-      <input className="search__box" placeholder='Wpisz produkt'/>
+    <div className="search__box">
+        <Input />
+      </div>
   )
 }
 

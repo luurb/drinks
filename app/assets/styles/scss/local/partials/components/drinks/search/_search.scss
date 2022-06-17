@@ -16,9 +16,14 @@
 }
 
 .search__box {
+    border: 2px solid var(--yellow);
+    border-radius: 5px;
+}
+
+.search__input,
+.search__result {
+    font-size: fonts.$small;
     padding: 5px 15px;
     text-align: center;
-    border: 2px solid var(--violet);
-    border-radius: 15px;
     --webkit-apperance: none;
 }
