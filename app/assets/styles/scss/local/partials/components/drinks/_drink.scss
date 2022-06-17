@@ -1,0 +1,46 @@
+@use '../../../../config/breakpoints';
+@use '../../../../local/fonts';
+
+.drink {
+    width: 100%;
+    background: var(--white);
+    border-radius: 5px;
+    box-shadow: 0 0 10px var(--grey);
+}
+
+.drink__top {
+    width: 100%;
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.drink__name {
+    font-size: fonts.$regular;
+    font-weight: 500;
+}
+
+.drink__social-wrapper{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .fa-whiskey-glass {
+        color: var(--yellow);
+    }
+
+    .fa-comment {
+        color: var(--grey);
+    }
+}
+
+.drink__rate {
+    font-weight: 500;
+}
+
+.drink__social-box {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}

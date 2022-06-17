@@ -1,5 +1,7 @@
 import React from 'react';
+import Drink from './Drink';
 import SortBox from './SortBox';
+
 
 const DrinksBox = () => {
   return (
@@ -8,6 +10,7 @@ const DrinksBox = () => {
         <span className="drinks__counter">Znaleziono 15 drinków</span>
         <SortBox />
       </div>
+      <Drink />
     </div>
   );
 };
