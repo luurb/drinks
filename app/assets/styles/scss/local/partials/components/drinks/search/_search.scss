@@ -8,7 +8,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
 
     form {
         text-align: center;
@@ -47,4 +47,29 @@
     padding: 5px;
     border-radius: 5px;
     box-shadow: 0 0 5px var(--grey);
+}
+
+.search__categories-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.search__category {
+    font-weight: 500;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    gap: 5px;
+}
+
+.search__category-disc {
+    background: var(--white);
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
 }
