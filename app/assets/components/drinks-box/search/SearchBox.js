@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
+import SearchResult from './SearchResult';
 
 const SearchBox = ({ addProduct }) => {
    const productsArr = [
@@ -69,6 +70,13 @@ const SearchBox = ({ addProduct }) => {
       );
    };
 
+   const onClickSearchResult = (product) => {
+      input.current.value = '';
+      input.current.focus();
+      setProducts([]);
+      addProduct(product.name);
+   };
+
    const productsCounter = 5;
 
    return (
@@ -92,24 +100,12 @@ const SearchBox = ({ addProduct }) => {
                   {products.map(
                      (product, index) =>
                         index < productsCounter && (
-                           <div
+                           <SearchResult
                               key={product.id}
-                              className="search__result"
-                              style={{
-                                 background:
-                                    index % 2
-                                       ? 'var(--white)'
-                                       : 'var(--yellow)',
-                              }}
-                              onClick={() => {
-                                 input.current.value = '';
-                                 input.current.focus();
-                                 setProducts([]);
-                                 addProduct(product.name);
-                              }}
-                           >
-                              {product.name}
-                           </div>
+                              product={product}
+                              index={index}
+                              onClick={onClickSearchResult}
+                           />
                         )
                   )}
                </div>
