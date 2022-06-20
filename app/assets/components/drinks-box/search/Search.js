@@ -36,7 +36,11 @@ const Search = () => {
    const [products, setProducts] = useState([]);
 
    const addProduct = (name) => {
-      setProducts([...products, {id: products.length + 1, name: name}]);
+      setProducts([...products, { id: products.length + 1, name: name }]);
+   };
+
+   const deleteProduct = (id) => {
+      setProducts(products.filter((product) => product.id !== id));
    };
 
    return (
@@ -45,7 +49,11 @@ const Search = () => {
          {products.length > 0 && (
             <div className="search__products-wrapper">
                {products.map((product) => (
-                  <Product key={product.id} name={product.name} />
+                  <Product
+                     key={product.id}
+                     product={product}
+                     deleteProduct={deleteProduct}
+                  />
                ))}
             </div>
          )}
