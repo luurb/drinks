@@ -70,6 +70,7 @@ const SearchBox = ({ addProduct, savedProducts }) => {
       );
    };
 
+   //Clear search box after click on search result
    const onClickSearchResult = (product) => {
       input.current.value = '';
       input.current.focus();
