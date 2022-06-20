@@ -75,6 +75,7 @@ const SearchBox = ({ addProduct }) => {
          </label>
          <div className="search__box">
             <input
+               type="text"
                id="search"
                className="search__input"
                placeholder="Wpisz produkt"
