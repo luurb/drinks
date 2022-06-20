@@ -2,7 +2,7 @@ import React from 'react';
 import Product from './Product';
 import Category from './Category';
 import SearchBox from './SearchBox';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 const Search = () => {
    const categories = [
@@ -34,9 +34,11 @@ const Search = () => {
    ];
 
    const [products, setProducts] = useState([]);
+   const counterRef = useRef(1);
 
    const addProduct = (name) => {
-      setProducts([...products, { id: products.length + 1, name: name }]);
+      setProducts([...products, { id: counterRef.current, name: name }]);
+      counterRef.current++;
    };
 
    const deleteProduct = (id) => {
