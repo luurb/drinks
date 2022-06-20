@@ -43,7 +43,7 @@ const Search = () => {
       <div className="search">
          <SearchBox addProduct={addProduct} savedProducts={products} />
          {products.length > 0 && (
-            <div className="search__products-box">
+            <div className="search__products-wrapper">
                {products.map((product) => (
                   <Product key={product.id} name={product.name} />
                ))}

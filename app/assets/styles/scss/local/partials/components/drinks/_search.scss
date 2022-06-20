@@ -42,7 +42,7 @@
     border: 2px solid var(--yellow);
 }
 
-.search__products-box {
+.search__products-wrapper {
     font-weight: 500;
     display: flex;
     justify-content: center;
@@ -51,13 +51,20 @@
     gap: 10px;
 }
 
-.search__product {
+.search__product-box {
     font-size: fonts.$v-small;
     background: var(--white);
     padding: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
     border-radius: 5px;
     box-shadow: 0 0 5px var(--grey);
     cursor: pointer;
+
+    i {
+        line-height: unset;
+    }
 }
 
 .search__categories-box {
