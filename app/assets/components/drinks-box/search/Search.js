@@ -41,7 +41,7 @@ const Search = () => {
 
    return (
       <div className="search">
-         <SearchBox addProduct={addProduct} />
+         <SearchBox addProduct={addProduct} savedProducts={products} />
          {products.length > 0 && (
             <div className="search__products-box">
                {products.map((product) => (

@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import SearchResult from './SearchResult';
 
-const SearchBox = ({ addProduct }) => {
+const SearchBox = ({ addProduct, savedProducts }) => {
    const productsArr = [
       {
          id: 1,
@@ -77,6 +77,14 @@ const SearchBox = ({ addProduct }) => {
       addProduct(product.name);
    };
 
+   const checkIfAlreadyAdded = (name) => {
+      if (savedProducts.length > 0) {
+         return savedProducts.some((savedProduct) => savedProduct.name == name);
+      }
+
+      return false;
+   };
+
    const productsCounter = 5;
 
    return (
@@ -99,7 +107,8 @@ const SearchBox = ({ addProduct }) => {
                <div className="search__results-box">
                   {products.map(
                      (product, index) =>
-                        index < productsCounter && (
+                        index < productsCounter &&
+                        !checkIfAlreadyAdded(product.name) && (
                            <SearchResult
                               key={product.id}
                               product={product}
