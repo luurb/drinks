@@ -1,10 +1,8 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import SearchResult from './SearchResult';
 
-const SearchBox = ({addProduct}) => {
-   const [products, setProducts] = useState([]);
-
+const SearchBox = ({ addProduct }) => {
    const productsArr = [
       {
          id: 1,
@@ -40,7 +38,26 @@ const SearchBox = ({addProduct}) => {
       },
    ];
 
-   const addSearchResult= (value) => {
+   const [products, setProducts] = useState([]);
+   const [isOpen, setIsOpen] = useState(false);
+   const input = useRef(null);
+   const setEvent = useRef(true);
+
+   useEffect(() => {
+      if (setEvent.current) {
+         window.addEventListener('click', (e) => {
+            if (input.current && input.current.contains(e.target)) {
+               setIsOpen(!isOpen);
+            } else {
+               setIsOpen(false);
+            }
+            console.log(isOpen);
+         });
+         setEvent.current = false;
+      }
+   });
+
+   const addSearchResult = (value) => {
       if (!value) {
          setProducts([]);
          return;
@@ -65,8 +82,9 @@ const SearchBox = ({addProduct}) => {
                onChange={(e) => {
                   addSearchResult(e.currentTarget.value);
                }}
+               ref={input}
             />
-            {products.length !== 0 && (
+            {products.length !== 0 && isOpen && (
                <div className="search__results-box">
                   {products.map(
                      (product, index) =>
