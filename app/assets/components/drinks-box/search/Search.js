@@ -2,6 +2,7 @@ import React from 'react';
 import Product from './Product';
 import Category from './Category';
 import SearchBox from './SearchBox';
+import { useState } from 'react';
 
 const Search = () => {
    const categories = [
@@ -32,16 +33,22 @@ const Search = () => {
       },
    ];
 
+   const [products, setProducts] = useState([]);
+
+   const addProduct = (name) => {
+      setProducts([...products, {id: products.length + 1, name: name}]);
+   };
+
    return (
       <div className="search">
-         <SearchBox />
-         <div className="search__products-box">
-            <Product name="whiskey" />
-            <Product name="sok z cytryny" />
-            <Product name="sok z cytryny" />
-            <Product name="sok z cytryny" />
-            <Product name="sok z cytryny" />
-         </div>
+         <SearchBox addProduct={addProduct} />
+         {products.length > 0 && (
+            <div className="search__products-box">
+               {products.map((product) => (
+                  <Product key={product.id} name={product.name} />
+               ))}
+            </div>
+         )}
          <div className="search__categories-box">
             {categories.map((category) => (
                <Category

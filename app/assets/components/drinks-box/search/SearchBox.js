@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import SearchResult from './SearchResult';
 
-const SearchBox = () => {
+const SearchBox = ({addProduct}) => {
    const [products, setProducts] = useState([]);
 
    const productsArr = [
@@ -75,6 +75,7 @@ const SearchBox = () => {
                               key={product.id}
                               name={product.name}
                               index={index}
+                              addProduct={addProduct}
                            />
                         )
                   )}
