@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import SearchResult from './SearchResult';
 
 const SearchBox = () => {
    const [products, setProducts] = useState([]);
@@ -70,18 +71,11 @@ const SearchBox = () => {
                   {products.map(
                      (product, index) =>
                         index < productsCounter && (
-                           <div
+                           <SearchResult
                               key={product.id}
-                              className="search__result"
-                              style={{
-                                 background:
-                                    index % 2
-                                       ? 'var(--white)'
-                                       : 'var(--yellow)',
-                              }}
-                           >
-                              {product.name}
-                           </div>
+                              name={product.name}
+                              index={index}
+                           />
                         )
                   )}
                </div>
