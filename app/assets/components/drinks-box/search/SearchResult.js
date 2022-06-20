@@ -5,9 +5,6 @@ const SearchResult = ({product, index, onClick}) => {
       <div
          key={product.id}
          className="search__result"
-         style={{
-            background: index % 2 ? 'var(--white)' : 'var(--yellow)',
-         }}
          onClick={() => onClick(product)}
       >
          {product.name}

@@ -113,7 +113,6 @@ const SearchBox = ({ addProduct, savedProducts }) => {
                            <SearchResult
                               key={product.id}
                               product={product}
-                              index={index}
                               onClick={onClickSearchResult}
                            />
                         )

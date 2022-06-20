@@ -34,6 +34,10 @@
     cursor: pointer;
 }
 
+.search__result:nth-child(odd) {
+    background: var(--yellow);
+}
+
 .search__results-box {
     width: 102%;
     position: absolute;
