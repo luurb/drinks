@@ -21,8 +21,9 @@
 }
 
 .search__box {
-    border: 2px solid var(--yellow);
+    position: relative;
     border-radius: 5px;
+    border: 2px solid var(--yellow);
 }
 
 .search__input,
@@ -30,6 +31,15 @@
     padding: 5px 15px;
     text-align: center;
     --webkit-apperance: none;
+    cursor: pointer;
+}
+
+.search__results-box {
+    width: 102%;
+    position: absolute;
+    left: -2px;
+    background: var(--white);
+    border: 2px solid var(--yellow);
 }
 
 .search__products-box {
