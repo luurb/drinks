@@ -40,7 +40,7 @@ const SearchBox = () => {
       },
    ];
 
-   const addProduct = (value) => {
+   const addSearchResult= (value) => {
       if (!value) {
          setProducts([]);
          return;
@@ -63,7 +63,7 @@ const SearchBox = () => {
                className="search__input"
                placeholder="Wpisz produkt"
                onChange={(e) => {
-                  addProduct(e.currentTarget.value);
+                  addSearchResult(e.currentTarget.value);
                }}
             />
             {products.length !== 0 && (
