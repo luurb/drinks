@@ -42,6 +42,7 @@ const SearchBox = ({ addProduct }) => {
    const input = useRef(null);
    const setEvent = useRef(true);
 
+   //Close search box after click somewhere on window
    useEffect(() => {
       if (setEvent.current) {
          window.addEventListener('click', (e) => {
@@ -50,13 +51,15 @@ const SearchBox = ({ addProduct }) => {
             } else {
                setIsOpen(false);
             }
-            console.log(isOpen);
          });
+
+         //Prevent adding multiple event listeners
          setEvent.current = false;
       }
    });
 
    const addSearchResult = (value) => {
+      setIsOpen(true);
       if (!value) {
          setProducts([]);
          return;
@@ -99,6 +102,9 @@ const SearchBox = ({ addProduct }) => {
                                        : 'var(--yellow)',
                               }}
                               onClick={() => {
+                                 input.current.value = '';
+                                 input.current.focus();
+                                 setProducts([]);
                                  addProduct(product.name);
                               }}
                            >
