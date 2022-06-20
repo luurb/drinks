@@ -1,6 +1,5 @@
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
-import SearchResult from './SearchResult';
 
 const SearchBox = ({ addProduct }) => {
    const productsArr = [
@@ -89,12 +88,21 @@ const SearchBox = ({ addProduct }) => {
                   {products.map(
                      (product, index) =>
                         index < productsCounter && (
-                           <SearchResult
+                           <div
                               key={product.id}
-                              name={product.name}
-                              index={index}
-                              addProduct={addProduct}
-                           />
+                              className="search__result"
+                              style={{
+                                 background:
+                                    index % 2
+                                       ? 'var(--white)'
+                                       : 'var(--yellow)',
+                              }}
+                              onClick={() => {
+                                 addProduct(product.name);
+                              }}
+                           >
+                              {product.name}
+                           </div>
                         )
                   )}
                </div>
