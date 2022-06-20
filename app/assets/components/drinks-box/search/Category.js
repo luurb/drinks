@@ -1,12 +1,21 @@
-import React from 'react'
+import React from 'react';
 
-const Category = (props) => {
-  return (
-    <div className="search__category">
-          <span className="search__category-disc" style={{ border: `2px solid var(--${props.color})` }}></span>
-          <span className="search__category-text">{props.name}</span>
-    </div>
-  )
-}
+const Category = ({ category, setCategories }) => {
+   return (
+      <div
+         className="search__category"
+         onClick={() => setCategories(category.id)}
+      >
+         <span
+            className="search__category-disc"
+            style={{
+               border: `2px solid var(--${category.color})`,
+               background: category.active && `var(--${category.color})`,
+            }}
+         ></span>
+         <span className="search__category-text">{category.name}</span>
+      </div>
+   );
+};
 
-export default Category
+export default Category;

@@ -5,34 +5,38 @@ import SearchBox from './SearchBox';
 import { useState, useRef } from 'react';
 
 const Search = () => {
-   const categories = [
+   const [categories, setCategories] = useState([
       {
          id: 1,
          name: 'słodki',
          color: 'yellow',
+         active: false,
       },
       {
          id: 2,
          name: 'kwaśny',
          color: 'green',
+         active: false,
       },
       {
          id: 3,
          name: 'orzeźwiający',
          color: 'blue',
+         active: false,
       },
       {
          id: 4,
          name: 'lekki',
          color: 'turquoise',
+         active: false,
       },
       {
          id: 5,
          name: 'mocny',
          color: 'red',
+         active: false,
       },
-   ];
-
+   ]);
    const [products, setProducts] = useState([]);
    const counterRef = useRef(1);
 
@@ -63,8 +67,16 @@ const Search = () => {
             {categories.map((category) => (
                <Category
                   key={category.id}
-                  name={category.name}
-                  color={category.color}
+                  category={category}
+                  setCategories={(id) => {
+                     setCategories(
+                        categories.map((category) =>
+                           category.id === id
+                              ? { ...category, active: !category.active }
+                              : category
+                        )
+                     );
+                  }}
                />
             ))}
          </div>
