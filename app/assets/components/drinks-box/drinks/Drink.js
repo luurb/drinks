@@ -2,7 +2,7 @@ import React from 'react';
 import SocialWrapper from './SocialWrapper';
 import Product from './Product';
 
-const Drink = () => {
+const Drink = ({drink}) => {
     return (
         <div className="drink">
             <div className="drink__top">
@@ -10,21 +10,18 @@ const Drink = () => {
                     className="drink__name"
                     style={{ borderBottom: '3px solid var(--yellow' }}
                 >
-                    White Russian
+                    {drink.name}
                 </span>
                 <SocialWrapper />
             </div>
             <div className="drink__bottom">
                 <img
                     className="drink__img"
-                    src="../images/drinks/mojito.jpg"
+                    src={drink.image}
                     alt="Zdjęcie drinka"
                 />
                 <div className="drink__desc">
-                    Wielu webmasterów i designerów używa Lorem Ipsum w budowie.
-                    Wiele wersji tekstu ewoluowało i zmieniało się przez lata,
-                    czasem przez przypadek, czasem specjalnie (humorystyczne
-                    wstawki itd).
+                    {drink.desc}
                     <div className="drink__products-box">
                         <span className="drink__products-header">
                             Składniki:

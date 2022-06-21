@@ -12,7 +12,7 @@ const Box = () => {
          desc: 'Wielu webmasterów i designerów używa Lorem Ipsum w budowie. Wiele wersji tekstu ewoluowało i zmieniało się przez lata, czasem przez przypadek, czasem specjalnie(humorystyczne wstawki itd).',
          products: 'wódka, kawa, syrop cukrowy, lód',
          type: 'słodki',
-         image: '../images/drinks/mojito.png',
+         image: '../images/drinks/mojito.jpg',
       },
       {
          id: 2,
@@ -20,7 +20,7 @@ const Box = () => {
          desc: 'Wielu webmasterów i designerów używa Lorem Ipsum w budowie. Wiele wersji tekstu ewoluowało i zmieniało się przez lata, czasem przez przypadek, czasem specjalnie(humorystyczne wstawki itd).',
          products: 'whiskey, lód',
          type: 'orzeźwiający, mocny',
-         image: '../images/drinks/mojito.png',
+         image: '../images/drinks/mojito.jpg',
       },
       {
          id: 3,
@@ -28,7 +28,7 @@ const Box = () => {
          desc: 'Wielu webmasterów i designerów używa Lorem Ipsum w budowie. Wiele wersji tekstu ewoluowało i zmieniało się przez lata, czasem przez przypadek, czasem specjalnie(humorystyczne wstawki itd).',
          products: 'wódka, kawa, sok z cytryny, lód',
          type: 'słodki, mocny',
-         image: '../images/drinks/mojito.png',
+         image: '../images/drinks/mojito.jpg',
       },
       {
          id: 4,
@@ -36,7 +36,7 @@ const Box = () => {
          desc: 'Wielu webmasterów i designerów używa Lorem Ipsum w budowie. Wiele wersji tekstu ewoluowało i zmieniało się przez lata, czasem przez przypadek, czasem specjalnie(humorystyczne wstawki itd).',
          products: 'wódka, kawa, sok jabłkowy, lód',
          type: 'mocny',
-         image: '../images/drinks/mojito.png',
+         image: '../images/drinks/mojito.jpg',
       },
       {
          id: 5,
@@ -44,7 +44,7 @@ const Box = () => {
          desc: 'Wielu webmasterów i designerów używa Lorem Ipsum w budowie. Wiele wersji tekstu ewoluowało i zmieniało się przez lata, czasem przez przypadek, czasem specjalnie(humorystyczne wstawki itd).',
          products: 'wódka, kawa, syro cukrowy, lód',
          type: 'słodki',
-         image: '../images/drinks/mojito.png',
+         image: '../images/drinks/mojito.jpg',
       },
    ];
 
@@ -63,7 +63,7 @@ const Box = () => {
    return (
       <div className="drinks-box">
          <Search setDrinks={updateDrinks} />
-         <DrinksBox />
+         <DrinksBox drinks={drinks} />
       </div>
    );
 };
