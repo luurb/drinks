@@ -39,11 +39,13 @@ const Search = ({ setDrinks }) => {
    ]);
    const [products, setProducts] = useState([]);
    const counterRef = useRef(1);
-   useEffect(() =>
-      setDrinks(
-         products,
-         categories.filter((category) => category.active)
-      )
+   useEffect(
+      () =>
+         setDrinks(
+            products,
+            categories.filter((category) => category.active)
+         ),
+      [products, categories]
    );
 
    const addProduct = (name) => {
