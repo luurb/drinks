@@ -2,7 +2,9 @@
 
 namespace App\Tests\Unit\Entity;
 
+use App\Entity\Category;
 use App\Entity\Drink;
+use App\Entity\Product;
 use App\Tests\DatabaseTestCase;
 
 class DrinkTest extends DatabaseTestCase
@@ -14,10 +16,9 @@ class DrinkTest extends DatabaseTestCase
         $drink->setDescription('test description');
         $drink->setPreparation('test preparation');
         $drink->setImage('test address');
-
+        
         $this->entityManager->persist($drink);
         $this->entityManager->flush();
-
         $drinkRepo = $this->entityManager->getRepository(Drink::class);
         $drinkRecord = $drinkRepo->findOneBy(['name' => 'mohito']);
 
@@ -25,5 +26,51 @@ class DrinkTest extends DatabaseTestCase
         $this->assertSame('test description', $drinkRecord->getDescription());
         $this->assertSame('test preparation', $drinkRecord->getPreparation());
         $this->assertSame('test address', $drinkRecord->getImage());
+    }
+
+    public function test_category_can_be_added_and_received(): void
+    {
+        $drink = new Drink();
+        $drink->setName('mohito');
+        $drink->setDescription('test description');
+        $drink->setPreparation('test preparation');
+        $drink->setImage('test address');
+
+        $category = new Category();
+        $category->setName('słodki');
+
+        $drink->addCategory($category);
+
+        $this->entityManager->persist($drink);
+        $this->entityManager->persist($category);
+        $this->entityManager->flush();
+
+        $drinkRepo = $this->entityManager->getRepository(Drink::class);
+        $drinkRecord = $drinkRepo->findOneBy(['name' => 'mohito']);
+
+        $this->assertEquals('słodki', $drinkRecord->getCategories()[0]->getName());
+    }
+
+    public function test_product_can_be_added_and_received(): void
+    {
+        $drink = new Drink();
+        $drink->setName('mohito');
+        $drink->setDescription('test description');
+        $drink->setPreparation('test preparation');
+        $drink->setImage('test address');
+
+        $product= new Product();
+        $product->setName('whiskey');
+
+        $drink->addProduct($product);
+
+        $this->entityManager->persist($drink);
+        $this->entityManager->persist($product);
+        $this->entityManager->flush();
+
+        $drinkRepo = $this->entityManager->getRepository(Drink::class);
+        $drinkRecord = $drinkRepo->findOneBy(['name' => 'mohito']);
+
+        $this->assertEquals('whiskey', $drinkRecord->getProducts()[0]->getName());
     }
 }
