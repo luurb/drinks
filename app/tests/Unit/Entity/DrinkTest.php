@@ -1,23 +1,12 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Unit\Entity;
 
 use App\Entity\Drink;
-use Doctrine\ORM\EntityManager;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Tests\DatabaseTestCase;
 
-class DrinkTest extends KernelTestCase
+class DrinkTest extends DatabaseTestCase
 {
-    /** @var EntityManager*/
-    private $entityManager;
-
-    protected function setUp(): void
-    {
-        $kernel =  self::bootKernel();
-        DatabasePrimer::prime($kernel);
-        $this->entityManager = $kernel->getContainer()->get('doctrine')->getManager();
-    }
-
     public function test_drink_record_can_be_created_in_database(): void
     {
         $drink = new Drink();

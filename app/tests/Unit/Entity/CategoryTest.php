@@ -1,24 +1,12 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Unit\Entity;
 
 use App\Entity\Category;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Tools\SchemaTool;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Tests\DatabaseTestCase;
 
-class CategoryTest extends KernelTestCase
+class CategoryTest extends DatabaseTestCase
 {
-    /** @var EntityManager*/
-    private $entityManager;
-
-    protected function setUp(): void
-    {
-        $kernel =  self::bootKernel();
-        DatabasePrimer::prime($kernel);
-        $this->entityManager = $kernel->getContainer()->get('doctrine')->getManager();
-    }
-
     public function test_category_record_can_be_created_in_database(): void
     {
         $category = new Category();

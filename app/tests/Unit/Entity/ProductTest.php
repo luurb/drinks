@@ -1,23 +1,12 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Unit\Entity;
 
 use App\Entity\Product;
-use Doctrine\ORM\EntityManager;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Tests\DatabaseTestCase;
 
-class ProductTest extends KernelTestCase
+class ProductTest extends DatabaseTestCase
 {
-    /** @var EntityManager*/
-    private $entityManager;
-
-    protected function setUp(): void
-    {
-        $kernel =  self::bootKernel();
-        DatabasePrimer::prime($kernel);
-        $this->entityManager = $kernel->getContainer()->get('doctrine')->getManager();
-    }
-
     public function test_product_record_can_be_created_in_database(): void
     {
         $product = new Product();
