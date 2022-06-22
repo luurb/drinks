@@ -14,7 +14,6 @@ abstract class DatabaseTestCase extends KernelTestCase
     protected function setUp(): void
     {
         $kernel =  self::bootKernel();
-        DatabasePrimer::prime($kernel);
         $this->entityManager = $kernel->getContainer()->get('doctrine')->getManager();
     }
 
