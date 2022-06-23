@@ -31,7 +31,7 @@ class DrinkTest extends ApiTestCase
         ]);
     }
 
-    public function testPOST(): void
+    public function testPost(): void
     {
         $this->client->request('POST', '/api/drinks', [
             'json' => [
@@ -83,7 +83,7 @@ class DrinkTest extends ApiTestCase
         ]);
     }
 
-    public function testPUT(): void
+    public function testPut(): void
     {
         $this->client->request('POST', '/api/drinks', [
             'json' => [
@@ -116,7 +116,7 @@ class DrinkTest extends ApiTestCase
         ]);
     }
 
-    public function testPATCH(): void
+    public function testPatch(): void
     {
         $this->client->request('POST', '/api/drinks', [
             'json' => [
@@ -152,7 +152,7 @@ class DrinkTest extends ApiTestCase
         ]);
     }
 
-    public function testDELETE(): void
+    public function testDelete(): void
     {
         $this->client->request('POST', '/api/drinks', [
             'json' => [
