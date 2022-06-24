@@ -37,8 +37,7 @@ const Search = ({ setDrinks }) => {
          active: false,
       },
    ]);
-   //Selected products
-   const [products, setProducts] = useState([]);
+   const [products, setProducts] = useState([]); // selected products
    const counterRef = useRef(1);
    useEffect(
       () =>
