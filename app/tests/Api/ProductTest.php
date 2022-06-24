@@ -55,4 +55,53 @@ class ProductTest extends ApiTestCase
         static::createclient()->request('DELETE', '/api/products');
         $this->assertresponsestatuscodesame(405);
     }
+
+    public function test_api_returns_products_filtered_by_name(): void
+    {
+        $names = ['sok z limonki', 'sok z cytryny', 'whiskey', 'syrop cukrowy'];
+        $entityManager = static::getContainer()->get('doctrine')->getManager();
+
+        foreach ($names as $name) {
+            $product = new Product();
+            $product->setName($name);
+            $entityManager->persist($product);
+        }
+
+        $entityManager->flush();
+
+        static::createClient()->request('GET', '/api/products?name=sok');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertJsonContains([
+            '@context' => '/api/contexts/Product',
+            '@id' => '/api/products',
+            '@type' => 'hydra:Collection',
+            'hydra:member' => [
+                [
+                    '@type' => 'Product',
+                    'name' => 'sok z limonki',
+                ],
+                [
+                    '@type' => 'Product',
+                    'name' => 'sok z cytryny',
+                ],
+            ],
+            'hydra:totalItems' => 2,
+        ]);
+
+        static::createClient()->request('GET', '/api/products?name=whi');
+
+        $this->assertJsonContains([
+            '@context' => '/api/contexts/Product',
+            '@id' => '/api/products',
+            '@type' => 'hydra:Collection',
+            'hydra:member' => [
+                [
+                    '@type' => 'Product',
+                    'name' => 'whiskey',
+                ],
+            ],
+            'hydra:totalItems' => 1,
+        ]);
+    }
 }
