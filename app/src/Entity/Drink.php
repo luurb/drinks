@@ -9,9 +9,12 @@ use App\Repository\DrinkRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: DrinkRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read']],
+)]
 #[ApiFilter(
     SearchFilter::class,
     properties: [
@@ -24,24 +27,31 @@ class Drink
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups('read')]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups('read')]
     private $name;
 
     #[ORM\Column(type: 'text')]
+    #[Groups('read')]
     private $description;
 
     #[ORM\Column(type: 'text')]
+    #[Groups('read')]
     private $preparation;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups('read')]
     private $image;
 
     #[ORM\ManyToMany(targetEntity: Product::class, inversedBy: 'drinks')]
+    #[Groups('read')]
     private $products;
 
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'drinks')]
+    #[Groups('read')]
     private $categories;
 
     public function __construct()
