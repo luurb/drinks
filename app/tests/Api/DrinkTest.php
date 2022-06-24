@@ -27,11 +27,11 @@ class DrinkTest extends ApiTestCase
 
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         $this->assertJsonContains([
-            "@context" => "/api/contexts/Drink",
-            "@id" => "/api/drinks",
-            "@type" => "hydra:Collection",
-            "hydra:member" => [],
-            "hydra:totalItems" => 0
+            '@context' => '/api/contexts/Drink',
+            '@id' => '/api/drinks',
+            '@type' => 'hydra:Collection',
+            'hydra:member' => [],
+            'hydra:totalItems' => 0
         ]);
     }
 
@@ -238,13 +238,13 @@ class DrinkTest extends ApiTestCase
         );
         //Assertions
         $this->assertJsonContains([
-            "@context" => "/api/contexts/Drink",
-            "@id" => "/api/drinks",
-            "@type" => "hydra:Collection",
-            "hydra:member" => [
+            '@context' => '/api/contexts/Drink',
+            '@id' => '/api/drinks',
+            '@type' => 'hydra:Collection',
+            'hydra:member' => [
                 [
-                    "@type" => "Drink",
-                    "name" => "drink2",
+                    '@type' => 'Drink',
+                    'name' => 'drink2',
                 ],
             ]
         ]);
@@ -255,13 +255,13 @@ class DrinkTest extends ApiTestCase
         );
         //Assertions
         $this->assertJsonContains([
-            "@context" => "/api/contexts/Drink",
-            "@id" => "/api/drinks",
-            "@type" => "hydra:Collection",
-            "hydra:member" => [
+            '@context' => '/api/contexts/Drink',
+            '@id' => '/api/drinks',
+            '@type' => 'hydra:Collection',
+            'hydra:member' => [
                 [
-                    "@type" => "Drink",
-                    "name" => "drink1",
+                    '@type' => 'Drink',
+                    'name' => 'drink1',
                 ],
             ]
         ]);
@@ -272,17 +272,17 @@ class DrinkTest extends ApiTestCase
         );
         //Assertions
         $this->assertJsonContains([
-            "@context" => "/api/contexts/Drink",
-            "@id" => "/api/drinks",
-            "@type" => "hydra:Collection",
-            "hydra:member" => [
+            '@context' => '/api/contexts/Drink',
+            '@id' => '/api/drinks',
+            '@type' => 'hydra:Collection',
+            'hydra:member' => [
                 [
-                    "@type" => "Drink",
-                    "name" => "drink2",
+                    '@type' => 'Drink',
+                    'name' => 'drink2',
                 ],
                 [
-                    "@type" => "Drink",
-                    "name" => "drink3",
+                    '@type' => 'Drink',
+                    'name' => 'drink3',
                 ],
             ]
         ]);
@@ -314,19 +314,19 @@ class DrinkTest extends ApiTestCase
 
         $this->client->request('GET', '/api/drinks?products=rum');
         $this->assertJsonContains([
-            "@context" => "/api/contexts/Drink",
-            "@id" => "/api/drinks",
-            "@type" => "hydra:Collection",
-            "hydra:member" => [],
+            '@context' => '/api/contexts/Drink',
+            '@id' => '/api/drinks',
+            '@type' => 'hydra:Collection',
+            'hydra:member' => [],
             'hydra:totalItems' => 0
         ]);
 
         $this->client->request('GET', '/api/drinks?products=wódka&categories=mocny');
         $this->assertJsonContains([
-            "@context" => "/api/contexts/Drink",
-            "@id" => "/api/drinks",
-            "@type" => "hydra:Collection",
-            "hydra:member" => [],
+            '@context' => '/api/contexts/Drink',
+            '@id' => '/api/drinks',
+            '@type' => 'hydra:Collection',
+            'hydra:member' => [],
             'hydra:totalItems' => 0
         ]);
     }
