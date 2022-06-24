@@ -62,7 +62,7 @@ const Search = ({ setDrinks }) => {
       <div className="search">
          <SearchBox
             addProduct={addProduct}
-            savedProducts={products}
+            selectedProducts={products}
          />
          {products.length > 0 && (
             <div className="search__products-wrapper">

@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import SearchResult from './SearchResult';
 
-const SearchBox = ({ addProduct, savedProducts }) => {
+const SearchBox = ({ addProduct, selectedProducts }) => {
    const [products, setProducts] = useState([]);
    const [isOpen, setIsOpen] = useState(false);
    const input = useRef(null);
@@ -38,7 +38,7 @@ const SearchBox = ({ addProduct, savedProducts }) => {
                const response = await axios.get(`/api/products?name=${value}`, {
                   headers: { accept: 'application/json' },
                });
-               setProducts(response.data);
+               setProducts(checkIfAlreadyAdded(response.data));
             } catch (error) {
                console.log(error);
                setProducts([]);
@@ -55,12 +55,11 @@ const SearchBox = ({ addProduct, savedProducts }) => {
       addProduct(product.name);
    };
 
-   const checkIfAlreadyAdded = (name) => {
-      if (savedProducts.length > 0) {
-         return savedProducts.some((savedProduct) => savedProduct.name == name);
-      }
-
-      return false;
+   //Return products filtered by already selected ones
+   const checkIfAlreadyAdded = (data) => {
+      return data.filter((product) =>
+         !selectedProducts.some((selected) => selected.name == product.name)
+      );
    };
 
    const productsCounter = 5;
@@ -85,8 +84,7 @@ const SearchBox = ({ addProduct, savedProducts }) => {
                <div className="search__results-box">
                   {products.map(
                      (product, index) =>
-                        index < productsCounter &&
-                        !checkIfAlreadyAdded(product.name) && (
+                        index < productsCounter && (
                            <SearchResult
                               key={product.id}
                               product={product}
