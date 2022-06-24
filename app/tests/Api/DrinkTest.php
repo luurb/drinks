@@ -238,15 +238,16 @@ class DrinkTest extends ApiTestCase
         );
         //Assertions
         $this->assertJsonContains([
-            "@context"=> "/api/contexts/Drink",
-            "@id"=> "/api/drinks",
-            "@type"=> "hydra:Collection",
-            "hydra:member"=> [
-            [
-                "@type"=> "Drink",
-                "name"=> "drink2",
-            ],
-            ]]);
+            "@context" => "/api/contexts/Drink",
+            "@id" => "/api/drinks",
+            "@type" => "hydra:Collection",
+            "hydra:member" => [
+                [
+                    "@type" => "Drink",
+                    "name" => "drink2",
+                ],
+            ]
+        ]);
 
         $this->client->request(
             'GET',
@@ -254,15 +255,16 @@ class DrinkTest extends ApiTestCase
         );
         //Assertions
         $this->assertJsonContains([
-            "@context"=> "/api/contexts/Drink",
-            "@id"=> "/api/drinks",
-            "@type"=> "hydra:Collection",
-            "hydra:member"=> [
-            [
-                "@type"=> "Drink",
-                "name"=> "drink1",
-            ],
-            ]]);
+            "@context" => "/api/contexts/Drink",
+            "@id" => "/api/drinks",
+            "@type" => "hydra:Collection",
+            "hydra:member" => [
+                [
+                    "@type" => "Drink",
+                    "name" => "drink1",
+                ],
+            ]
+        ]);
 
         $this->client->request(
             'GET',
@@ -270,18 +272,62 @@ class DrinkTest extends ApiTestCase
         );
         //Assertions
         $this->assertJsonContains([
-            "@context"=> "/api/contexts/Drink",
-            "@id"=> "/api/drinks",
-            "@type"=> "hydra:Collection",
-            "hydra:member"=> [
-            [
-                "@type"=> "Drink",
-                "name"=> "drink2",
-            ],
-            [
-                "@type"=> "Drink",
-                "name"=> "drink3",
-            ],
-            ]]);
+            "@context" => "/api/contexts/Drink",
+            "@id" => "/api/drinks",
+            "@type" => "hydra:Collection",
+            "hydra:member" => [
+                [
+                    "@type" => "Drink",
+                    "name" => "drink2",
+                ],
+                [
+                    "@type" => "Drink",
+                    "name" => "drink3",
+                ],
+            ]
+        ]);
+    }
+
+    public function test_return_empty_collection_when_there_is_no_match_in_filter(): void
+    {
+        $productFixture = new ProductFixtures();
+        $categoryFixture = new CategoryFixtures();
+        $productFixture->load($this->entityManager);
+        $categoryFixture->load($this->entityManager);
+
+        $this->client->request('POST', '/api/drinks', [
+            'json' => [
+                'name' => 'drink1',
+                'description' => 'description',
+                'preparation' => 'preparation',
+                'image' => '../images',
+                'categories' => [
+                    '/api/categories/orzeźwiający'
+                ],
+                'products' => [
+                    '/api/products/wódka',
+                    '/api/products/sok%20wiśniowy',
+                    '/api/products/mięta'
+                ]
+            ]
+        ]);
+
+        $this->client->request('GET', '/api/drinks?products=rum');
+        $this->assertJsonContains([
+            "@context" => "/api/contexts/Drink",
+            "@id" => "/api/drinks",
+            "@type" => "hydra:Collection",
+            "hydra:member" => [],
+            'hydra:totalItems' => 0
+        ]);
+
+        $this->client->request('GET', '/api/drinks?products=wódka&categories=mocny');
+        $this->assertJsonContains([
+            "@context" => "/api/contexts/Drink",
+            "@id" => "/api/drinks",
+            "@type" => "hydra:Collection",
+            "hydra:member" => [],
+            'hydra:totalItems' => 0
+        ]);
     }
 }
