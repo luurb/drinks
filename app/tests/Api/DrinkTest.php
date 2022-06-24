@@ -186,12 +186,11 @@ class DrinkTest extends ApiTestCase
                 'preparation' => 'preparation',
                 'image' => '../images',
                 'categories' => [
-                    '/api/categories/słodki'
+                    '/api/categories/orzeźwiający'
                 ],
                 'products' => [
                     '/api/products/wódka',
-                    '/api/products/sok wiśniowy',
-                    '/api/products/kawa',
+                    '/api/products/sok%20wiśniowy',
                     '/api/products/mięta'
                 ]
             ]
@@ -209,7 +208,6 @@ class DrinkTest extends ApiTestCase
                 ],
                 'products' => [
                     '/api/products/wódka',
-                    '/api/products/sok ananasowy',
                     '/api/products/rum',
                     '/api/products/kawa'
                 ]
@@ -227,7 +225,7 @@ class DrinkTest extends ApiTestCase
                     '/api/categories/kwaśny'
                 ],
                 'products' => [
-                    '/api/products/wino białe',
+                    '/api/products/wino%20białe',
                     '/api/products/mięta',
                     '/api/products/kawa'
                 ]
@@ -236,20 +234,54 @@ class DrinkTest extends ApiTestCase
 
         $this->client->request(
             'GET',
-            '/api/drinks?product[]=/api/products/wódka&product[]=/api/products/sok%20wiśniowy&categories=słodki'
+            '/api/drinks?products[]=wódka&products[]=sok%20wiśniowy&categories=słodki'
         );
         //Assertions
+        $this->assertJsonContains([
+            "@context"=> "/api/contexts/Drink",
+            "@id"=> "/api/drinks",
+            "@type"=> "hydra:Collection",
+            "hydra:member"=> [
+            [
+                "@type"=> "Drink",
+                "name"=> "drink2",
+            ],
+            ]]);
 
         $this->client->request(
             'GET',
-            '/api/drinks?product[]=/api/products/mięta&categories=słodki'
+            '/api/drinks?products[]=mięta&categories=orzeźwiający'
         );
         //Assertions
+        $this->assertJsonContains([
+            "@context"=> "/api/contexts/Drink",
+            "@id"=> "/api/drinks",
+            "@type"=> "hydra:Collection",
+            "hydra:member"=> [
+            [
+                "@type"=> "Drink",
+                "name"=> "drink1",
+            ],
+            ]]);
 
         $this->client->request(
             'GET',
-            '/api/drinks?product[]=/api/products/kawa&categories[]=słodki&categories[]=kwaśny'
+            '/api/drinks?products[]=kawa&categories[]=słodki&categories[]=kwaśny'
         );
         //Assertions
+        $this->assertJsonContains([
+            "@context"=> "/api/contexts/Drink",
+            "@id"=> "/api/drinks",
+            "@type"=> "hydra:Collection",
+            "hydra:member"=> [
+            [
+                "@type"=> "Drink",
+                "name"=> "drink2",
+            ],
+            [
+                "@type"=> "Drink",
+                "name"=> "drink3",
+            ],
+            ]]);
     }
 }
