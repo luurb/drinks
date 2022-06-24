@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\DrinkRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,6 +12,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DrinkRepository::class)]
 #[ApiResource]
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        'products' => 'exact', 
+        'categories' => 'exact',
+    ]
+)]
 class Drink
 {
     #[ORM\Id]
