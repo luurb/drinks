@@ -172,7 +172,7 @@ class DrinkTest extends ApiTestCase
         $this->assertResponseStatusCodeSame(204);
     }
 
-    public function test_return_drinks_which_contain_specific_products(): void
+    public function test_return_drinks_which_contain_specific_products_and_categories(): void
     {
         $productFixture = new ProductFixtures();
         $categoryFixture = new CategoryFixtures();
@@ -191,7 +191,7 @@ class DrinkTest extends ApiTestCase
                 'products' => [
                     '/api/products/wódka',
                     '/api/products/sok wiśniowy',
-                    '/api/products/lód',
+                    '/api/products/kawa',
                     '/api/products/mięta'
                 ]
             ]
@@ -205,7 +205,7 @@ class DrinkTest extends ApiTestCase
                 'image' => '../images',
                 'categories' => [
                     '/api/categories/kwaśny',
-                    '/api/categories/mocny'
+                    '/api/categories/słodki'
                 ],
                 'products' => [
                     '/api/products/wódka',
@@ -233,5 +233,23 @@ class DrinkTest extends ApiTestCase
                 ]
             ]
         ]);
+
+        $this->client->request(
+            'GET',
+            '/api/drinks?product[]=/api/products/wódka&product[]=/api/products/sok%20wiśniowy&categories=słodki'
+        );
+        //Assertions
+
+        $this->client->request(
+            'GET',
+            '/api/drinks?product[]=/api/products/mięta&categories=słodki'
+        );
+        //Assertions
+
+        $this->client->request(
+            'GET',
+            '/api/drinks?product[]=/api/products/kawa&categories[]=słodki&categories[]=kwaśny'
+        );
+        //Assertions
     }
 }
