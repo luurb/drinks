@@ -63,7 +63,7 @@ class AppFixtures extends Fixture
             $manager->persist($category);
         }
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $drink = new Drink();
 
             $drink->setName($faker->word);
