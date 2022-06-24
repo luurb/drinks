@@ -3,16 +3,20 @@
 namespace App\Tests\Api;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
+use App\DataFixtures\CategoryFixtures;
+use App\DataFixtures\ProductFixtures;
 use App\Entity\Drink;
 
 class DrinkTest extends ApiTestCase
 {
     private $client;
+    private $entityManager;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->client = static::createClient();
+        $this->entityManager = $this->getContainer()->get('doctrine')->getManager();
     }
 
     public function testGetCollection(): void
@@ -69,8 +73,7 @@ class DrinkTest extends ApiTestCase
             ]
         ]);
 
-        $entityManager = $this->getContainer()->get('doctrine')->getManager();
-        $drinkRecord = $entityManager->getRepository(Drink::class)->findOneBy(['name' => 'mohito']);
+        $drinkRecord = $this->entityManager->getRepository(Drink::class)->findOneBy(['name' => 'mohito']);
         $drinkId = $drinkRecord->getId();
         $this->client->request('GET', "/api/drinks/$drinkId");
 
@@ -94,8 +97,7 @@ class DrinkTest extends ApiTestCase
             ]
         ]);
 
-        $entityManager = $this->getContainer()->get('doctrine')->getManager();
-        $drinkRecord = $entityManager->getRepository(Drink::class)->findOneBy(['name' => 'mohito']);
+        $drinkRecord = $this->entityManager->getRepository(Drink::class)->findOneBy(['name' => 'mohito']);
         $drinkId = $drinkRecord->getId();
 
         $this->client->request('PUT', "/api/drinks/$drinkId", [
@@ -127,8 +129,7 @@ class DrinkTest extends ApiTestCase
             ]
         ]);
 
-        $entityManager = $this->getContainer()->get('doctrine')->getManager();
-        $drinkRecord = $entityManager->getRepository(Drink::class)->findOneBy(['name' => 'mohito']);
+        $drinkRecord = $this->entityManager->getRepository(Drink::class)->findOneBy(['name' => 'mohito']);
         $drinkId = $drinkRecord->getId();
 
         $this->client->request('PATCH', "/api/drinks/$drinkId", [
@@ -163,12 +164,74 @@ class DrinkTest extends ApiTestCase
             ]
         ]);
 
-        $entityManager = $this->getContainer()->get('doctrine')->getManager();
-        $drinkRecord = $entityManager->getRepository(Drink::class)->findOneBy(['name' => 'mohito']);
+        $drinkRecord = $this->entityManager->getRepository(Drink::class)->findOneBy(['name' => 'mohito']);
         $drinkId = $drinkRecord->getId();
 
         $this->client->request('DELETE', "/api/drinks/$drinkId");
 
         $this->assertResponseStatusCodeSame(204);
+    }
+
+    public function test_return_drinks_which_contain_specific_products(): void
+    {
+        $productFixture = new ProductFixtures();
+        $categoryFixture = new CategoryFixtures();
+        $productFixture->load($this->entityManager);
+        $categoryFixture->load($this->entityManager);
+
+        $this->client->request('POST', '/api/drinks', [
+            'json' => [
+                'name' => 'drink1',
+                'description' => 'description',
+                'preparation' => 'preparation',
+                'image' => '../images',
+                'categories' => [
+                    '/api/categories/słodki'
+                ],
+                'products' => [
+                    '/api/products/wódka',
+                    '/api/products/sok wiśniowy',
+                    '/api/products/lód',
+                    '/api/products/mięta'
+                ]
+            ]
+        ]);
+
+        $this->client->request('POST', '/api/drinks', [
+            'json' => [
+                'name' => 'drink2',
+                'description' => 'description',
+                'preparation' => 'preparation',
+                'image' => '../images',
+                'categories' => [
+                    '/api/categories/kwaśny',
+                    '/api/categories/mocny'
+                ],
+                'products' => [
+                    '/api/products/wódka',
+                    '/api/products/sok ananasowy',
+                    '/api/products/rum',
+                    '/api/products/kawa'
+                ]
+            ]
+        ]);
+
+        $this->client->request('POST', '/api/drinks', [
+            'json' => [
+                'name' => 'drink3',
+                'description' => 'description',
+                'preparation' => 'preparation',
+                'image' => '../images',
+                'categories' => [
+                    '/api/categories/słodki',
+                    '/api/categories/kwaśny'
+                ],
+                'products' => [
+                    '/api/products/wino białe',
+                    '/api/products/mięta',
+                    '/api/products/kawa'
+                ]
+            ]
+        ]);
     }
 }
