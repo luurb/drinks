@@ -37,6 +37,7 @@ const Search = ({ setDrinks }) => {
          active: false,
       },
    ]);
+   //Selected products
    const [products, setProducts] = useState([]);
    const counterRef = useRef(1);
    useEffect(
@@ -59,7 +60,10 @@ const Search = ({ setDrinks }) => {
 
    return (
       <div className="search">
-         <SearchBox addProduct={addProduct} savedProducts={products} />
+         <SearchBox
+            addProduct={addProduct}
+            savedProducts={products}
+         />
          {products.length > 0 && (
             <div className="search__products-wrapper">
                {products.map((product) => (

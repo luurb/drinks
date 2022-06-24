@@ -3,41 +3,6 @@ import { useState, useEffect, useRef } from 'react';
 import SearchResult from './SearchResult';
 
 const SearchBox = ({ addProduct, savedProducts }) => {
-   const productsArr = [
-      {
-         id: 1,
-         name: 'whiskey',
-      },
-      {
-         id: 2,
-         name: 'wódka',
-      },
-      {
-         id: 3,
-         name: 'sok z cytryny',
-      },
-      {
-         id: 4,
-         name: 'sok z limonki',
-      },
-      {
-         id: 5,
-         name: 'sok jabłkowy',
-      },
-      {
-         id: 6,
-         name: 'sok wiśniowy',
-      },
-      {
-         id: 7,
-         name: 'sok bananowy',
-      },
-      {
-         id: 8,
-         name: 'sok malinowy',
-      },
-   ];
-
    const [products, setProducts] = useState([]);
    const [isOpen, setIsOpen] = useState(false);
    const input = useRef(null);
@@ -65,9 +30,21 @@ const SearchBox = ({ addProduct, savedProducts }) => {
          setProducts([]);
          return;
       }
-      setProducts(
-         productsArr.filter((product) => product.name.includes(value))
-      );
+
+      if (value.length > 1) {
+         (async function () {
+            const axios = require('axios').default;
+            try {
+               const response = await axios.get(`/api/products?name=${value}`, {
+                  headers: { accept: 'application/json' },
+               });
+               setProducts(response.data);
+            } catch (error) {
+               console.log(error);
+               setProducts([]);
+            }
+         })();
+      }
    };
 
    //Clear search box after click on search result
