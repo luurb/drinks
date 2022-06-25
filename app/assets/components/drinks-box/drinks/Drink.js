@@ -21,7 +21,7 @@ const Drink = ({ drink }) => {
                alt="Zdjęcie drinka"
             />
             <div className="drink__desc">
-               {drink.description}
+               <div className="drink__desc-text">{drink.description}</div>
                <div className="drink__products-wrapper">
                   <span className="drink__products-header">Składniki:</span>
                   <div className="drink__products-box">
