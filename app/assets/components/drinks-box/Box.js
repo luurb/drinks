@@ -22,13 +22,43 @@ const Box = () => {
             const response = await axios.get(uri, {
                headers: { accept: 'application/json' },
             });
-            console.log(response.data);
-            setDrinks(response.data);
+            setDrinks(filterDrinks(response.data));
          } catch (error) {
             console.log(error);
             setDrinks([]);
          }
       })();
+
+      const filterDrinks = (data) => {
+         const filteredDrinks = data.map((drink) => {
+            let productRelevance = 0;
+            let categoryRelevance = 0;
+
+            //Set products revelance (if drink has a product from selected products increment revelance)
+            drink.products.forEach((product) => {
+               products.some(
+                  (selectedProduct) => selectedProduct.name == product.name
+               ) && productRelevance++;
+            });
+
+            //Same as products but with categories
+            drink.categories.forEach((category) => {
+               categories.some(
+                  (selectedCategory) => selectedCategory.name == category.name
+               ) && categoryRelevance++;
+            });
+
+            return {
+               ...drink,
+               productRelevance: productRelevance,
+               categoryRelevance: categoryRelevance,
+               revelance: productRelevance + categoryRelevance,
+            };
+         });
+
+         console.log('Filtered:', filteredDrinks);
+         return filteredDrinks;
+      };
    };
 
    return (
