@@ -35,15 +35,23 @@ const Box = () => {
             let productRelevance = 0;
             let categoryRelevance = 0;
 
-            //Set products revelance (if drink has a product from selected products increment revelance)
-            drink.products.forEach((product) => {
-               products.some(
+            /*
+            Set products revelance and active status for colors
+            if drink has a product from selected products increment revelance
+            */
+            drink.products = drink.products.map((product) => {
+               if (products.some(
                   (selectedProduct) => selectedProduct.name == product.name
-               ) && productRelevance++;
+               )) {
+                  productRelevance++;
+                  return { ...product, active: true };
+               } else {
+                  return { ...product, active: false};
+               }
             });
 
             /*
-            Same as products but additionallu replace fetched categories with 
+            Set categories revelance and replace fetched categories with 
             categories which contain colors from Search component
             */
             drink.categories = drink.categories.map((category) => {

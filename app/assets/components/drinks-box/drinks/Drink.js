@@ -1,6 +1,5 @@
 import React from 'react';
 import SocialWrapper from './SocialWrapper';
-import Product from './Product';
 
 const Drink = ({ drink }) => {
    return (
