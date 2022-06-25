@@ -13,20 +13,23 @@ const DrinksBox = ({ drinks }) => {
             return `Znaleziono 1 drink`;
             break;
          case 2:
-         case 3: 
+         case 3:
          case 4:
             return `Znaleziono ${drinksLength} drinki`;
             break;
          default:
             return `Znaleziono ${drinksLength} drinków`;
       }
-   }
+   };
 
    return (
       <div className="drinks">
          <div className="drinks__top">
             <span className="drinks__counter">{drinksCounter()}</span>
-            <SortBox />
+            <div className="drinks__sort-box">
+               <span>Sortuj</span>
+               <i className="fa-solid fa-caret-down"></i>
+            </div>
          </div>
          <div className="drinks__wrapper">
             {drinks.map((drink) => (
