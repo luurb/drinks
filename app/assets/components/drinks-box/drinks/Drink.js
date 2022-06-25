@@ -31,7 +31,12 @@ const Drink = ({ drink }) => {
                   <span className="drink__products-header">Składniki:</span>
                   <div className="drink__products-box">
                      {drink.products.map((product) => (
-                        <span key={product.id}>{product.name}</span>
+                        <span
+                           key={product.id}
+                           className={product.active ? "drink__active-product" : ""}
+                        >
+                           {product.name}
+                        </span>
                      ))}
                   </div>
                </div>
