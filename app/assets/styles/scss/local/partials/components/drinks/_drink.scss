@@ -94,6 +94,9 @@
     font-size: fonts.$small;
     width: 100%;
     padding-top: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
 }
 
 .drink__products-header {
