@@ -6,6 +6,7 @@ import axios from 'axios';
 
 const Box = () => {
    const [drinks, setDrinks] = useState([]);
+   const [sortFunc, setSortFunc] = useState(sortByRelevance);
 
    const updateDrinks = (products, categories) => {
       let uri = '/api/drinks?';
@@ -81,10 +82,38 @@ const Box = () => {
       };
    };
 
+   const setSortFuncBySelectedOption = (sortOption) => {
+      const callback = (() => {
+         switch (sortOption.name) {
+            case 'trafność':
+               return sortByRelevance;
+               break;
+            default:
+               return sortByRelevance;
+         }
+      })();
+
+      setSortFunc(() => callback);
+   };
+
+   const sortByRelevance = (firstDrink, secondDrink) => {
+      if (firstDrink.revelance > secondDrink.revelance) {
+         return -1;
+      }
+      if (firstDrink.revelance < secondDrink.revelance) {
+         return 1;
+      }
+
+      return 0;
+   };
+
    return (
       <div className="drinks-box">
          <Search setDrinks={updateDrinks} />
-         <DrinksBox drinks={drinks} />
+         <DrinksBox
+            drinks={drinks.sort((a, b) => sortFunc(a, b))}
+            setSortFuncBySelectedOption={setSortFuncBySelectedOption}
+         />
       </div>
    );
 };

@@ -3,7 +3,7 @@ import Drink from './Drink';
 import SortBox from './SortBox';
 import { useState } from 'react';
 
-const DrinksBox = ({ drinks }) => {
+const DrinksBox = ({ drinks, setSortFuncBySelectedOption }) => {
    const [toogle, setToogle] = useState(false);
    const [sortOptions, setSortOptions] = useState([
       {
@@ -53,28 +53,8 @@ const DrinksBox = ({ drinks }) => {
    };
 
    useEffect(() => {
-      const sortOption = sortOptions.find((option) => option.active);
-      const callback = (() => {
-         switch (sortOption.name) {
-            case 'trafność':
-               return sortByRelevance;
-               break;
-            default:
-               return sortByRelevance;
-         }
-      })();
+      setSortFuncBySelectedOption(sortOptions.find((option) => option.active));
    }, [sortOptions]);
-
-   const sortByRelevance = (firstDrink, secondDrink) => {
-      if (firstDrink.revelance > secondDrink.revelance) {
-         return -1;
-      }
-      if (firstDrink.revelance < secondDrink.revelance) {
-         return 1;
-      }
-
-      return 0;
-   };
 
    return (
       <div className="drinks">
