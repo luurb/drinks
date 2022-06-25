@@ -59,10 +59,7 @@ const Search = ({ setDrinks }) => {
 
    return (
       <div className="search">
-         <SearchBox
-            addProduct={addProduct}
-            selectedProducts={products}
-         />
+         <SearchBox addProduct={addProduct} selectedProducts={products} />
          {products.length > 0 && (
             <div className="search__products-wrapper">
                {products.map((product) => (

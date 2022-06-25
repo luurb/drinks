@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import SearchResult from './SearchResult';
+import axios from 'axios';
 
 const SearchBox = ({ addProduct, selectedProducts }) => {
    const [products, setProducts] = useState([]);
@@ -33,7 +34,6 @@ const SearchBox = ({ addProduct, selectedProducts }) => {
 
       if (value.length > 1) {
          (async function () {
-            const axios = require('axios').default;
             try {
                const response = await axios.get(`/api/products?name=${value}`, {
                   headers: { accept: 'application/json' },
