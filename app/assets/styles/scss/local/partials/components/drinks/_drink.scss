@@ -16,10 +16,29 @@
     align-items: center;
 }
 
+.drink__name-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .drink__name {
+    position: relative;
     font-size: fonts.$regular;
     font-weight: 500;
     cursor: pointer;
+}
+
+.drink__categories-box {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.drink__category-disc {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
 }
 
 .drink__social-wrapper{

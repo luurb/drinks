@@ -6,9 +6,18 @@ const Drink = ({ drink }) => {
    return (
       <div className="drink">
          <div className="drink__top">
-            <span className="drink__name">
-               {drink.categories.map((category, index) => <div key={index} className="drink__category-dis }}c" style={{background: `var(--yellow})`}}></div>)} 
-               {drink.name}</span>
+            <div className="drink__name-box">
+               <div className="drink__categories-box">
+                  {drink.categories.map((category, index) => (
+                     <div
+                        key={index}
+                        className="drink__category-disc"
+                        style={{ background: `var(--${category.color})` }}
+                     ></div>
+                  ))}
+               </div>
+               <span className="drink__name">{drink.name}</span>
+            </div>
             <SocialWrapper />
          </div>
          <div className="drink__bottom">
