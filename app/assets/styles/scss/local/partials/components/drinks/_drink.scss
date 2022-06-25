@@ -63,20 +63,25 @@
 
 .drink__desc {
     font-size: fonts.$small;
-    padding: 0 8px 8px 8px;
+    padding: 0 8px;
     line-height: 150%;
 }
 
-.drink__products-box {
+.drink__products-wrapper{
     font-size: fonts.$small;
     width: 100%;
-    padding-top: 5px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
+    padding-top: 10px;
 }
 
 .drink__products-header {
     font-weight: 500;
+}
+
+.drink__products-box {
+    padding-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    line-height: 80%;
 }

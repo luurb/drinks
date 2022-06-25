@@ -22,11 +22,13 @@ const Drink = ({ drink }) => {
             />
             <div className="drink__desc">
                {drink.description}
-               <div className="drink__products-box">
+               <div className="drink__products-wrapper">
                   <span className="drink__products-header">Składniki:</span>
-                  {drink.products.map((product) => (
-                     <span key={product.id}>{product.name}</span>
-                  ))}
+                  <div className="drink__products-box">
+                     {drink.products.map((product) => (
+                        <span key={product.id}>{product.name}</span>
+                     ))}
+                  </div>
                </div>
             </div>
          </div>
