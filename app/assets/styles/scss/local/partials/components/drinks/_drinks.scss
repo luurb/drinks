@@ -19,10 +19,41 @@
 }
 
 .drinks__sort-box {
+  padding: 0 10px;
+  position: relative;;
   display: flex;
   align-items: center;
   gap: 5px;
   cursor: pointer;
+}
+
+.drinks__sort-options-box {
+  font-size: fonts.$small2;
+  background: var(--white);
+  width: 135px;
+  position: absolute;
+  top: 30px;
+  right: -20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--grey);
+  border-radius: 5px;
+}
+
+.drinks__sort-option {
+  font-weight: 400;
+  width: 100%;
+  padding: 5px 0;
+  text-align: center;
+  border-bottom: 2px solid var(--grey);
+  border-radius: 5px;
+}
+
+.drinks__sort-active {
+  background: var(--violet);
+  color: var(--white);
 }
 
 .drinks__wrapper {

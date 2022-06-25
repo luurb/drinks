@@ -2,3 +2,7 @@
 @use './fonts';
 @use './../config/layers';
 @use '../config/breakpoints';
+
+.sort-caret {
+   font-size: 2.5rem;
+}

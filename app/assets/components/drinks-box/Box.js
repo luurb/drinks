@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Search from './search/Search';
 import DrinksBox from './drinks/DrinksBox';
 import { useState } from 'react';
@@ -40,13 +40,15 @@ const Box = () => {
             if drink has a product from selected products increment revelance
             */
             drink.products = drink.products.map((product) => {
-               if (products.some(
-                  (selectedProduct) => selectedProduct.name == product.name
-               )) {
+               if (
+                  products.some(
+                     (selectedProduct) => selectedProduct.name == product.name
+                  )
+               ) {
                   productRelevance++;
                   return { ...product, active: true };
                } else {
-                  return { ...product, active: false};
+                  return { ...product, active: false };
                }
             });
 
@@ -63,7 +65,7 @@ const Box = () => {
 
                return categories.find(
                   (selectedCategory) => selectedCategory.name == category.name
-               )
+               );
             });
 
             return {
