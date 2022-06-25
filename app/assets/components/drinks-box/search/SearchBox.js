@@ -67,14 +67,14 @@ const SearchBox = ({ addProduct, selectedProducts }) => {
    return (
       <form>
          <label htmlFor="search" className="search__header">
-            Wybierz produkty
+            Wybierz sładniki 
          </label>
          <div className="search__box">
             <input
                type="text"
                id="search"
                className="search__input"
-               placeholder="Wpisz produkt"
+               placeholder="Wpisz składnik"
                onChange={(e) => {
                   addSearchResult(e.currentTarget.value);
                }}
