@@ -6,12 +6,9 @@ const Drink = ({ drink }) => {
    return (
       <div className="drink">
          <div className="drink__top">
-            <span
-               className="drink__name"
-               style={{ borderBottom: '3px solid var(--yellow' }}
-            >
-               {drink.name}
-            </span>
+            <span className="drink__name">
+               {drink.categories.map((category, index) => <div key={index} className="drink__category-dis }}c" style={{background: `var(--yellow})`}}></div>)} 
+               {drink.name}</span>
             <SocialWrapper />
          </div>
          <div className="drink__bottom">

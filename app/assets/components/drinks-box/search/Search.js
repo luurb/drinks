@@ -39,14 +39,7 @@ const Search = ({ setDrinks }) => {
    ]);
    const [products, setProducts] = useState([]); // selected products
    const counterRef = useRef(1);
-   useEffect(
-      () =>
-         setDrinks(
-            products,
-            categories.filter((category) => category.active)
-         ),
-      [products, categories]
-   );
+   useEffect(() => setDrinks(products, categories), [products, categories]);
 
    const addProduct = (name) => {
       setProducts([...products, { id: counterRef.current, name: name }]);

@@ -14,8 +14,9 @@ const Box = () => {
          uri += `products[]=${product.name}&`;
       });
       categories.forEach((category) => {
-         uri += `categories[]=${category.name}&`;
+         category.active && (uri += `categories[]=${category.name}&`);
       });
+      console.log(categories);
 
       (async () => {
          try {
@@ -41,11 +42,20 @@ const Box = () => {
                ) && productRelevance++;
             });
 
-            //Same as products but with categories
-            drink.categories.forEach((category) => {
+            /*
+            Same as products but additionallu replace fetched categories with 
+            categories which contain colors from Search component
+            */
+            drink.categories = drink.categories.map((category) => {
                categories.some(
-                  (selectedCategory) => selectedCategory.name == category.name
+                  (selectedCategory) =>
+                     selectedCategory.name == category.name &&
+                     selectedCategory.active
                ) && categoryRelevance++;
+
+               return categories.find(
+                  (selectedCategory) => selectedCategory.name == category.name
+               )
             });
 
             return {
