@@ -25,7 +25,7 @@
 }
 
 .search__input {
-    border: 2px solid var(--grey);
+    border: 2px solid var(--violet);
     border-radius: 10px;
 }
 
@@ -39,7 +39,8 @@
 }
 
 .search__result:nth-child(odd) {
-    background: var(--yellow);
+    background: var(--violet);
+    color: var(--white);
 }
 
 .search__results-box {
@@ -47,7 +48,8 @@
     position: absolute;
     left: -2px;
     background: var(--white);
-    border: 2px solid var(--yellow);
+    border: 2px solid var(--violet);
+    border-radius: 10px;
 }
 
 .search__products-wrapper {
