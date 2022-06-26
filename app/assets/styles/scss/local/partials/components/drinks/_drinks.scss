@@ -84,4 +84,13 @@
   .drinks {
     max-width: 100%;
   }
+
+  .drinks__top {
+    justify-content: space-between;
+  }
+
+  .drinks__sort-options-box {
+    width: 160px;
+    top: 35px;
+  }
 }

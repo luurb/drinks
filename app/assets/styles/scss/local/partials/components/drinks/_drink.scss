@@ -139,12 +139,13 @@
 @media (min-width: breakpoints.$desktop-small) {
     .drink {
         //width of img / resolution of img
-        max-height: calc(250px / 1.56);
+        height: calc(320px / 1.56);
+        max-width: 100%;
     }
 
     .drink__top {
         //100% - width of the image + padding
-        width: calc(100% - 250px);
+        width: calc(100% - 330px);
     }
 
     .drink__bottom {
@@ -156,18 +157,26 @@
 
     .drink__img {
         //100% height of drink bottom + height of drink top and padding
-        width: 250px;
+        width: 320px;
         position: absolute;
         right: 0;
-        top: -42px;
-        border-radius: 5px;
+        top: -49px;
+        border-radius: 10px;
     }
 
     .drink__desc {
-        width: calc(100% - 250px);
-        max-height: calc(250px / 1.56 - 45px);
+        width: calc(100% - 330px);
+        max-height: calc(320px / 1.56 - 55px);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+    }
+
+    .drink__products-wrapper {
+        align-items: center;
+    }
+
+    .drink__products-box {
+        padding-top: 0;
     }
 }
