@@ -17,14 +17,15 @@ const Box = () => {
       categories.forEach((category) => {
          category.active && (uri += `categories[]=${category.name}&`);
       });
-      console.log(categories);
 
       (async () => {
          try {
             const response = await axios.get(uri, {
                headers: { accept: 'application/json' },
             });
-            setDrinks(filterDrinks(response.data));
+            const filteredDrinks = filterDrinks(response.data);
+            console.log(filteredDrinks);
+            setDrinks(filteredDrinks);
          } catch (error) {
             console.log(error);
             setDrinks([]);
@@ -32,53 +33,57 @@ const Box = () => {
       })();
 
       const filterDrinks = (data) => {
-         const filteredDrinks = data.map((drink) => {
-            let productRelevance = 0;
-            let categoryRelevance = 0;
-
-            /*
-            Set products revelance and active status for colors
-            if drink has a product from selected products increment revelance
-            */
-            drink.products = drink.products.map((product) => {
-               if (
-                  products.some(
-                     (selectedProduct) => selectedProduct.name == product.name
-                  )
-               ) {
-                  productRelevance++;
-                  return { ...product, active: true };
-               } else {
-                  return { ...product, active: false };
-               }
-            });
-
-            /*
-            Set categories revelance and replace fetched categories with 
-            categories which contain colors from Search component
-            */
-            drink.categories = drink.categories.map((category) => {
-               categories.some(
-                  (selectedCategory) =>
-                     selectedCategory.name == category.name &&
-                     selectedCategory.active
-               ) && categoryRelevance++;
-
-               return categories.find(
-                  (selectedCategory) => selectedCategory.name == category.name
-               );
-            });
-
+         return data.map((drink) => {
+            drink = filterProducts(drink);
+            drink = filterCategories(drink);
             return {
                ...drink,
-               productRelevance: productRelevance,
-               categoryRelevance: categoryRelevance,
-               revelance: productRelevance + categoryRelevance,
+               revelance: drink.productRelevance + drink.categoryRelevance,
             };
          });
+      };
 
-         console.log('Filtered:', filteredDrinks);
-         return filteredDrinks;
+      /*
+      Set products revelance and active status for colors
+      if drink has a product from selected products increment revelance
+      */
+      const filterProducts = (drink) => {
+         let productRelevance = 0;
+         drink.products = drink.products.map((product) => {
+            if (
+               products.some(
+                  (selectedProduct) => selectedProduct.name == product.name
+               )
+            ) {
+               productRelevance++;
+               return { ...product, active: true };
+            } else {
+               return { ...product, active: false };
+            }
+         });
+
+         return { ...drink, productRelevance: productRelevance };
+      };
+
+      /*
+      Set categories revelance and replace fetched categories with 
+      categories which contain colors from Search component
+      */
+      const filterCategories = (drink) => {
+         let categoryRelevance = 0;
+         drink.categories = drink.categories.map((category) => {
+            categories.some(
+               (selectedCategory) =>
+                  selectedCategory.name == category.name &&
+                  selectedCategory.active
+            ) && categoryRelevance++;
+
+            return categories.find(
+               (selectedCategory) => selectedCategory.name == category.name
+            );
+         });
+
+         return { ...drink, categoryRelevance: categoryRelevance};
       };
    };
 
