@@ -11,6 +11,7 @@ const SocialWrapper = () => {
             <div className="drink__social-box">
                 <i className="fa-solid fa-comment"></i>
                 <span>4</span>
+                <span className="drink__comment-text">komentarze</span>
             </div>
         </div>
     );

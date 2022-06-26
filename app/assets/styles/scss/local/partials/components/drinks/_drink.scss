@@ -65,6 +65,10 @@
     gap: 5px;
 }
 
+.drink__comment-text {
+    display: none;
+}
+
 .drink__bottom {
     background: var(--white);
     display: flex;
@@ -167,6 +171,7 @@
     .drink__desc {
         width: calc(100% - 330px);
         max-height: calc(320px / 1.56 - 55px);
+        padding-bottom: 5px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -178,5 +183,9 @@
 
     .drink__products-box {
         padding-top: 0;
+    }
+
+    .drink__comment-text {
+        display: inline-block;
     }
 }
