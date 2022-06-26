@@ -117,3 +117,33 @@
     color: var(--violet);
     font-weight: 600;
 }
+
+@media (min-width: breakpoints.$drinks-break) {
+    .drink__top {
+        //100% - width of the image + padding
+        width: calc(100% - 31vw);
+    }
+
+    .drink__bottom {
+        flex-direction: row-reverse;
+        align-items: flex-start;
+        position: relative;
+    }
+
+    .drink__img {
+        //100% height of drink bottom + height of drink top and padding
+        max-height: calc(100% + 52px);
+        width: unset;
+        position: absolute;
+        right: 0;
+        top: -42px;
+        border-radius: 5px;
+    }
+
+    .drink__desc {
+        height: 15vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+}
