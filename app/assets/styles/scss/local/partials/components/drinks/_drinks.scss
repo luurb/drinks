@@ -62,3 +62,9 @@
   flex-direction: column;
   gap: 30px;
 }
+
+@media (min-width: breakpoints.$drinks-break) {
+  .drinks {
+    max-width: 100%;
+  }
+}
