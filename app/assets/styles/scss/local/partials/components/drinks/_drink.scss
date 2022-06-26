@@ -26,6 +26,7 @@
     position: relative;
     font-size: fonts.$regular;
     font-weight: 500;
+    text-transform: capitalize;
     cursor: pointer;
 }
 
@@ -145,6 +146,7 @@
         //width of img / resolution of img
         height: calc(320px / 1.56);
         max-width: 100%;
+        padding: 0 0 10px 10px;
     }
 
     .drink__top {
@@ -187,5 +189,10 @@
 
     .drink__comment-text {
         display: inline-block;
+    }
+
+    .drink__category-disc {
+        width: 20px;
+        height: 20px;
     }
 }
