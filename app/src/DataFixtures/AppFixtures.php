@@ -7,10 +7,16 @@ use App\Entity\Drink;
 use App\Entity\Product;
 use App\Entity\Category;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class AppFixtures extends Fixture
+class AppFixtures extends Fixture implements FixtureGroupInterface
 {
+    public static function getGroups(): array
+    {
+       return ['drinks'];
+    }
+
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create();
@@ -67,9 +73,9 @@ class AppFixtures extends Fixture
             $drink = new Drink();
 
             $drink->setName($faker->word);
-            $drink->setDescription($faker->sentence(25));
-            $drink->setPreparation($faker->sentence(15));
-            $drink->setImage('../img');
+            $drink->setDescription($faker->sentence(40));
+            $drink->setPreparation($faker->sentence(40));
+            $drink->setImage('../images/drinks/mojito.jpg');
             $drink->addCategory($categoryEntities[rand(0, count($categoryEntities) - 1)]);
             $drink->addProduct($productEntities[rand(0, count($productEntities) - 1)]);
             $drink->addProduct($productEntities[rand(0, count($productEntities) - 1)]);
