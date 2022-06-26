@@ -9,7 +9,9 @@ function App() {
          <Nav />
          <main className="main__drinks">
             <Info />
-            <Box />
+            <div className="drinks-box__wrapper">
+               <Box />
+            </div>
          </main>
       </>
    );

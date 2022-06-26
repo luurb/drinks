@@ -113,7 +113,7 @@ const Box = () => {
    };
 
    return (
-      <div className="drinks-box">
+      <div className="drinks-box__box">
          <Search setDrinks={updateDrinks} />
          <DrinksBox
             drinks={drinks.sort((a, b) => sortFunc(a, b))}
