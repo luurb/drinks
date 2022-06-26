@@ -64,7 +64,23 @@
   gap: 30px;
 }
 
-@media (min-width: breakpoints.$drinks-break) {
+@media (min-width: breakpoints.$tablet) {
+  .drinks {
+    min-width: 100%;
+  }
+
+  .drinks__wrapper {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .drinks__top {
+    justify-content: space-around;
+  }
+}
+
+@media (min-width: breakpoints.$desktop-small) {
   .drinks {
     max-width: 100%;
   }
