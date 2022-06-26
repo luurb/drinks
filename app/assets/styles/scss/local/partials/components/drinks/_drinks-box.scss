@@ -19,10 +19,18 @@
 
 @media (min-width: breakpoints.$tablet) {
   .drinks-box__box {
+    padding: 10px 2vw;
     border-radius: 10px;
   }
 
   .drinks-box__wrapper {
     padding: 20px 5vw;
+  }
+}
+
+@media (min-width: breakpoints.$desktop) {
+  .drinks-box__box {
+    flex-direction: row;
+    align-items: flex-start;
   }
 }

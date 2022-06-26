@@ -94,3 +94,9 @@
     top: 35px;
   }
 }
+
+@media (min-width: breakpoints.$desktop) {
+  .drinks {
+    min-width: unset;
+  }
+}

@@ -96,3 +96,22 @@
     height: 15px;
     border-radius: 50%;
 }
+
+@media (min-width: breakpoints.$desktop) {
+    .search {
+        min-width: 300px;
+
+        form {
+            width: 100%;
+        }
+    }
+
+    .search__input {
+        width: 100%;
+    }
+
+    .search__input,
+    .search__result {
+        padding: 10px 15px;
+    }
+}
