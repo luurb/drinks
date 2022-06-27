@@ -3,7 +3,6 @@ import Search from './search/Search';
 import DrinksBox from './drinks/DrinksBox';
 import { useState } from 'react';
 import axios from 'axios';
-import DrinksBoxSkeleton from './drinks/DrinksBoxSkeleton';
 
 const Box = () => {
    const [drinks, setDrinks] = useState([]);
@@ -119,14 +118,11 @@ const Box = () => {
    return (
       <div className="drinks-box__box">
          <Search setDrinks={updateDrinks} />
-         {isLoaded ? (
             <DrinksBox
                drinks={drinks.sort((a, b) => sortFunc(a, b))}
                setSortFuncBySelectedOption={setSortFuncBySelectedOption}
+               isLoaded={isLoaded}
             />
-         ) : (
-            <DrinksBoxSkeleton />
-         )}
       </div>
    );
 };

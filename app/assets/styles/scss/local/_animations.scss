@@ -1,9 +1,27 @@
 @keyframes typing {
-  from { width: 0 }
-  to { width: 130px }
+   from {
+      width: 0;
+   }
+   to {
+      width: 130px;
+   }
 }
 
 @keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: var(--violet); }
+   from,
+   to {
+      border-color: transparent;
+   }
+   50% {
+      border-color: var(--violet);
+   }
+}
+
+@keyframes fillGlass {
+   from {
+      height: 10px;
+   }
+   to {
+      height: 75px;
+   }
 }

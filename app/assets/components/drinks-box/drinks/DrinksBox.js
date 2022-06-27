@@ -2,8 +2,9 @@ import React, { useEffect } from 'react';
 import Drink from './Drink';
 import SortBox from './SortBox';
 import { useState } from 'react';
+import LoadingDrink from './LoadingDrink';
 
-const DrinksBox = ({ drinks, setSortFuncBySelectedOption }) => {
+const DrinksBox = ({ drinks, isLoaded, setSortFuncBySelectedOption }) => {
    const [toogle, setToogle] = useState(false);
    const [sortOptions, setSortOptions] = useState([
       {
@@ -78,11 +79,15 @@ const DrinksBox = ({ drinks, setSortFuncBySelectedOption }) => {
                )}
             </div>
          </div>
-         <div className="drinks__wrapper">
-            {drinks.map((drink) => (
-               <Drink key={drink.id} drink={drink} />
-            ))}
-         </div>
+         {isLoaded ? (
+            <div className="drinks__wrapper">
+               {drinks.map((drink) => (
+                  <Drink key={drink.id} drink={drink} />
+               ))}
+            </div>
+         ) : (
+            <LoadingDrink />
+         )}
       </div>
    );
 };
