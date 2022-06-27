@@ -3,14 +3,17 @@ import Search from './search/Search';
 import DrinksBox from './drinks/DrinksBox';
 import { useState } from 'react';
 import axios from 'axios';
+import DrinksBoxSkeleton from './drinks/DrinksBoxSkeleton';
 
 const Box = () => {
    const [drinks, setDrinks] = useState([]);
    const [sortFunc, setSortFunc] = useState(sortByRelevance);
+   const [isLoaded, setIsLoaded] = useState(true);
 
    const updateDrinks = (products, categories) => {
-      let uri = '/api/drinks?';
+      setIsLoaded(false);
 
+      let uri = '/api/drinks?';
       products.forEach((product) => {
          uri += `products[]=${product.name}&`;
       });
@@ -25,6 +28,7 @@ const Box = () => {
             });
             const filteredDrinks = filterDrinks(response.data);
             console.log(filteredDrinks);
+            setIsLoaded(true);
             setDrinks(filteredDrinks);
          } catch (error) {
             console.log(error);
@@ -83,7 +87,7 @@ const Box = () => {
             );
          });
 
-         return { ...drink, categoryRelevance: categoryRelevance};
+         return { ...drink, categoryRelevance: categoryRelevance };
       };
    };
 
@@ -115,10 +119,14 @@ const Box = () => {
    return (
       <div className="drinks-box__box">
          <Search setDrinks={updateDrinks} />
-         <DrinksBox
-            drinks={drinks.sort((a, b) => sortFunc(a, b))}
-            setSortFuncBySelectedOption={setSortFuncBySelectedOption}
-         />
+         {isLoaded ? (
+            <DrinksBox
+               drinks={drinks.sort((a, b) => sortFunc(a, b))}
+               setSortFuncBySelectedOption={setSortFuncBySelectedOption}
+            />
+         ) : (
+            <DrinksBoxSkeleton />
+         )}
       </div>
    );
 };
