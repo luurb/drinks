@@ -99,6 +99,8 @@
 @media (min-width: breakpoints.$desktop) {
   .drinks {
     min-width: unset;
+    // 100% - search box width
+    width: calc(100% - 300px);
     max-width: 1100px;
   }
 }

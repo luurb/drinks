@@ -67,7 +67,7 @@ const SearchBox = ({ addProduct, selectedProducts }) => {
    return (
       <form>
          <label htmlFor="search" className="search__header">
-            Wybierz sładniki 
+            Wybierz składniki 
          </label>
          <div className="search__box">
             <input
