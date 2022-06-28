@@ -13,12 +13,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: DrinkRepository::class)]
 #[ApiResource(
+    attributes: ['pagination_items_per_page' => 20],
     normalizationContext: ['groups' => ['read']],
 )]
 #[ApiFilter(
     SearchFilter::class,
     properties: [
-        'products' => 'exact', 
+        'products' => 'exact',
         'categories' => 'exact',
     ]
 )]
