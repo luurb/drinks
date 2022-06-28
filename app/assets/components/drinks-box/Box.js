@@ -3,7 +3,6 @@ import Search from './search/Search';
 import DrinksBox from './drinks/DrinksBox';
 import { useState } from 'react';
 import axios from 'axios';
-import { useIntersectionObserver } from 'react-intersection-observer-hook';
 
 const Box = () => {
    const [drinks, setDrinks] = useState([]);

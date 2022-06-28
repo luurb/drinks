@@ -4,7 +4,12 @@ import SortBox from './SortBox';
 import { useState } from 'react';
 import LoadingDrink from './LoadingDrink';
 
-const DrinksBox = ({ drinks, isLoaded, setSortFuncBySelectedOption, drinksTotalItems }) => {
+const DrinksBox = ({
+   drinks,
+   isLoaded,
+   setSortFuncBySelectedOption,
+   drinksTotalItems,
+}) => {
    const [toogle, setToogle] = useState(false);
    const [sortOptions, setSortOptions] = useState([
       {
