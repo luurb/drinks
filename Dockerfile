@@ -27,4 +27,4 @@ WORKDIR /var/www
 #Change owner of the container document root
 RUN chown -R www-data:www-data /var/www
 
-COPY ./app .
+#COPY ./app .
