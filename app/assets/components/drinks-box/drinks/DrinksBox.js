@@ -4,7 +4,7 @@ import SortBox from './SortBox';
 import { useState } from 'react';
 import LoadingDrink from './LoadingDrink';
 
-const DrinksBox = ({ drinks, isLoaded, setSortFuncBySelectedOption }) => {
+const DrinksBox = ({ drinks, isLoaded, setSortFuncBySelectedOption, drinksTotalItems }) => {
    const [toogle, setToogle] = useState(false);
    const [sortOptions, setSortOptions] = useState([
       {
@@ -35,8 +35,7 @@ const DrinksBox = ({ drinks, isLoaded, setSortFuncBySelectedOption }) => {
    ]);
 
    const drinksCounter = () => {
-      const drinksLength = drinks.length;
-      switch (drinksLength) {
+      switch (drinksTotalItems) {
          case 0:
             return 'Nie znaleziono drinków dla wybranych produktów';
             break;
@@ -46,10 +45,10 @@ const DrinksBox = ({ drinks, isLoaded, setSortFuncBySelectedOption }) => {
          case 2:
          case 3:
          case 4:
-            return `Znaleziono ${drinksLength} drinki`;
+            return `Znaleziono ${drinksTotalItems} drinki`;
             break;
          default:
-            return `Znaleziono ${drinksLength} drinków`;
+            return `Znaleziono ${drinksTotalItems} drinków`;
       }
    };
 

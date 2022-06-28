@@ -1,13 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Search from './search/Search';
 import DrinksBox from './drinks/DrinksBox';
 import { useState } from 'react';
 import axios from 'axios';
+import { useIntersectionObserver } from 'react-intersection-observer-hook';
 
 const Box = () => {
    const [drinks, setDrinks] = useState([]);
    const [sortFunc, setSortFunc] = useState(sortByRelevance);
    const [isLoaded, setIsLoaded] = useState(true);
+   const drinksTotalItemsRef = useRef(0);
 
    const updateDrinks = (products, categories) => {
       setIsLoaded(false);
@@ -22,10 +24,9 @@ const Box = () => {
 
       (async () => {
          try {
-            const response = await axios.get(uri, {
-               headers: { accept: 'application/json' },
-            });
-            const filteredDrinks = filterDrinks(response.data);
+            const response = await axios.get(uri);
+            const filteredDrinks = filterDrinks(response.data['hydra:member']);
+            drinksTotalItemsRef.current = response.data['hydra:totalItems'];
             console.log(filteredDrinks);
             setIsLoaded(true);
             setDrinks(filteredDrinks);
@@ -118,11 +119,12 @@ const Box = () => {
    return (
       <div className="drinks-box__box">
          <Search setDrinks={updateDrinks} />
-            <DrinksBox
-               drinks={drinks.sort((a, b) => sortFunc(a, b))}
-               setSortFuncBySelectedOption={setSortFuncBySelectedOption}
-               isLoaded={isLoaded}
-            />
+         <DrinksBox
+            drinks={drinks.sort((a, b) => sortFunc(a, b))}
+            setSortFuncBySelectedOption={setSortFuncBySelectedOption}
+            isLoaded={isLoaded}
+            drinksTotalItems={drinksTotalItemsRef.current}
+         />
       </div>
    );
 };
