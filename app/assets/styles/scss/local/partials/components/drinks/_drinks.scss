@@ -59,12 +59,10 @@
 }
 
 .drinks__wrapper {
-  max-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 30px;
-  overflow-y: auto;
 }
 
 .drinks__wrapper::-webkit-scrollbar {
@@ -77,9 +75,11 @@
   }
 
   .drinks__wrapper {
+    max-height: 100vh;
     flex-direction: row;
     justify-content: center;
     flex-wrap: wrap;
+    overflow-y: auto;
   }
 
   .drinks__top {
