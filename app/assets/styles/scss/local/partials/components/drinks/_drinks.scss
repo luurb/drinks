@@ -85,6 +85,18 @@
   .drinks__top {
     justify-content: space-around;
   }
+
+  .drinks__wrapper::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .drinks__wrapper::-webkit-scrollbar-track {
+    background: var(--white);
+  }
+
+  .drinks__wrapper::-webkit-scrollbar-thumb {
+    background: var(--grey);
+  }
 }
 
 @media (min-width: breakpoints.$desktop-small) {
@@ -100,6 +112,10 @@
   .drinks__sort-options-box {
     width: 180px;
     top: 40px;
+  }
+
+  .drinks__wrapper::-webkit-scrollbar {
+    width: 8px;
   }
 }
 
