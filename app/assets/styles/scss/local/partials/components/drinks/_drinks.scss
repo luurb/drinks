@@ -59,9 +59,16 @@
 }
 
 .drinks__wrapper {
+  max-height: 100vh;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 30px;
+  overflow-y: auto;
+}
+
+.drinks__wrapper::-webkit-scrollbar {
+  width: 0;
 }
 
 @media (min-width: breakpoints.$tablet) {

@@ -2,7 +2,8 @@
 @use '../../../../local/fonts';
 
 .drink {
-    width: 100%;
+    //20px for scrollbar
+    width: calc(100% - 10px);
     padding-bottom: 10px;
     border-radius: 5px;
     box-shadow: 0 0 10px var(--grey);
