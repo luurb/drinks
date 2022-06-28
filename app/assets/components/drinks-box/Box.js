@@ -14,18 +14,16 @@ const Box = () => {
    const updateDrinks = (products, categories) => {
       setIsLoaded(false);
 
-      let uri = '/api/drinks?';
-      products.forEach((product) => {
-         uri += `products[]=${product.name}&`;
-      });
-      categories.forEach((category) => {
-         category.active && (uri += `categories[]=${category.name}&`);
-      });
+      const uri = getUri(products, categories);
 
       (async () => {
          try {
             const response = await axios.get(uri);
-            const filteredDrinks = filterDrinks(response.data['hydra:member']);
+            const filteredDrinks = filterDrinks(
+               response.data['hydra:member'],
+               products,
+               categories
+            );
             drinksTotalItemsRef.current = response.data['hydra:totalItems'];
             console.log(filteredDrinks);
             setIsLoaded(true);
@@ -35,24 +33,50 @@ const Box = () => {
             setDrinks([]);
          }
       })();
+   };
 
-      const filterDrinks = (data) => {
-         return data.map((drink) => {
-            drink = filterProducts(drink);
-            drink = filterCategories(drink);
-            return {
-               ...drink,
-               revelance: drink.productRelevance + drink.categoryRelevance,
-            };
-         });
-      };
+   const getUri = (products, categories) => {
+      let uri = `/api/drinks?`;
+      products.forEach((product) => {
+         uri += `products[]=${product.name}&`;
+      });
 
-      /*
-      Set products revelance and active status for colors
-      if drink has a product from selected products increment revelance
+      let activeCategoryCounter = 0;
+      categories.forEach((category) => {
+         if (category.active) {
+            uri += `categories[]=${category.name}&`;
+            activeCategoryCounter++;
+         }
+      });
+
+      let pagination =
+         products.length == 0 &&
+         categories.some((category) => category.active) == 0
+            ? 'true'
+            : 'false';
+
+      /* 
+      Set pagination to true if all categories are active and 
+      no products are selected.
       */
-      const filterProducts = (drink) => {
+      pagination =
+         products.length == 0 && activeCategoryCounter == 5
+            ? 'true'
+            : pagination;
+      uri += `&pagination=${pagination}`;
+
+      return uri;
+   };
+
+   const filterDrinks = (data, products, categories) => {
+      return data.map((drink) => {
          let productRelevance = 0;
+         let categoryRelevance = 0;
+
+         /*
+         Set products revelance and active status for colors
+         if drink has a product from selected products increment revelance
+         */
          drink.products = drink.products.map((product) => {
             if (
                products.some(
@@ -66,15 +90,10 @@ const Box = () => {
             }
          });
 
-         return { ...drink, productRelevance: productRelevance };
-      };
-
-      /*
-      Set categories revelance and replace fetched categories with 
-      categories which contain colors from Search component
-      */
-      const filterCategories = (drink) => {
-         let categoryRelevance = 0;
+         /*
+         Set categories revelance and replace fetched categories with 
+         categories which contain colors from Search component
+         */
          drink.categories = drink.categories.map((category) => {
             categories.some(
                (selectedCategory) =>
@@ -87,8 +106,13 @@ const Box = () => {
             );
          });
 
-         return { ...drink, categoryRelevance: categoryRelevance };
-      };
+         return {
+            ...drink,
+            productRelevance: productRelevance,
+            categoryRelevance: categoryRelevance,
+            revelance: drink.productRelevance + drink.categoryRelevance,
+         };
+      });
    };
 
    const setSortFuncBySelectedOption = (sortOption) => {
