@@ -61,6 +61,10 @@
     font-weight: 500;
 }
 
+.drink__rate-text {
+    display: none;
+}
+
 .drink__social-box {
     display: flex;
     align-items: center;
@@ -234,7 +238,8 @@
         padding-top: 0;
     }
 
-    .drink__comment-text {
+    .drink__comment-text,
+    .drink__rate-text {
         display: inline-block;
     }
 

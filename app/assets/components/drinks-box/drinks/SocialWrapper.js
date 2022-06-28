@@ -6,7 +6,8 @@ const SocialWrapper = () => {
             <span className="drink__rate">4.24</span>
             <div className="drink__social-box">
                 <i className="fa-solid fa-martini-glass"></i>
-                <span>12 ocen</span>
+                <span>14</span>
+                <span className="drink__rate-text">ocen</span>
             </div>
             <div className="drink__social-box">
                 <i className="fa-solid fa-comment"></i>
