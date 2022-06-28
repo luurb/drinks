@@ -330,4 +330,32 @@ class DrinkTest extends ApiTestCase
             'hydra:totalItems' => 0
         ]);
     }
+
+    public function test_pagination_work_when_its_enabled(): void 
+    {
+        for ($i = 0; $i < 25; $i++) {
+            $drink = new Drink();
+            $drink->setName('test');
+            $drink->setDescription('test');
+            $drink->setPreparation('test');
+            $drink->setImage('test');
+            $this->entityManager->persist($drink);
+        }
+
+        $this->entityManager->flush();
+
+        $this->client->request('GET', '/api/drinks');
+        $this->assertJsonContains([
+            '@context' => '/api/contexts/Drink',
+            '@id' => '/api/drinks',
+            '@type' => 'hydra:Collection',
+            'hydra:totalItems' => 25,
+            'hydra:view' => [
+                '@type'=> 'hydra:PartialCollectionView',
+                'hydra:first'=> '/api/drinks?page=1',
+                'hydra:last'=> '/api/drinks?page=2',
+                'hydra:next'=> '/api/drinks?page=2'
+            ] 
+        ]);
+    }
 }
