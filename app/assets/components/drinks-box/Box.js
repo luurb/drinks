@@ -7,7 +7,7 @@ import axios from 'axios';
 const Box = () => {
    const [drinks, setDrinks] = useState([]);
    const [sortFunc, setSortFunc] = useState(sortByRelevance);
-   const [isLoaded, setIsLoaded] = useState(true);
+   const [isLoaded, setIsLoaded] = useState(false);
    const drinksTotalItemsRef = useRef(0);
 
    const updateDrinks = (products, categories) => {

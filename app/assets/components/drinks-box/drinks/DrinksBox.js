@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import Drink from './Drink';
 import SortBox from './SortBox';
-import { useState } from 'react';
 import LoadingDrink from './LoadingDrink';
 
 const DrinksBox = ({
@@ -38,6 +37,28 @@ const DrinksBox = ({
          active: false,
       },
    ]);
+   const observerRef = useRef();
+
+   useEffect(() => {
+      setSortFuncBySelectedOption(sortOptions.find((option) => option.active));
+   }, [sortOptions]);
+
+   useEffect(() => {
+      const node = observerRef.current;
+      if (!node) return;
+
+      const options = {
+         root: null,
+         rootMargin: '0px',
+         threshold: 1.0
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+         entries[0].isIntersecting && console.log('In view');
+      }, options);
+      observer.observe(node);
+
+   }, [drinks]);
 
    const drinksCounter = () => {
       switch (drinksTotalItems) {
@@ -56,10 +77,6 @@ const DrinksBox = ({
             return `Znaleziono ${drinksTotalItems} drinków`;
       }
    };
-
-   useEffect(() => {
-      setSortFuncBySelectedOption(sortOptions.find((option) => option.active));
-   }, [sortOptions]);
 
    return (
       <div className="drinks">
@@ -85,9 +102,13 @@ const DrinksBox = ({
          </div>
          {isLoaded ? (
             <div className="drinks__wrapper">
-               {drinks.map((drink) => (
-                  <Drink key={drink.id} drink={drink} />
-               ))}
+               {drinks.map((drink, index) =>
+                  index + 1 != drinks.length ? (
+                     <Drink key={drink.id} drink={drink} />
+                  ) : (
+                     <Drink key={drink.id} drink={drink} ref={observerRef} />
+                  )
+               )}
             </div>
          ) : (
             <LoadingDrink />
