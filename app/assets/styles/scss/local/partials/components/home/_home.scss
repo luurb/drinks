@@ -7,7 +7,7 @@
     height: 100vh;
     background-size: cover;
     background-position: center;
-    background-image: url(../../../../../../../public/images/home-mobile.png);
+    background-image: url(../../../../../../../public/images/home-mobile.jpg);
 }
 
 .home__main {
@@ -108,12 +108,12 @@
 
 @media (min-width: breakpoints.$tablet) {
     .home {
-        background-image: url(../../../../../../../public/images/home-tablets.png);
+        background-image: url(../../../../../../../public/images/home-tablets.jpg);
     }
 }
 
 @media (min-width: breakpoints.$desktop-small) {
     .home {
-        background-image: url(../../../../../../../public/images/home.png);
+        background-image: url(../../../../../../../public/images/home.jpg);
     }
 }
