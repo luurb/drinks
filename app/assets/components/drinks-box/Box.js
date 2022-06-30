@@ -152,7 +152,7 @@ const Box = () => {
             ...drink,
             productRelevance: productRelevance,
             categoryRelevance: categoryRelevance,
-            revelance: drink.productRelevance + drink.categoryRelevance,
+            revelance: productRelevance + categoryRelevance,
          };
       });
    };
