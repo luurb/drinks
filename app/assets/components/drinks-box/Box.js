@@ -9,10 +9,15 @@ const Box = () => {
    const [sortFunc, setSortFunc] = useState(sortByRelevance);
    const [isLoaded, setIsLoaded] = useState(false);
    const drinksTotalItemsRef = useRef(0);
+   const paginationRef = useRef({
+      page: 1,
+      pagnination: 'server',
+      active: true,
+   });
 
    const updateDrinks = (products, categories) => {
       setIsLoaded(false);
-
+      setPagination(products, categories);
       const uri = getUri(products, categories);
 
       (async () => {
@@ -34,35 +39,40 @@ const Box = () => {
       })();
    };
 
+   const setPagination = (products, categories) => {
+      paginationRef.current.active = true;
+      paginationRef.current.pagnination = 'server';
+
+      let activeCategories = 0;
+
+      categories.forEach((category) => category.active && activeCategories++);
+
+      if (
+         (categories.length != activeCategories && activeCategories > 0) ||
+         products.length > 0
+      ) {
+         paginationRef.current.active = false;
+         paginationRef.current.pagnination = 'client';
+      }
+
+      console.log(paginationRef.current);
+   };
+
    const getUri = (products, categories) => {
-      let uri = `/api/drinks?`;
+      const pagination = paginationRef.current.active;
+      const page =
+         paginationRef.current.pagination == 'server'
+            ? paginationRef.current.page
+            : 1;
+      let uri = `/api/drinks?page=${page}&pagination=${pagination}&`;
+
       products.forEach((product) => {
          uri += `products[]=${product.name}&`;
       });
 
-      let activeCategoryCounter = 0;
       categories.forEach((category) => {
-         if (category.active) {
-            uri += `categories[]=${category.name}&`;
-            activeCategoryCounter++;
-         }
+         category.active && (uri += `categories[]=${category.name}&`);
       });
-
-      let pagination =
-         products.length == 0 &&
-         categories.some((category) => category.active) == 0
-            ? 'true'
-            : 'false';
-
-      /* 
-      Set pagination to true if all categories are active and 
-      no products are selected.
-      */
-      pagination =
-         products.length == 0 && activeCategoryCounter == 5
-            ? 'true'
-            : pagination;
-      uri += `&pagination=${pagination}`;
 
       return uri;
    };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Drink from './Drink';
 import SortBox from './SortBox';
 import LoadingDrink from './LoadingDrink';
@@ -50,14 +50,15 @@ const DrinksBox = ({
       const options = {
          root: null,
          rootMargin: '0px',
-         threshold: 1.0
-      }
+         threshold: 1.0,
+      };
 
       const observer = new IntersectionObserver((entries) => {
-         entries[0].isIntersecting && console.log('In view');
+         if (entries[0].isIntersecting) {
+            console.log('In view');
+         }
       }, options);
       observer.observe(node);
-
    }, [drinks]);
 
    const drinksCounter = () => {
