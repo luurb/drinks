@@ -3,11 +3,11 @@ import { useState, useEffect, useRef } from 'react';
 import SearchResult from './SearchResult';
 import axios from 'axios';
 
-const SearchBox = ({ addProduct, selectedProducts }) => {
-   const [products, setProducts] = useState([]);
+const SearchBox = ({ addProduct, products}) => {
    const [isOpen, setIsOpen] = useState(false);
    const input = useRef(null);
    const setEvent = useRef(true);
+   const [fetchedProducts, setFetchedProducts] = useState([]);
 
    //Close search box after click somewhere on window
    useEffect(() => {
@@ -28,7 +28,7 @@ const SearchBox = ({ addProduct, selectedProducts }) => {
    const addSearchResult = (value) => {
       setIsOpen(true);
       if (!value) {
-         setProducts([]);
+         setFetchedProducts([]);
          return;
       }
 
@@ -38,10 +38,10 @@ const SearchBox = ({ addProduct, selectedProducts }) => {
                const response = await axios.get(`/api/products?name=${value}`, {
                   headers: { accept: 'application/json' },
                });
-               setProducts(checkIfAlreadyAdded(response.data));
+               setFetchedProducts(checkIfAlreadyAdded(response.data));
             } catch (error) {
                console.log(error);
-               setProducts([]);
+               setFetchedProducts([]);
             }
          })();
       }
@@ -51,14 +51,14 @@ const SearchBox = ({ addProduct, selectedProducts }) => {
    const onClickSearchResult = (product) => {
       input.current.value = '';
       input.current.focus();
-      setProducts([]);
+      setFetchedProducts([]);
       addProduct(product.name);
    };
 
    //Return products filtered by already selected ones
    const checkIfAlreadyAdded = (data) => {
       return data.filter((product) =>
-         !selectedProducts.some((selected) => selected.name == product.name)
+         !products.some((selected) => selected.name == product.name)
       );
    };
 
@@ -80,9 +80,9 @@ const SearchBox = ({ addProduct, selectedProducts }) => {
                }}
                ref={input}
             />
-            {products.length !== 0 && isOpen && (
+            {fetchedProducts.length !== 0 && isOpen && (
                <div className="search__results-box">
-                  {products.map(
+                  {fetchedProducts.map(
                      (product, index) =>
                         index < productsCounter && (
                            <SearchResult

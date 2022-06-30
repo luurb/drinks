@@ -5,6 +5,39 @@ import { useState } from 'react';
 import axios from 'axios';
 
 const Box = () => {
+   const [categories, setCategories] = useState([
+      {
+         id: 1,
+         name: 'słodki',
+         color: 'yellow',
+         active: false,
+      },
+      {
+         id: 2,
+         name: 'kwaśny',
+         color: 'green',
+         active: false,
+      },
+      {
+         id: 3,
+         name: 'orzeźwiający',
+         color: 'blue',
+         active: false,
+      },
+      {
+         id: 4,
+         name: 'lekki',
+         color: 'turquoise',
+         active: false,
+      },
+      {
+         id: 5,
+         name: 'mocny',
+         color: 'red',
+         active: false,
+      },
+   ]);
+   const [products, setProducts] = useState([]); // selected products
    const [drinks, setDrinks] = useState([]);
    const [sortFunc, setSortFunc] = useState(sortByRelevance);
    const [isLoaded, setIsLoaded] = useState(false);
@@ -15,7 +48,7 @@ const Box = () => {
       active: true,
    });
 
-   const updateDrinks = (products, categories) => {
+   useEffect(() => {
       setIsLoaded(false);
       setPagination(products, categories);
       const uri = getUri(products, categories);
@@ -37,7 +70,7 @@ const Box = () => {
             setDrinks([]);
          }
       })();
-   };
+   }, [products, categories]);
 
    const setPagination = (products, categories) => {
       paginationRef.current.active = true;
@@ -151,7 +184,12 @@ const Box = () => {
 
    return (
       <div className="drinks-box__box">
-         <Search setDrinks={updateDrinks} />
+         <Search
+            products={products}
+            setProducts={setProducts}
+            categories={categories}
+            setCategories={setCategories}
+         />
          <DrinksBox
             drinks={drinks.sort((a, b) => sortFunc(a, b))}
             setSortFuncBySelectedOption={setSortFuncBySelectedOption}
