@@ -54,11 +54,12 @@ const DrinksBox = ({
       const options = {
          root: null,
          rootMargin: '0px',
-         threshold: 1.0,
+         threshold: 0.9,
       };
 
       observerRef.current = new IntersectionObserver((entries) => {
          if (entries[0].isIntersecting) {
+            console.log('In view');
             drinksTotalItems - drinks.length != 0 && incrementPage();
          }
       }, options);
