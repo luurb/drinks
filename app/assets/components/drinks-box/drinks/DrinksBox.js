@@ -39,14 +39,16 @@ const DrinksBox = ({
       },
    ]);
    const observerRef = useRef();
+   const lastDrinkRef = useRef();
 
    useEffect(() => {
       setSortFuncBySelectedOption(sortOptions.find((option) => option.active));
    }, [sortOptions]);
 
    useEffect(() => {
-      const node = observerRef.current;
+      const node = lastDrinkRef.current;
       if (!node) return;
+      if (observerRef.current) observerRef.current.disconnect();
 
       const options = {
          root: null,
@@ -54,13 +56,13 @@ const DrinksBox = ({
          threshold: 1.0,
       };
 
-      const observer = new IntersectionObserver((entries) => {
+      observerRef.current = new IntersectionObserver((entries) => {
          if (entries[0].isIntersecting) {
             console.log('In view');
             incrementPage();
          }
       }, options);
-      observer.observe(node);
+      observerRef.current.observe(node);
    }, [drinks]);
 
    const drinksCounter = () => {
@@ -109,7 +111,7 @@ const DrinksBox = ({
                   index + 1 != drinks.length ? (
                      <Drink key={drink.id} drink={drink} />
                   ) : (
-                     <Drink key={drink.id} drink={drink} ref={observerRef} />
+                     <Drink key={drink.id} drink={drink} ref={lastDrinkRef} />
                   )
                )}
             </div>
