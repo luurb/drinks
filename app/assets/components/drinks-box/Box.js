@@ -41,63 +41,62 @@ const Box = () => {
    const [drinks, setDrinks] = useState([]);
    const [sortFunc, setSortFunc] = useState(sortByRelevance);
    const [isLoaded, setIsLoaded] = useState(false);
+   const [page, setPage] = useState(1);
+   const paginationRef = useRef(true);
    const drinksTotalItemsRef = useRef(0);
-   const paginationRef = useRef({
-      page: 1,
-      pagnination: 'server',
-      active: true,
-   });
 
    useEffect(() => {
-      setIsLoaded(false);
-      setPagination(products, categories);
-      const uri = getUri(products, categories);
-
       (async () => {
-         try {
-            const response = await axios.get(uri);
-            const filteredDrinks = filterDrinks(
-               response.data['hydra:member'],
-               products,
-               categories
-            );
-            drinksTotalItemsRef.current = response.data['hydra:totalItems'];
-            console.log(filteredDrinks);
-            setIsLoaded(true);
-            setDrinks(filteredDrinks);
-         } catch (error) {
-            console.log(error);
-            setDrinks([]);
-         }
+         setIsLoaded(false);
+         setPagination();
+         setPage(1);
+         const uri = getUri();
+         const fetchedDrinks = await fetchDrinks(uri);
+         setDrinks(fetchedDrinks);
+         setIsLoaded(true);
       })();
    }, [products, categories]);
 
-   const setPagination = (products, categories) => {
-      paginationRef.current.active = true;
-      paginationRef.current.pagnination = 'server';
-
-      let activeCategories = 0;
-
-      categories.forEach((category) => category.active && activeCategories++);
-
-      if (
-         (categories.length != activeCategories && activeCategories > 0) ||
-         products.length > 0
-      ) {
-         paginationRef.current.active = false;
-         paginationRef.current.pagnination = 'client';
+   useEffect(() => {
+      if (page != 1 && paginationRef.current) {
+         (async () => {
+            const uri = getUri();
+            console.log(uri);
+            const fetchedDrinks = await fetchDrinks(uri);
+            setDrinks([...drinks, ...fetchedDrinks]);
+            let drinksCopy = drinks;
+            drinksCopy = [...drinks, ...fetchedDrinks];
+            console.log('Drinks after pagination:', drinksCopy);
+            setIsLoaded(true);
+         })();
       }
+   }, [page]);
 
-      console.log(paginationRef.current);
+   const fetchDrinks = async (uri) => {
+      try {
+         const response = await axios.get(uri);
+         const filteredDrinks = filterDrinks(response.data['hydra:member']);
+         drinksTotalItemsRef.current = response.data['hydra:totalItems'];
+         console.log('Fetch drinks:', filteredDrinks);
+         return filteredDrinks;
+      } catch (error) {
+         console.log(error);
+      }
    };
 
-   const getUri = (products, categories) => {
-      const pagination = paginationRef.current.active;
-      const page =
-         paginationRef.current.pagination == 'server'
-            ? paginationRef.current.page
-            : 1;
-      let uri = `/api/drinks?page=${page}&pagination=${pagination}&`;
+   const setPagination = () => {
+      paginationRef.current = true;
+
+      if (products.length > 0) return (paginationRef.current = false);
+
+      let activeCategories = 0;
+      categories.forEach((category) => category.active && activeCategories++);
+      if (activeCategories > 0 && activeCategories != categories.length)
+         return (paginationRef.current = false);
+   };
+
+   const getUri = () => {
+      let uri = `/api/drinks?page=${page}&pagination=${paginationRef.current}&`;
 
       products.forEach((product) => {
          uri += `products[]=${product.name}&`;
@@ -110,7 +109,7 @@ const Box = () => {
       return uri;
    };
 
-   const filterDrinks = (data, products, categories) => {
+   const filterDrinks = (data) => {
       return data.map((drink) => {
          let productRelevance = 0;
          let categoryRelevance = 0;
@@ -157,6 +156,7 @@ const Box = () => {
       });
    };
 
+   const incrementPage = () => setPage(page + 1);
    const setSortFuncBySelectedOption = (sortOption) => {
       const callback = (() => {
          switch (sortOption.name) {
@@ -195,6 +195,7 @@ const Box = () => {
             setSortFuncBySelectedOption={setSortFuncBySelectedOption}
             isLoaded={isLoaded}
             drinksTotalItems={drinksTotalItemsRef.current}
+            incrementPage={incrementPage}
          />
       </div>
    );

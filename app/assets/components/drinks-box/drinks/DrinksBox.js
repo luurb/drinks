@@ -8,6 +8,7 @@ const DrinksBox = ({
    isLoaded,
    setSortFuncBySelectedOption,
    drinksTotalItems,
+   incrementPage 
 }) => {
    const [toogle, setToogle] = useState(false);
    const [sortOptions, setSortOptions] = useState([
@@ -56,6 +57,7 @@ const DrinksBox = ({
       const observer = new IntersectionObserver((entries) => {
          if (entries[0].isIntersecting) {
             console.log('In view');
+            incrementPage();
          }
       }, options);
       observer.observe(node);
