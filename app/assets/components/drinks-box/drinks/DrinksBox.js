@@ -6,6 +6,7 @@ import LoadingDrink from './LoadingDrink';
 const DrinksBox = ({
    drinks,
    isLoaded,
+   pageLoaded,
    setSortFuncBySelectedOption,
    drinksTotalItems,
    incrementPage,
@@ -113,6 +114,7 @@ const DrinksBox = ({
                      <Drink key={drink.id} drink={drink} ref={lastDrinkRef} />
                   )
                )}
+            {!pageLoaded && <LoadingDrink />}
             </div>
          ) : (
             <LoadingDrink />

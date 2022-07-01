@@ -41,6 +41,7 @@ const Box = () => {
    const [drinks, setDrinks] = useState([]);
    const [sortFunc, setSortFunc] = useState(sortByRelevance);
    const [isLoaded, setIsLoaded] = useState(false);
+   const [pageLoaded, setPageLoaded] = useState(true);
    const [page, setPage] = useState(1);
    const paginationRef = useRef(true);
    const drinksTotalItemsRef = useRef(0);
@@ -59,6 +60,7 @@ const Box = () => {
 
    useEffect(() => {
       if (page != 1 && paginationRef.current) {
+         setPageLoaded(false);
          (async () => {
             const uri = getUri();
             console.log(uri);
@@ -67,7 +69,7 @@ const Box = () => {
             let drinksCopy = drinks;
             drinksCopy = [...drinks, ...fetchedDrinks];
             console.log('Drinks after pagination:', drinksCopy);
-            setIsLoaded(true);
+            setPageLoaded(true);
          })();
       }
    }, [page]);
@@ -194,6 +196,7 @@ const Box = () => {
             drinks={drinks.sort((a, b) => sortFunc(a, b))}
             setSortFuncBySelectedOption={setSortFuncBySelectedOption}
             isLoaded={isLoaded}
+            pageLoaded={pageLoaded}
             drinksTotalItems={drinksTotalItemsRef.current}
             incrementPage={incrementPage}
          />
