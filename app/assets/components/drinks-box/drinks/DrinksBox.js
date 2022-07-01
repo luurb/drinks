@@ -114,7 +114,7 @@ const DrinksBox = ({
                      <Drink key={drink.id} drink={drink} ref={lastDrinkRef} />
                   )
                )}
-            {!pageLoaded && <LoadingDrink />}
+               {!pageLoaded && <LoadingDrink margin={0} />}
             </div>
          ) : (
             <LoadingDrink />
