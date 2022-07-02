@@ -24,6 +24,7 @@ const Drink = React.forwardRef((props, ref) => {
                className="drink__img"
                src={props.drink.image}
                alt="Zdjęcie drinka"
+               loading="lazy"
             />
             <div className="drink__desc">
                <div className="drink__desc-text">{props.drink.description}</div>
