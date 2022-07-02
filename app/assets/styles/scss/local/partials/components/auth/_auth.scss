@@ -59,6 +59,11 @@
       border-radius: 10px;
       box-shadow: 0 0 5px var(--yellow);
    }
+
+   input:focus {
+      box-shadow: 0 0 15px var(--yellow);
+      transition: box-shadow 0.3s ease;
+   }
 }
 
 .auth__text-wrapper {
@@ -89,4 +94,9 @@
    border-radius: 20px;
    background: var(--violet);
    box-shadow: 0 0 5px var(--white);
+}
+
+.auth__submit:hover {
+   color: var(--yellow);
+   transition: color 0.5s ease;
 }
