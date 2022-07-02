@@ -59,13 +59,25 @@
    letter-spacing: 2px;
 }
 
+.auth__inputs-wrapper {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+}
+
+.auth__inputs-box {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+}
+
 .auth__input-box {
    display: flex;
    flex-direction: column;
    gap: 5px;
 
    input {
-      font-size: fonts.$regular;
+      font-size: fonts.$small;
       width: 260px;
       padding: 10px;
       border-radius: 10px;
@@ -111,4 +123,13 @@
 .auth__submit:hover {
    color: var(--yellow);
    transition: color 0.5s ease;
+}
+
+@media (min-width: breakpoints.$desktop-small) {
+   .auth__inputs-wrapper {
+      flex-direction: row;
+      gap: 40px;
+      justify-content: center;
+      align-items: center;
+   }
 }
