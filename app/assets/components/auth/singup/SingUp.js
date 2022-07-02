@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const SingUp = () => {
    return (
@@ -35,7 +36,9 @@ const SingUp = () => {
                   <div className="auth__text-wrapper">
                      <div className="auth__text-box">
                         Masz już swój bar?
-                        <span>Wejdź</span>
+                        <Link to="/login">
+                           <span>Wejdź</span>
+                        </Link>
                      </div>
                   </div>
                   <input

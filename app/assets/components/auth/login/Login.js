@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
    return (
@@ -23,7 +24,9 @@ const Login = () => {
                   <div className="auth__text-wrapper">
                      <div className="auth__text-box">
                         Pierwszy raz?
-                        <span>Otwórz bar</span>
+                        <Link to="/singup">
+                           <span>Otwórz bar</span>
+                        </Link>
                      </div>
                      <div className="auth__text-box">
                         Nie pamiętasz hasła?
