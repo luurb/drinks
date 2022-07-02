@@ -60,17 +60,17 @@ const Box = () => {
 
    const updateDrinks = () => {
       currentPageRef.current++;
-      if (currentPageRef.current != 1 && paginationRef.current) {
+      if (paginationRef.current) {
          setPageLoaded(false);
          (async () => {
             const uri = getUri();
             console.log(uri);
             const fetchedDrinks = await fetchDrinks(uri);
             setDrinks([...drinks, ...fetchedDrinks]);
-            let drinksCopy = drinks;
-            drinksCopy = [...drinks, ...fetchedDrinks];
             setPageLoaded(true);
          })();
+      } else {
+         setDrinks([...drinks]);
       }
    };
 
@@ -192,7 +192,7 @@ const Box = () => {
             setCategories={setCategories}
          />
          <DrinksBox
-            drinks={drinks.sort((a, b) => sortFunc(a, b))}
+            drinks={drinks.sort((a, b) => sortFunc(a, b)).slice(0, 20 * currentPageRef.current)}
             setSortFuncBySelectedOption={setSortFuncBySelectedOption}
             isLoaded={isLoaded}
             pageLoaded={pageLoaded}
