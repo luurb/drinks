@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Login = () => {
    return (
-      <div className="auth">
+      <>
          <div className="auth__img"></div>
          <div className="auth__box">
             <div className="auth__form-box">
@@ -41,7 +41,7 @@ const Login = () => {
                </form>
             </div>
          </div>
-      </div>
+      </>
    );
 };
 

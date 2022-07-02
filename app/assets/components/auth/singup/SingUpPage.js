@@ -6,7 +6,11 @@ const SingUpPage = () => {
    return (
       <>
          <Nav />
-         <SingUp />
+         <div className="auth">
+            <div className="auth__wrapper">
+               <SingUp />
+            </div>
+         </div>
       </>
    );
 };

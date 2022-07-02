@@ -6,7 +6,11 @@ const LoginPage = () => {
   return (
      <>
          <Nav />
-         <Login />
+         <div className="auth">
+            <div className="auth__wrapper">
+               <Login />
+            </div>
+         </div>
      </>
   )
 }

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const SingUp = () => {
    return (
-      <div className="auth">
+      <>
          <div className="auth__img"></div>
          <div className="auth__box">
             <div className="auth__form-box">
@@ -57,7 +57,7 @@ const SingUp = () => {
                </form>
             </div>
          </div>
-      </div>
+      </>
    );
 };
 
