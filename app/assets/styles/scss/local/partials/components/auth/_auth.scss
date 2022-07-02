@@ -1,29 +1,41 @@
 @use '../../../../config/breakpoints';
 @use '../../../../local/fonts';
 
+.auth {
+   width: 100vw;
+   height: 100%;
+   min-height: calc(100vh - 60px); //nav height
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 30px;
+   background: linear-gradient(180deg, var(--violet), var(--dark-pink));
+}
+
 .auth__box {
    font-family: fonts.$poppins;
    font-size: fonts.$small;
    color: var(--white);
    height: 100%;
-   min-height: calc(100vh - 60px - 210px); // minus nav and img height
    width: 100vw;
-   padding: 10px 4vw;
+   max-width: 800px;
+   padding-bottom: 30px;
    display: flex;
    justify-content: center;
-   background: linear-gradient(135deg, var(--violet), var(--dark-pink));
 }
 
 .auth__img {
    width: 100vw;
-   height: 210px;
+   max-width: 800px;
+   height: 44vw;
+   max-height: 355px;
+   border-radius: 10px;
    background-size: cover;
    background-position: center;
    background-image: url(../../../../../../../public/images/auth.jpg);
 }
 
 .auth__form-box {
-   margin-top: 20px;
    display: flex;
    flex-direction: column;
    align-items: center;
@@ -39,11 +51,11 @@
 }
 
 .auth__header {
-   font-size: fonts.$big;
+   font-size: fonts.$medium2;
    font-weight: 600;
-   width: 280px;
+   padding: 0 20px;
    text-align: center;
-   border-bottom: 5px solid var(--yellow);
+   border-bottom: 4px solid var(--yellow);
    letter-spacing: 2px;
 }
 
