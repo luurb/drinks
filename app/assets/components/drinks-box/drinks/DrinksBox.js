@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Drink from './Drink';
 import SortBox from './SortBox';
 import LoadingDrink from './LoadingDrink';
@@ -9,7 +9,7 @@ const DrinksBox = ({
    pageLoaded,
    setSortFuncBySelectedOption,
    drinksTotalItems,
-   incrementPage,
+   updateDrinks,
 }) => {
    const [toogle, setToogle] = useState(false);
    const [sortOptions, setSortOptions] = useState([
@@ -40,16 +40,10 @@ const DrinksBox = ({
       },
    ]);
    const observerRef = useRef();
-   const lastDrinkRef = useRef();
-
-   useEffect(() => {
-      setSortFuncBySelectedOption(sortOptions.find((option) => option.active));
-   }, [sortOptions]);
-
-   useEffect(() => {
-      const node = lastDrinkRef.current;
+   const lastDrinkRef = useCallback((node) => {
       if (!node) return;
       if (observerRef.current) observerRef.current.disconnect();
+      if (!pageLoaded) return;
 
       const options = {
          root: null,
@@ -59,12 +53,16 @@ const DrinksBox = ({
 
       observerRef.current = new IntersectionObserver((entries) => {
          if (entries[0].isIntersecting) {
-            console.log('In view');
-            drinksTotalItems - drinks.length != 0 && incrementPage();
+            drinksTotalItems - drinks.length != 0 && updateDrinks();
          }
       }, options);
+
       observerRef.current.observe(node);
-   }, [drinks]);
+   });
+
+   useEffect(() => {
+      setSortFuncBySelectedOption(sortOptions.find((option) => option.active));
+   }, [sortOptions]);
 
    const drinksCounter = () => {
       switch (drinksTotalItems) {
@@ -115,11 +113,11 @@ const DrinksBox = ({
                      <Drink key={drink.id} drink={drink} ref={lastDrinkRef} />
                   )
                )}
-               {!pageLoaded && <LoadingDrink margin={0} />}
             </div>
          ) : (
             <LoadingDrink />
          )}
+         {!pageLoaded && <LoadingDrink margin={0} />}
       </div>
    );
 };

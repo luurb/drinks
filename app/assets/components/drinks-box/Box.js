@@ -42,7 +42,7 @@ const Box = () => {
    const [sortFunc, setSortFunc] = useState(sortByRelevance);
    const [isLoaded, setIsLoaded] = useState(false);
    const [pageLoaded, setPageLoaded] = useState(true);
-   const [page, setPage] = useState(1);
+   const currentPageRef = useRef(1);
    const paginationRef = useRef(true);
    const drinksTotalItemsRef = useRef(0);
 
@@ -50,7 +50,7 @@ const Box = () => {
       (async () => {
          setIsLoaded(false);
          setPagination();
-         setPage(1);
+         currentPageRef.current = 1;
          const uri = getUri();
          const fetchedDrinks = await fetchDrinks(uri);
          setDrinks(fetchedDrinks);
@@ -58,8 +58,9 @@ const Box = () => {
       })();
    }, [products, categories]);
 
-   useEffect(() => {
-      if (page != 1 && paginationRef.current) {
+   const updateDrinks = () => {
+      currentPageRef.current++;
+      if (currentPageRef.current != 1 && paginationRef.current) {
          setPageLoaded(false);
          (async () => {
             const uri = getUri();
@@ -68,11 +69,10 @@ const Box = () => {
             setDrinks([...drinks, ...fetchedDrinks]);
             let drinksCopy = drinks;
             drinksCopy = [...drinks, ...fetchedDrinks];
-            console.log('Drinks after pagination:', drinksCopy);
             setPageLoaded(true);
          })();
       }
-   }, [page]);
+   };
 
    const fetchDrinks = async (uri) => {
       try {
@@ -98,7 +98,7 @@ const Box = () => {
    };
 
    const getUri = () => {
-      let uri = `/api/drinks?page=${page}&pagination=${paginationRef.current}&`;
+      let uri = `/api/drinks?page=${currentPageRef.current}&pagination=${paginationRef.current}&`;
 
       products.forEach((product) => {
          uri += `products[]=${product.name}&`;
@@ -158,7 +158,6 @@ const Box = () => {
       });
    };
 
-   const incrementPage = () => setPage(page + 1);
    const setSortFuncBySelectedOption = (sortOption) => {
       const callback = (() => {
          switch (sortOption.name) {
@@ -198,7 +197,7 @@ const Box = () => {
             isLoaded={isLoaded}
             pageLoaded={pageLoaded}
             drinksTotalItems={drinksTotalItemsRef.current}
-            incrementPage={incrementPage}
+            updateDrinks={updateDrinks}
          />
       </div>
    );
