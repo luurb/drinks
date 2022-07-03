@@ -17,7 +17,7 @@
    align-items: center;
    gap: 30px;
    background: var(--violet);
-   box-shadow: 0 0 5px var(--white);
+   box-shadow: 0 0 3px var(--white);
 }
 
 .auth__box {
@@ -35,7 +35,6 @@
    height: 44vw;
    min-height: 210px;
    max-height: 440px;
-   border-radius: 10px;
    background-size: cover;
    background-position: center;
    background-image: url(../../../../../../../public/images/auth.jpg);
@@ -134,7 +133,6 @@
 @media (min-width: breakpoints.$tablet) {
    .auth {
       place-content: center;
-      padding: 20px 0;
    }
 }
 
