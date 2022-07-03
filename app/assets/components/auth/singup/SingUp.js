@@ -1,9 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const SingUp = () => {
+   const [inputs, setInputs] = useState({
+      name: '',
+      email: '',
+      password: '',
+      confirmed_password: '',
+   });
+
+   const handleInput = (e) => {
+      const target = e.target;
+      const name = target.name;
+
+      setInputs({
+         ...inputs,
+         [name]: target.value,
+      });
+   };
+
    return (
       <>
+         {console.log(inputs)}
          <div className="auth__img"></div>
          <div className="auth__box">
             <div className="auth__form-box">
@@ -12,12 +30,24 @@ const SingUp = () => {
                   <div className="auth__inputs-wrapper">
                      <div className="auth__inputs-box">
                         <div className="auth__input-box">
-                           <label htmlFor="login">Nazwa baristy</label>
-                           <input type="text" id="login" name="login"></input>
+                           <label htmlFor="name">Nazwa barmana</label>
+                           <input
+                              type="text"
+                              id="name"
+                              name="name"
+                              value={inputs.name}
+                              onChange={handleInput}
+                           ></input>
                         </div>
                         <div className="auth__input-box">
                            <label htmlFor="email">Email</label>
-                           <input type="email" id="email" name="email"></input>
+                           <input
+                              type="email"
+                              id="email"
+                              name="email"
+                              value={inputs.email}
+                              onChange={handleInput}
+                           ></input>
                         </div>
                      </div>
                      <div className="auth__inputs-box">
@@ -27,6 +57,7 @@ const SingUp = () => {
                               type="password"
                               id="password"
                               name="password"
+                              onChange={handleInput}
                            ></input>
                         </div>
                         <div className="auth__input-box">
@@ -37,6 +68,7 @@ const SingUp = () => {
                               type="password"
                               id="confirm_password"
                               name="confirm_password"
+                              onChange={handleInput}
                            ></input>
                         </div>
                      </div>
