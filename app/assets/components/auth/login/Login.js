@@ -1,7 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const Login = () => {
+   const [inputs, setInputs] = useState({
+      name: '',
+      password: '',
+   });
+
+   const handleInput = (e) => {
+      const target = e.target;
+      const name = target.name;
+
+      setInputs({
+         ...inputs,
+         [name]: target.value,
+      });
+   };
    return (
       <>
          <div className="auth__img"></div>
@@ -10,8 +24,14 @@ const Login = () => {
                <div className="auth__header">Wejdź do baru</div>
                <form>
                   <div className="auth__input-box">
-                     <label htmlFor="login">Nazwa baristy</label>
-                     <input type="text" id="login" name="login"></input>
+                     <label htmlFor="name">Nazwa barmana</label>
+                     <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={inputs.name}
+                        onChange={handleInput}
+                     ></input>
                   </div>
                   <div className="auth__input-box">
                      <label htmlFor="password">Hasło</label>
@@ -19,6 +39,7 @@ const Login = () => {
                         type="password"
                         id="password"
                         name="password"
+                        onChange={handleInput}
                      ></input>
                   </div>
                   <div className="auth__text-wrapper">

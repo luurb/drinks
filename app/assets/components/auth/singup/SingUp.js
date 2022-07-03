@@ -21,7 +21,6 @@ const SingUp = () => {
 
    return (
       <>
-         {console.log(inputs)}
          <div className="auth__img"></div>
          <div className="auth__box">
             <div className="auth__form-box">
