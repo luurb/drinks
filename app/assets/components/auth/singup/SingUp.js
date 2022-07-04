@@ -2,25 +2,48 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const SingUp = () => {
-   const [inputs, setInputs] = useState({
-      name: '',
-      email: '',
-      password: '',
-      confirmed_password: '',
-   });
+   const [inputs, setInputs] = useState([
+      {
+         name: 'name',
+         value: '',
+         error_text: '',
+         error_status: false,
+      },
+      {
+         name: 'email',
+         value: '',
+         error_text: '',
+         error_status: false,
+      },
+      {
+         name: 'password',
+         value: '',
+         error_text: '',
+         error_status: false,
+      },
+      {
+         name: 'confirm_password',
+         value: '',
+         error_text: '',
+         error_status: false,
+      },
+   ]);
 
    const handleInput = (e) => {
       const target = e.target;
       const name = target.name;
+      const value = target.value;
 
-      setInputs({
-         ...inputs,
-         [name]: target.value,
-      });
+      setInputs(
+         inputs.map((input) =>
+            input.name == name ? { ...input, value: value } : input
+         )
+      );
    };
 
    return (
       <>
+      {console.log(inputs)}
          <div className="auth__img"></div>
          <div className="auth__box">
             <div className="auth__form-box">
