@@ -4,24 +4,28 @@ import { Link } from 'react-router-dom';
 const SingUp = () => {
    const [inputs, setInputs] = useState([
       {
+         id: 'Nazwa barmana',
          name: 'name',
          value: '',
          error_text: '',
          error_status: false,
       },
       {
+         id: 'Email',
          name: 'email',
          value: '',
          error_text: '',
          error_status: false,
       },
       {
+         id: 'Hasło',
          name: 'password',
          value: '',
          error_text: '',
          error_status: false,
       },
       {
+         id: 'Hasło2',
          name: 'confirm_password',
          value: '',
          error_text: '',
@@ -41,14 +45,68 @@ const SingUp = () => {
       );
    };
 
+   const handleSubmit = (e) => {
+      e.preventDefault();
+
+      setInputs(
+         inputs.map((input) => {
+            if (input.value.length < 4 && input.name != 'confirm_password') {
+               return {
+                  ...input,
+                  error_text: `${input.id} musi zawierać minimum 4 znaki`,
+                  error_status: true,
+               };
+            }
+
+            if (input.name == 'password') {
+               const confirmPasswordInput = inputs.find(
+                  (input) => input.name == 'confirm_password'
+               );
+               if (confirmPasswordInput.value !== input.value) {
+                  return {
+                     ...input,
+                     error_text: 'Hasła muszą być takie same',
+                     error_status: true,
+                  };
+               }
+            }
+
+            const validEmail =
+               /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+            if (input.name == 'email' && input.value.match(validEmail)) {
+               return {
+                  ...input,
+                  error_text: 'Niepoprawny email',
+                  error_status: true,
+               };
+            }
+
+            const validName = /^[a-zA-Z0-9]*$/;
+            if (input.name == 'name' && !input.value.match(validName)) {
+               return {
+                  ...input,
+                  error_text: 'Niepoprawna nazwa',
+                  error_status: true,
+               };
+            }
+
+            return {
+               ...input,
+               error_text: '',
+               error_status: false,
+            };
+         })
+      );
+   };
+
    return (
       <>
-      {console.log(inputs)}
+         {console.log(inputs)}
          <div className="auth__img"></div>
          <div className="auth__box">
             <div className="auth__form-box">
                <div className="auth__header">Otwórz swój bar</div>
-               <form>
+               <form onSubmit={handleSubmit}>
                   <div className="auth__inputs-wrapper">
                      <div className="auth__inputs-box">
                         <div className="auth__input-box">
