@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const SingUp = () => {
    const [inputs, setInputs] = useState([
       {
-         id: 'Nazwa barmana',
+         id: 'Nazwa',
          name: 'name',
          value: '',
       },
@@ -27,16 +27,16 @@ const SingUp = () => {
 
    const [errors, setErrors] = useState({
       name: {
-         error_text: '',
-         error_active: false,
+        text: '',
+        active: false,
       },
       email: {
-         error_text: '',
-         error_active: false,
+        text: '',
+        active: false,
       },
       password: {
-         error_text: '',
-         error_active: false,
+        text: '',
+        active: false,
       },
    });
 
@@ -59,8 +59,8 @@ const SingUp = () => {
       inputs.forEach((input) => {
          if (input.value.length < 4 && input.name != 'confirm_password') {
             errorsCopy[input.name] = {
-               error_text: `${input.id} musi zawierać minimum 4 znaki`,
-               error_status: true,
+              text: `${input.id} musi zawierać minimum 4 znaki`,
+              active: true,
             };
 
             return;
@@ -75,8 +75,8 @@ const SingUp = () => {
             if (confirmPasswordInput.value !== input.value) {
                console.log('NIe takie same');
                errorsCopy[input.name] = {
-                  error_text: 'Hasła muszą być takie same',
-                  error_status: true,
+                 text: 'Hasła muszą być takie same',
+                 active: true,
                };
 
                return;
@@ -87,8 +87,8 @@ const SingUp = () => {
             /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
          if (input.name == 'email' && !input.value.match(validEmail)) {
             errorsCopy[input.name] = {
-               error_text: 'Niepoprawny email',
-               error_status: true,
+              text: 'Niepoprawny email',
+              active: true,
             };
 
             return;
@@ -97,8 +97,8 @@ const SingUp = () => {
          const validName = /^[a-zA-Z0-9]*$/;
          if (input.name == 'name' && !input.value.match(validName)) {
             errorsCopy[input.name] = {
-               error_text: 'Nazwa zawiera niedozwolone znaki',
-               error_status: true,
+              text: 'Nazwa zawiera niedozwolone znaki',
+              active: true,
             };
 
             return;
@@ -106,18 +106,18 @@ const SingUp = () => {
 
          if (input.name != 'confirm_password') {
             errorsCopy[input.name] = {
-               error_text: '',
-               error_status: false,
+              text: '',
+              active: false,
             };
          }
       });
 
-      setErrors(errorsCopy);
+      setErrors({ ...errorsCopy });
    };
 
    return (
       <>
-         {console.log(errors)}
+      {console.log(errors)}
          <div className="auth__img"></div>
          <div className="auth__box">
             <div className="auth__form-box">
@@ -127,6 +127,7 @@ const SingUp = () => {
                      <div className="auth__inputs-box">
                         <div className="auth__input-box">
                            <label htmlFor="name">Nazwa barmana</label>
+                           {errors.name.active && (<div className="auth__error">{errors.name.text }</div>)}
                            <input
                               type="text"
                               id="name"
@@ -137,6 +138,7 @@ const SingUp = () => {
                         </div>
                         <div className="auth__input-box">
                            <label htmlFor="email">Email</label>
+                           {errors.email.active && (<div className="auth__error">{errors.email.text }</div>)}
                            <input
                               type="email"
                               id="email"
@@ -149,6 +151,7 @@ const SingUp = () => {
                      <div className="auth__inputs-box">
                         <div className="auth__input-box">
                            <label htmlFor="password">Hasło</label>
+                           {errors.password.active && (<div className="auth__error">{errors.password.text }</div>)}
                            <input
                               type="password"
                               id="password"
