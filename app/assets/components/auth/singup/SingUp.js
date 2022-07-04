@@ -7,31 +7,38 @@ const SingUp = () => {
          id: 'Nazwa barmana',
          name: 'name',
          value: '',
-         error_text: '',
-         error_status: false,
       },
       {
          id: 'Email',
          name: 'email',
          value: '',
-         error_text: '',
-         error_status: false,
       },
       {
          id: 'Hasło',
          name: 'password',
          value: '',
-         error_text: '',
-         error_status: false,
       },
       {
          id: 'Hasło2',
          name: 'confirm_password',
          value: '',
-         error_text: '',
-         error_status: false,
       },
    ]);
+
+   const [errors, setErrors] = useState({
+      name: {
+         error_text: '',
+         error_active: false,
+      },
+      email: {
+         error_text: '',
+         error_active: false,
+      },
+      password: {
+         error_text: '',
+         error_active: false,
+      },
+   });
 
    const handleInput = (e) => {
       const target = e.target;
@@ -48,60 +55,69 @@ const SingUp = () => {
    const handleSubmit = (e) => {
       e.preventDefault();
 
-      setInputs(
-         inputs.map((input) => {
-            if (input.value.length < 4 && input.name != 'confirm_password') {
-               return {
-                  ...input,
-                  error_text: `${input.id} musi zawierać minimum 4 znaki`,
+      let errorsCopy = errors;
+      inputs.forEach((input) => {
+         if (input.value.length < 4 && input.name != 'confirm_password') {
+            errorsCopy[input.name] = {
+               error_text: `${input.id} musi zawierać minimum 4 znaki`,
+               error_status: true,
+            };
+
+            return;
+         }
+
+         if (input.name == 'password') {
+            const confirmPasswordInput = inputs.find(
+               (input) => input.name == 'confirm_password'
+            );
+            console.log('Confirm', confirmPasswordInput.value);
+            console.log('Password', input.value);
+            if (confirmPasswordInput.value !== input.value) {
+               console.log('NIe takie same');
+               errorsCopy[input.name] = {
+                  error_text: 'Hasła muszą być takie same',
                   error_status: true,
                };
-            }
 
-            if (input.name == 'password') {
-               const confirmPasswordInput = inputs.find(
-                  (input) => input.name == 'confirm_password'
-               );
-               if (confirmPasswordInput.value !== input.value) {
-                  return {
-                     ...input,
-                     error_text: 'Hasła muszą być takie same',
-                     error_status: true,
-                  };
-               }
+               return;
             }
+         }
 
-            const validEmail =
-               /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-            if (input.name == 'email' && input.value.match(validEmail)) {
-               return {
-                  ...input,
-                  error_text: 'Niepoprawny email',
-                  error_status: true,
-               };
-            }
+         const validEmail =
+            /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+         if (input.name == 'email' && !input.value.match(validEmail)) {
+            errorsCopy[input.name] = {
+               error_text: 'Niepoprawny email',
+               error_status: true,
+            };
 
-            const validName = /^[a-zA-Z0-9]*$/;
-            if (input.name == 'name' && !input.value.match(validName)) {
-               return {
-                  ...input,
-                  error_text: 'Niepoprawna nazwa',
-                  error_status: true,
-               };
-            }
+            return;
+         }
 
-            return {
-               ...input,
+         const validName = /^[a-zA-Z0-9]*$/;
+         if (input.name == 'name' && !input.value.match(validName)) {
+            errorsCopy[input.name] = {
+               error_text: 'Nazwa zawiera niedozwolone znaki',
+               error_status: true,
+            };
+
+            return;
+         }
+
+         if (input.name != 'confirm_password') {
+            errorsCopy[input.name] = {
                error_text: '',
                error_status: false,
             };
-         })
-      );
+         }
+      });
+
+      setErrors(errorsCopy);
    };
 
    return (
       <>
-         {console.log(inputs)}
+         {console.log(errors)}
          <div className="auth__img"></div>
          <div className="auth__box">
             <div className="auth__form-box">
