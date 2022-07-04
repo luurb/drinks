@@ -86,7 +86,9 @@
 
    input {
       font-size: fonts.$small;
-      width: 260px;
+      width: 100%;
+      min-width: 280px;
+      max-width: 350px;
       padding: 10px;
       border-radius: 10px;
       box-shadow: 0 0 5px var(--yellow);
