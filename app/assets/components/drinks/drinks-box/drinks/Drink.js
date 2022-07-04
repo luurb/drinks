@@ -27,7 +27,7 @@ const Drink = React.forwardRef((props, ref) => {
                loading="lazy"
             />
             <div className="drink__desc">
-               <div className="drink__desc-text">{props.drink.description}</div>
+               <div className="drink__desc-text">{props.drink.shortDescription}</div>
                <div className="drink__products-wrapper">
                   <span className="drink__products-header">Składniki:</span>
                   <div className="drink__products-box">

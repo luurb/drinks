@@ -99,6 +99,8 @@ const Box = () => {
 
    const getUri = () => {
       let uri = `/api/drinks?page=${currentPageRef.current}&pagination=${paginationRef.current}&`;
+      uri += 'properties[]=id&properties[]=name&properties[]=shortDescription&properties[]=image&';
+      uri += 'properties[]=categories&properties[]=products&'
 
       products.forEach((product) => {
          uri += `products[]=${product.name}&`;
