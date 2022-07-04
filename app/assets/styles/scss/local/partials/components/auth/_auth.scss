@@ -47,6 +47,7 @@
    gap: 20px;
 
    form {
+      width: 260px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -71,8 +72,10 @@
 }
 
 .auth__inputs-box {
+   height: 100%;
    display: flex;
    flex-direction: column;
+   justify-content: space-between;
    gap: 10px;
 }
 
@@ -130,9 +133,20 @@
    transition: all 0.5s ease;
 }
 
+.auth__error {
+   font-weight: 500;
+   color: var(--yellow);
+}
+
 @media (min-width: breakpoints.$tablet) {
    .auth {
       place-content: center;
+   }
+   
+   .auth__form-box {
+      form {
+         width: unset;
+      }
    }
 }
 

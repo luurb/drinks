@@ -127,7 +127,6 @@ const SingUp = () => {
                      <div className="auth__inputs-box">
                         <div className="auth__input-box">
                            <label htmlFor="name">Nazwa barmana</label>
-                           {errors.name.active && (<div className="auth__error">{errors.name.text }</div>)}
                            <input
                               type="text"
                               id="name"
@@ -135,10 +134,10 @@ const SingUp = () => {
                               value={inputs.name}
                               onChange={handleInput}
                            ></input>
+                           {errors.name.active && (<div className="auth__error">{errors.name.text }</div>)}
                         </div>
                         <div className="auth__input-box">
                            <label htmlFor="email">Email</label>
-                           {errors.email.active && (<div className="auth__error">{errors.email.text }</div>)}
                            <input
                               type="email"
                               id="email"
@@ -146,18 +145,19 @@ const SingUp = () => {
                               value={inputs.email}
                               onChange={handleInput}
                            ></input>
+                           {errors.email.active && (<div className="auth__error">{errors.email.text }</div>)}
                         </div>
                      </div>
                      <div className="auth__inputs-box">
                         <div className="auth__input-box">
                            <label htmlFor="password">Hasło</label>
-                           {errors.password.active && (<div className="auth__error">{errors.password.text }</div>)}
                            <input
                               type="password"
                               id="password"
                               name="password"
                               onChange={handleInput}
                            ></input>
+                           {errors.password.active && (<div className="auth__error">{errors.password.text }</div>)}
                         </div>
                         <div className="auth__input-box">
                            <label htmlFor="confirm_password">
