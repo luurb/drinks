@@ -6,6 +6,7 @@ use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use App\DataFixtures\CategoryFixtures;
 use App\DataFixtures\ProductFixtures;
 use App\Entity\Drink;
+use Faker\Factory;
 
 class DrinkTest extends ApiTestCase
 {
@@ -331,7 +332,7 @@ class DrinkTest extends ApiTestCase
         ]);
     }
 
-    public function test_pagination_work_when_its_enabled(): void 
+    public function test_pagination_work_when_its_enabled(): void
     {
         for ($i = 0; $i < 25; $i++) {
             $drink = new Drink();
@@ -351,11 +352,31 @@ class DrinkTest extends ApiTestCase
             '@type' => 'hydra:Collection',
             'hydra:totalItems' => 25,
             'hydra:view' => [
-                '@type'=> 'hydra:PartialCollectionView',
-                'hydra:first'=> '/api/drinks?page=1',
-                'hydra:last'=> '/api/drinks?page=2',
-                'hydra:next'=> '/api/drinks?page=2'
-            ] 
+                '@type' => 'hydra:PartialCollectionView',
+                'hydra:first' => '/api/drinks?page=1',
+                'hydra:last' => '/api/drinks?page=2',
+                'hydra:next' => '/api/drinks?page=2'
+            ]
         ]);
+    }
+
+    public function test_short_description_returns_less_or_equal_180_characters(): void
+    {
+        $faker = Factory::create();
+        $drink = new Drink();
+        $drink->setName('test');
+        $drink->setDescription($faker->sentence(80));
+        $drink->setPreparation('test');
+        $drink->setImage('test');
+
+        $this->entityManager->persist($drink);
+        $this->entityManager->flush();
+
+        $drinkId = $this->entityManager->getRepository(Drink::class)->findOneBy(['name' => 'test'])->getId();
+        $response = $this->client->request('GET', "/api/drinks/$drinkId");
+        $response = json_decode($response->getContent(), true);
+
+        //180 + 3 beacuse 3 dots are added to the end of short description
+        $this->assertLessThanOrEqual(183, strlen($response['shortDescription']));
     }
 }

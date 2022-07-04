@@ -87,6 +87,16 @@ class Drink
         return $this->description;
     }
 
+    #[Groups('read')]
+    public function getShortDescription(): ?string 
+    {
+        if (strlen($this->description) < 180) {
+            return $this->description;
+        }
+
+        return substr($this->description, 0, 180) . '...';
+    }
+
     public function setDescription(string $description): self
     {
         $this->description = $description;
