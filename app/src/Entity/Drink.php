@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use App\Repository\DrinkRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -26,7 +27,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
         'products' => 'exact',
         'categories' => 'exact',
     ]
+
 )]
+#[ApiFilter(PropertyFilter::class)]
 class Drink
 {
     #[ORM\Id]
@@ -88,7 +91,7 @@ class Drink
     }
 
     #[Groups('read')]
-    public function getShortDescription(): ?string 
+    public function getShortDescription(): ?string
     {
         if (strlen($this->description) < 180) {
             return $this->description;

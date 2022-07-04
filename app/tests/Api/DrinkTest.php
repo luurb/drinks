@@ -379,4 +379,35 @@ class DrinkTest extends ApiTestCase
         //180 + 3 beacuse 3 dots are added to the end of short description
         $this->assertLessThanOrEqual(183, strlen($response['shortDescription']));
     }
+
+    public function test_property_filter_works_correctly(): void
+    {
+        $drink = new Drink();
+        $drink->setName('mohito');
+        $drink->setDescription('description');
+        $drink->setPreparation('test');
+        $drink->setImage('test');
+
+        $this->entityManager->persist($drink);
+        $this->entityManager->flush();
+
+        $response = $this->client->request('GET', '/api/drinks?properties[]=shortDescription&properties[]=name');
+
+        $this->assertNotContains([
+            'hydra:member' => [
+                'description' => 'description',
+                'preparation' => 'test',
+                'image' => 'test',
+            ]
+        ], json_decode($response->getContent(), true));
+
+        $this->assertJsonContains([
+            'hydra:member' => [
+                [
+                    'name' => 'mohito',
+                    'shortDescription' => 'description',
+                ]
+            ],
+        ]);
+    }
 }
