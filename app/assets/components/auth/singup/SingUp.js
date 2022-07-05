@@ -122,17 +122,38 @@ const SingUp = () => {
       const email = inputs.find((input) => input.name == 'email').value;
       const password = inputs.find((input) => input.name == 'password').value;
 
-      const response = await axios.post('/api/users', {
-         username: userName,
-         email: email,
-         password: password,
-      });
+      try {
+         const response = await axios.post('/api/users', {
+            username: userName,
+            email: email,
+            password: password,
+         });
 
-      response.status === 201 && navigate('/dashboard', { replace: true });
-      if (
-         response.status == 422 &&
-         response.data['hydra:title'] == 'An error occured'
-      ) {
+         response.status === 201 && navigate('/dashboard', { replace: true });
+      } catch (error) {
+         const response = error.response;
+
+         if (
+            response.status == 422 &&
+            response.data['hydra:title'] == 'An error occurred'
+         ) {
+            const violations = response.data.violations;
+            let errorsCopy = errors;
+            violations.forEach((violation) => {
+               violation.propertyPath == 'email' &&
+                  (errorsCopy.email = {
+                     text: violation.message,
+                     active: true,
+                  });
+               violation.propertyPath == 'username' &&
+                  (errorsCopy.name = {
+                     text: violation.message,
+                     active: true,
+                  });
+            });
+
+            setErrors({ ...errorsCopy });
+         }
       }
    };
 
