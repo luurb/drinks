@@ -173,6 +173,68 @@ class DrinkTest extends ApiTestCase
         $this->assertResponseStatusCodeSame(204);
     }
 
+    public function test_drink_returns_products_and_categories_in_format_with_names(): void
+    {
+        $productFixture = new ProductFixtures();
+        $categoryFixture = new CategoryFixtures();
+        $productFixture->load($this->entityManager);
+        $categoryFixture->load($this->entityManager);
+
+        $this->client->request('POST', '/api/drinks', [
+            'json' => [
+                'name' => 'drink1',
+                'description' => 'description',
+                'preparation' => 'preparation',
+                'image' => '../images',
+                'categories' => [
+                    '/api/categories/orzeźwiający'
+                ],
+                'products' => [
+                    '/api/products/wódka',
+                    '/api/products/sok%20wiśniowy',
+                    '/api/products/mięta'
+                ]
+            ]
+        ]);
+
+        $this->client->request('GET', '/api/drinks');
+
+        $this->assertJsonContains([
+            '@context' => '/api/contexts/Drink',
+            '@id' => '/api/drinks',
+            '@type' => 'hydra:Collection',
+            'hydra:member' => [
+                [
+                    '@type' => 'Drink',
+                    'name' => 'drink1',
+                    'description' => 'description',
+                    'preparation' => 'preparation',
+                    'image' => '../images',
+                    'products' => [
+                        [
+                            '@type' => 'Product',
+                            'name' => 'wódka'
+                        ],
+                        [
+                            '@type' => 'Product',
+                            'name' => 'sok wiśniowy'
+                        ],
+                        [
+                            '@type' => 'Product',
+                            'name' => 'mięta'
+                        ],
+                    ],
+                    'categories' => [
+                        [
+                            '@type' => 'Category',
+                            'name' => 'orzeźwiający'
+                        ],
+                    ]
+                ],
+            ]
+        ]);
+    }
+
     public function test_return_drinks_which_contain_specific_products_and_categories(): void
     {
         $productFixture = new ProductFixtures();
