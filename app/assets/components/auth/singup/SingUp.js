@@ -129,6 +129,11 @@ const SingUp = () => {
       });
 
       response.status === 201 && navigate('/dashboard', { replace: true });
+      if (
+         response.status == 422 &&
+         response.data['hydra:title'] == 'An error occured'
+      ) {
+      }
    };
 
    return (
