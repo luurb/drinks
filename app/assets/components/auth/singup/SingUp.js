@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const SingUp = () => {
    const [inputs, setInputs] = useState([
@@ -27,18 +28,19 @@ const SingUp = () => {
 
    const [errors, setErrors] = useState({
       name: {
-        text: '',
-        active: false,
+         text: '',
+         active: false,
       },
       email: {
-        text: '',
-        active: false,
+         text: '',
+         active: false,
       },
       password: {
-        text: '',
-        active: false,
+         text: '',
+         active: false,
       },
    });
+   const navigate = useNavigate();
 
    const handleInput = (e) => {
       const target = e.target;
@@ -59,8 +61,8 @@ const SingUp = () => {
       inputs.forEach((input) => {
          if (input.value.length < 4 && input.name != 'confirm_password') {
             errorsCopy[input.name] = {
-              text: `${input.id} musi zawierać minimum 4 znaki`,
-              active: true,
+               text: `${input.id} musi zawierać minimum 4 znaki`,
+               active: true,
             };
 
             return;
@@ -70,13 +72,10 @@ const SingUp = () => {
             const confirmPasswordInput = inputs.find(
                (input) => input.name == 'confirm_password'
             );
-            console.log('Confirm', confirmPasswordInput.value);
-            console.log('Password', input.value);
             if (confirmPasswordInput.value !== input.value) {
-               console.log('NIe takie same');
                errorsCopy[input.name] = {
-                 text: 'Hasła muszą być takie same',
-                 active: true,
+                  text: 'Hasła muszą być takie same',
+                  active: true,
                };
 
                return;
@@ -87,8 +86,8 @@ const SingUp = () => {
             /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
          if (input.name == 'email' && !input.value.match(validEmail)) {
             errorsCopy[input.name] = {
-              text: 'Niepoprawny email',
-              active: true,
+               text: 'Niepoprawny email',
+               active: true,
             };
 
             return;
@@ -97,8 +96,8 @@ const SingUp = () => {
          const validName = /^[a-zA-Z0-9]*$/;
          if (input.name == 'name' && !input.value.match(validName)) {
             errorsCopy[input.name] = {
-              text: 'Nazwa zawiera niedozwolone znaki',
-              active: true,
+               text: 'Nazwa zawiera niedozwolone znaki',
+               active: true,
             };
 
             return;
@@ -106,13 +105,30 @@ const SingUp = () => {
 
          if (input.name != 'confirm_password') {
             errorsCopy[input.name] = {
-              text: '',
-              active: false,
+               text: '',
+               active: false,
             };
          }
       });
 
       setErrors({ ...errorsCopy });
+      singUp();
+   };
+
+   const singUp = async () => {
+      if (Object.values(errors).some((value) => value.active)) return;
+
+      const userName = inputs.find((input) => input.name == 'name').value;
+      const email = inputs.find((input) => input.name == 'email').value;
+      const password = inputs.find((input) => input.name == 'password').value;
+
+      const response = await axios.post('/api/users', {
+         username: userName,
+         email: email,
+         password: password,
+      });
+
+      response.status === 201 && navigate('/dashboard', { replace: true });
    };
 
    return (
@@ -133,7 +149,11 @@ const SingUp = () => {
                               value={inputs.name}
                               onChange={handleInput}
                            ></input>
-                           {errors.name.active && (<div className="auth__error">{errors.name.text }</div>)}
+                           {errors.name.active && (
+                              <div className="auth__error">
+                                 {errors.name.text}
+                              </div>
+                           )}
                         </div>
                         <div className="auth__input-box">
                            <label htmlFor="email">Email</label>
@@ -144,7 +164,11 @@ const SingUp = () => {
                               value={inputs.email}
                               onChange={handleInput}
                            ></input>
-                           {errors.email.active && (<div className="auth__error">{errors.email.text }</div>)}
+                           {errors.email.active && (
+                              <div className="auth__error">
+                                 {errors.email.text}
+                              </div>
+                           )}
                         </div>
                      </div>
                      <div className="auth__inputs-box">
@@ -156,7 +180,11 @@ const SingUp = () => {
                               name="password"
                               onChange={handleInput}
                            ></input>
-                           {errors.password.active && (<div className="auth__error">{errors.password.text }</div>)}
+                           {errors.password.active && (
+                              <div className="auth__error">
+                                 {errors.password.text}
+                              </div>
+                           )}
                         </div>
                         <div className="auth__input-box">
                            <label htmlFor="confirm_password">
