@@ -139,6 +139,7 @@
 .auth__error {
    font-weight: 500;
    color: var(--yellow);
+   text-align: center;
 }
 
 @media (min-width: breakpoints.$tablet) {
