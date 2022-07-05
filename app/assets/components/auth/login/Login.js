@@ -71,7 +71,7 @@ const Login = () => {
             active: false,
          };
       });
-      setErrors({ ...errorsCopy });
+      setErrors({ ...errorsCopy, login: {text: '', active: false} });
       login();
    };
 
