@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Login = () => {
    const [inputs, setInputs] = useState([
@@ -24,6 +25,7 @@ const Login = () => {
          active: false,
       },
    });
+   const navigate = useNavigate();
 
    const handleInput = (e) => {
       const target = e.target;
@@ -59,8 +61,33 @@ const Login = () => {
 
             return;
          }
+
+         errorsCopy[input.name] = {
+            text: '',
+            active: false,
+         };
       });
       setErrors({ ...errorsCopy });
+      login();
+   };
+
+   const login = async () => {
+      if (Object.values(errors).some((value) => value.active)) return;
+
+      const userName = inputs.find((input) => input.name == 'name').value;
+      const password = inputs.find((input) => input.name == 'password').value;
+
+      try {
+         const response = await axios.post('/api/login', {
+            username: userName,
+            password: password,
+         });
+         console.log(response);
+
+         response.status === 201 && navigate('/dashboard', { replace: true });
+      } catch (error) {
+         console.log(error);
+      }
    };
 
    return (
