@@ -197,4 +197,38 @@ class UserTest extends ApiTestCase
          ]
       ]);
    }
+
+   public function test_unique_username_and_email_validation_work_correctly(): void
+   {
+      $this->client->request('POST', '/api/users', [
+         'json' => [
+            'username' => 'test',
+            'email' => 'test@example.com',
+            'password' => 'test345'
+         ]
+      ]);
+
+      $this->client->request('POST', '/api/users', [
+         'json' => [
+            'username' => 'test',
+            'email' => 'test@example.com',
+            'password' => 'test345'
+         ]
+      ]);
+
+      $this->assertResponseStatusCodeSame(422);
+      $this->assertJsonContains([
+         'hydra:title' => 'An error occurred',
+         'violations' => [
+            [
+               'propertyPath' => 'email',
+               'message' => 'Podany adres e-mail jest już używany',
+            ],
+            [
+               'propertyPath' => 'username',
+               'message' => 'Barman o podanej nazwie już istnieje',
+            ]
+         ]
+      ]);
+   }
 }
