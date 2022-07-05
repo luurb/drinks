@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
@@ -23,10 +24,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Groups(['user:write', 'user:read'])]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 4, max: 25)]
     private $username;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[Groups(['user:write', 'user:read'])]
+    #[Assert\NotBlank]
+    #[Assert\Email]
     private $email;
 
     #[ORM\Column(type: 'json')]
@@ -34,6 +39,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string')]
     #[Groups(['user:write'])]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 4, max: 50)]
     private $password;
 
     #[ORM\Column(type: 'datetime_immutable')]
