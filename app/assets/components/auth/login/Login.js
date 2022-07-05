@@ -24,6 +24,10 @@ const Login = () => {
          text: '',
          active: false,
       },
+      login: {
+         text: '',
+         active: false,
+      },
    });
    const navigate = useNavigate();
 
@@ -86,7 +90,12 @@ const Login = () => {
 
          response.status === 201 && navigate('/dashboard', { replace: true });
       } catch (error) {
-         console.log(error);
+         const response = error.response;
+         response.data.error &&
+            setErrors({
+               ...errors,
+               login: { text: response.data.error, active: true },
+            });
       }
    };
 
@@ -96,6 +105,9 @@ const Login = () => {
          <div className="auth__box">
             <div className="auth__form-box">
                <div className="auth__header">Wejdź do baru</div>
+               {errors.login.active && (
+                  <div className="auth__error">{errors.login.text}</div>
+               )}
                <form onSubmit={handleSubmit}>
                   <div className="auth__input-box">
                      <label htmlFor="name">Nazwa barmana</label>
