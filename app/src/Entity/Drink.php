@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DrinkRepository::class)]
 #[ApiResource(
@@ -40,14 +41,19 @@ class Drink
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Groups('drink:read')]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 2, max: 50)]
     private $name;
 
     #[ORM\Column(type: 'text')]
     #[Groups('drink:read')]
+    #[Assert\NotBlank]
     private $description;
 
     #[ORM\Column(type: 'text')]
     #[Groups('drink:read')]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 2, max: 50)]
     private $preparation;
 
     #[ORM\Column(type: 'string', length: 255)]
