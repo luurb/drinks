@@ -49,7 +49,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string')]
     #[Groups(['user:write'])]
     #[Assert\NotBlank]
-    #[Assert\Length(min: 4, max: 30)]
+    #[Assert\Length(min: 4)]
     private $password;
 
     #[ORM\Column(type: 'datetime_immutable')]

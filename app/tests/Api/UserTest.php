@@ -180,7 +180,6 @@ class UserTest extends ApiTestCase
          'json' => [
             'username' => $faker->realTextBetween(26),
             'email' => 'test@example.com',
-            'password' => $faker->realTextBetween(31),
          ]
       ]);
       $this->assertResponseStatusCodeSame(422);
@@ -190,10 +189,6 @@ class UserTest extends ApiTestCase
                'propertyPath' => 'username',
                'message' => 'This value is too long. It should have 25 characters or less.',
             ],
-            [
-               'propertyPath' => 'password',
-               'message' => 'This value is too long. It should have 30 characters or less.',
-            ]
          ]
       ]);
    }
