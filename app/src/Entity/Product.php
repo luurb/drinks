@@ -14,7 +14,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ApiResource(
-    itemOperations: ['get', 'put']
+    collectionOperations: ['get', 'post'],
+    itemOperations: ['get']
 )]
 #[ApiFilter(
     SearchFilter::class, properties: ['name' => 'partial']
