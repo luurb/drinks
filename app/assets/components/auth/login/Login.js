@@ -73,13 +73,12 @@ const Login = () => {
             active: false,
          };
       });
-      setErrors({ ...errorsCopy, login: { text: '', active: false } });
-      login();
+      errorsCopy.login = { text: '', active: false };
+      setErrors({ ...errorsCopy });
+      !Object.values(errorsCopy).some((value) => value.active) && login();
    };
 
    const login = async () => {
-      if (Object.values(errors).some((value) => value.active)) return;
-
       const userName = inputs.find((input) => input.name == 'name').value;
       const password = inputs.find((input) => input.name == 'password').value;
 
@@ -89,7 +88,6 @@ const Login = () => {
             password: password,
          });
 
-         console.log(response);
          if (response.status === 204) {
             setUser(response.headers.location);
             navigate('/dashboard', { replace: true });
@@ -108,7 +106,7 @@ const Login = () => {
    const setUser = async (iri) => {
       try {
          const response = await axios.get(iri);
-         response.status === 200 && userContext.setUser(data);
+         response.status === 200 && userContext.setUser(response.data);
       } catch (error) {
          console.log('Cant fetch user data');
       }
