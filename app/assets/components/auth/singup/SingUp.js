@@ -129,7 +129,8 @@ const SingUp = () => {
             password: password,
          });
 
-         response.status === 201 && navigate('/dashboard', { replace: true });
+         response.status === 201 &&
+            navigate('/login', { state: { singup: true }, replace: true });
       } catch (error) {
          const response = error.response;
 

@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import AuthContext from '../AuthContext';
 
-const Login = () => {
+const Login = (props) => {
    const [inputs, setInputs] = useState([
       {
          id: 'Nazwa',
@@ -32,6 +32,7 @@ const Login = () => {
    });
    const userContext = useContext(AuthContext);
    const navigate = useNavigate();
+   const location = useLocation();
 
    const handleInput = (e) => {
       const target = e.target;
@@ -116,6 +117,13 @@ const Login = () => {
       <>
          <div className="auth__img"></div>
          <div className="auth__box">
+            {location.state && location.state.singup && (
+               <div className="auth__info">
+                  <i className="fa-solid fa-champagne-glasses"></i>
+                  <span>Bar został utworzony</span>
+                  <i className="fa-solid fa-champagne-glasses"></i>
+               </div>
+            )}
             <div className="auth__form-box">
                <div className="auth__header">Wejdź do baru</div>
                {errors.login.active && (
