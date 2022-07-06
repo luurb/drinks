@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import AuthContext from '../AuthContext';
 
 const Login = () => {
    const [inputs, setInputs] = useState([
@@ -29,6 +30,7 @@ const Login = () => {
          active: false,
       },
    });
+   const user = useContext(AuthContext);
    const navigate = useNavigate();
 
    const handleInput = (e) => {
