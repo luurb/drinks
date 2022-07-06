@@ -96,6 +96,8 @@ const Login = () => {
       } catch (error) {
          const response = error.response;
          console.log(response);
+         response.status == 401 &&
+            (response.data.error = 'Nieprawidłowe dane');
          response.data.error &&
             setErrors({
                ...errors,
