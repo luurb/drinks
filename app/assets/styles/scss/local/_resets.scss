@@ -9,7 +9,13 @@
 
 html {
     font-family: fonts.$poppins;
-    font-size: 9px;
+    font-size: 8px;
+}
+
+@media (min-width: breakpoints.$tablet) {
+    html {
+        font-size: 9px;
+    }
 }
 
 @media (min-width: breakpoints.$desktop-small) {
