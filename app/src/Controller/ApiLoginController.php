@@ -22,4 +22,10 @@ class ApiLoginController extends AbstractController
             'Location' => $iriConverter->getIriFromItem($this->getUser())
         ]);
     }
+
+    #[Route('/logout', name: 'api_logout')]
+    public function logout(): void
+    {
+        throw new \Exception('should not be reached');
+    }
 }
