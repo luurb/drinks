@@ -3,10 +3,11 @@
 
 .drink {
     //20px for scrollbar
+    background: var(--white);
     width: calc(100% - 10px);
     padding-bottom: 10px;
     border-radius: 5px;
-    box-shadow: 0 0 10px var(--grey);
+    box-shadow: 0 0 5px var(--grey);
 }
 
 .drink__top {
@@ -76,7 +77,6 @@
 }
 
 .drink__bottom {
-    background: var(--white);
     display: flex;
     flex-direction: column;
     justify-content: center;
