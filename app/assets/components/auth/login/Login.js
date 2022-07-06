@@ -71,7 +71,7 @@ const Login = () => {
             active: false,
          };
       });
-      setErrors({ ...errorsCopy, login: {text: '', active: false} });
+      setErrors({ ...errorsCopy, login: { text: '', active: false } });
       login();
    };
 
@@ -88,9 +88,12 @@ const Login = () => {
          });
          console.log(response);
 
-         response.status === 201 && navigate('/dashboard', { replace: true });
+         if (response.status === 204) {
+            navigate('/dashboard', { replace: true });
+         }
       } catch (error) {
          const response = error.response;
+         console.log(response);
          response.data.error &&
             setErrors({
                ...errors,
