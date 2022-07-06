@@ -30,7 +30,7 @@ const Login = () => {
          active: false,
       },
    });
-   const user = useContext(AuthContext);
+   const userContext = useContext(AuthContext);
    const navigate = useNavigate();
 
    const handleInput = (e) => {
@@ -88,21 +88,29 @@ const Login = () => {
             username: userName,
             password: password,
          });
-         console.log(response);
 
+         console.log(response);
          if (response.status === 204) {
+            setUser(response.headers.location);
             navigate('/dashboard', { replace: true });
          }
       } catch (error) {
          const response = error.response;
-         console.log(response);
-         response.status == 401 &&
-            (response.data.error = 'Nieprawidłowe dane');
+         response.status == 401 && (response.data.error = 'Nieprawidłowe dane');
          response.data.error &&
             setErrors({
                ...errors,
                login: { text: response.data.error, active: true },
             });
+      }
+   };
+
+   const setUser = async (iri) => {
+      try {
+         const response = await axios.get(iri);
+         response.status === 200 && userContext.setUser(data);
+      } catch (error) {
+         console.log('Cant fetch user data');
       }
    };
 

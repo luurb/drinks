@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import AuthContext from './AuthContext'
+import React, { useEffect, useState } from 'react';
+import AuthContext from './AuthContext';
 
-const AuthProvider = ({children}) => {
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    window.user && setUser(window.user)
-  }, []);
-  return (
-     <AuthContext.Provider value={user}>{children}</AuthContext.Provider>
-  )
-}
+const AuthProvider = ({ children }) => {
+   const [user, setUser] = useState(null);
+   useEffect(() => {
+      window.user && setUser(window.user);
+   }, []);
 
-export default AuthProvider
+   const value = {
+      user: user,
+      setUser: setUser,
+   };
+
+   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+export default AuthProvider;
