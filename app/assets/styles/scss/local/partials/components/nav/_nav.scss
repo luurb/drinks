@@ -23,20 +23,25 @@
 
     .nav__right {
         background: var(--violet);
-        padding-bottom: 15px;
     }
 }
 
 .nav__logo {
+    font-size: fonts.$medium2;
     color: var(--yellow);
 }
 
 .nav__right {
     width: 100%;
     display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
     position: absolute;
-    top: 57px;
+    top: 62px;
     left: 0;
+    padding-bottom: 15px;
 }
 
 .nav__link {
@@ -52,28 +57,19 @@
 
 #nav:checked ~ .nav__right {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-
 }
 
-@media (min-width: breakpoints.$tablet) {
+@media (min-width: breakpoints.$nav-break) {
     .fa-bars {
         display: none;
     }
 
     .nav__right {
         display: flex;
+        flex-direction: row;
         justify-content: flex-end;
-        align-items: center;
-        gap: 40px;
         position: unset;
-    }
-
-    .nav__main {
-        .nav__right {
-            padding-bottom: 0;
-        }
+        padding-bottom: 0;
     }
 }
+

@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import AuthContext from '../auth/AuthContext';
 
 const Nav = () => {
+   const user = useContext(AuthContext).user;
    return (
       <div className="nav__main">
          <nav className="nav ">
@@ -22,6 +24,14 @@ const Nav = () => {
                      <i className="fa-solid fa-martini-glass"></i>
                   </Link>
                </div>
+               {user && (
+                  <div className="nav__link-box">
+                     <a className="nav__link" href="/logout">
+                        <span>Zamknij bar</span>
+                        <i className="fa-solid fa-door-open"></i>
+                     </a>
+                  </div>
+               )}
             </div>
          </nav>
       </div>
