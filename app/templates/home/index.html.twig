@@ -23,6 +23,14 @@
 						<span class="nav__link">Mój bar</span>
 					</a>
 				</div>
+                {% if app.user %}
+                  <div class="nav__link-box">
+                     <a class="nav__link" href="/logout">
+                        <span>Zamknij bar</span>
+                        <i class="fa-solid fa-door-open"></i>
+                     </a>
+                  </div>
+                {% endif %}
 			</div>
 		</nav>
         <main class="home__main">
