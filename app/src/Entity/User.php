@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -56,9 +58,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read'])]
     private $createdAt;
 
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Drink::class)]
+    #[Groups(['user:read'], 'user:write')]
+    private $drinks;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->drinks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -146,5 +153,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    /**
+     * @return Collection<int, Drink>
+     */
+    public function getDrinks(): Collection
+    {
+        return $this->drinks;
+    }
+
+    public function addDrink(Drink $drink): self
+    {
+        if (!$this->drinks->contains($drink)) {
+            $this->drinks[] = $drink;
+            $drink->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDrink(Drink $drink): self
+    {
+        if ($this->drinks->removeElement($drink)) {
+            // set the owning side to null (unless already changed)
+            if ($drink->getAuthor() === $this) {
+                $drink->setAuthor(null);
+            }
+        }
+
+        return $this;
     }
 }

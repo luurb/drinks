@@ -78,6 +78,11 @@ class Drink
     #[Groups('drink:read')]
     private $categories;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'drinks')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups('drink:read')]
+    private $author;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -191,6 +196,18 @@ class Drink
     public function removeCategory(Category $category): self
     {
         $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }
