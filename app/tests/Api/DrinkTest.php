@@ -87,7 +87,11 @@ class DrinkTest extends CustomApiTestCase
             'image' => '../images',
             'products' => [],
             'categories' => [],
-            'author' => '/api/users/' . $user->getId()
+            'author' => [
+                '@id' => '/api/users/' . $user->getId(),
+                '@type' => 'User',
+                'username' => $user->getUsername()
+            ]
         ]);
     }
 
@@ -204,7 +208,6 @@ class DrinkTest extends CustomApiTestCase
         $this->client->request('DELETE', "/api/drinks/$drinkId");
 
         $this->assertResponseStatusCodeSame(204);
-
     }
 
     public function test_drink_returns_products_and_categories_in_format_with_names(): void
