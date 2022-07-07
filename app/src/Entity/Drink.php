@@ -83,6 +83,10 @@ class Drink
     #[Groups('drink:read')]
     private $author;
 
+    #[ORM\Column(type: 'boolean')]
+    #[Groups('drink:read')]
+    private $isPublished = false;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -208,6 +212,18 @@ class Drink
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function isIsPublished(): ?bool
+    {
+        return $this->isPublished;
+    }
+
+    public function setIsPublished(bool $isPublished): self
+    {
+        $this->isPublished = $isPublished;
 
         return $this;
     }

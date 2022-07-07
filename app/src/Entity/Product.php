@@ -41,6 +41,9 @@ class Product
     #[ORM\ManyToMany(targetEntity: Drink::class, mappedBy: 'products')]
     private $drinks;
 
+    #[ORM\Column(type: 'boolean')]
+    private $isPublished = false;
+
     public function __construct()
     {
         $this->drinks = new ArrayCollection();
@@ -86,6 +89,18 @@ class Product
         if ($this->drinks->removeElement($drink)) {
             $drink->removeProduct($this);
         }
+
+        return $this;
+    }
+
+    public function isIsPublished(): ?bool
+    {
+        return $this->isPublished;
+    }
+
+    public function setIsPublished(bool $isPublished): self
+    {
+        $this->isPublished = $isPublished;
 
         return $this;
     }
