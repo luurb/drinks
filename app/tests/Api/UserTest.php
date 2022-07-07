@@ -3,13 +3,10 @@
 namespace App\Tests\Api;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
-use App\DataFixtures\CategoryFixtures;
-use App\DataFixtures\ProductFixtures;
-use App\Entity\Drink;
 use App\Entity\User;
 use Faker\Factory;
 
-class UserTest extends ApiTestCase
+class UserTest extends CustomApiTestCase
 {
    private $client;
    private $entityManager;
@@ -42,6 +39,20 @@ class UserTest extends ApiTestCase
       $this->assertNotContains([
          'password' => 'test1234'
       ], json_decode($response->getContent(), true));
+   }
+
+   public function testCreateUser(): void
+   {
+      $this->client->request('POST', '/api/users', [
+         'json' => [
+            'username' => 'test',
+            'email' => 'test@example.com',
+            'password' => 'test1234'
+         ]
+      ]);
+      $this->assertResponseStatusCodeSame(201);
+
+      $this->logIn($this->client, 'test', 'test1234');
    }
 
    public function testRetrieveUser(): void
@@ -83,6 +94,7 @@ class UserTest extends ApiTestCase
       $this->client->request('PATCH', "/api/users/$userId", [
          'json' => [
             'username' => 'admin',
+            'password' => 'test1234'
          ],
          'headers' => [
             'content-type' => 'application/merge-patch+json'

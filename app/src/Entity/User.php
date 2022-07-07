@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -49,9 +50,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $roles = [];
 
     #[ORM\Column(type: 'string')]
-    #[Groups(['user:write'])]
-    #[Assert\NotBlank]
-    #[Assert\Length(min: 4)]
     private $password;
 
     #[ORM\Column(type: 'datetime_immutable')]
@@ -61,6 +59,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Drink::class)]
     #[Groups(['user:read'], 'user:write')]
     private $drinks;
+
+    #[Groups(['user:write'])]
+    #[SerializedName('password')]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 4)]
+    private $plainPassword;
 
     public function __construct()
     {
@@ -135,7 +139,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+         $this->plainPassword = null;
     }
 
     public function getEmail(): ?string
@@ -181,6 +185,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $drink->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }
