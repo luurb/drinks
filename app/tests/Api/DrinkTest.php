@@ -22,13 +22,14 @@ class DrinkTest extends CustomApiTestCase
 
     public function createDrink(string $name): void
     {
-        $this->createUserAndLogIn($this->client, 'test', '12345');
+        $user = $this->createUserAndLogIn($this->client, 'test', '12345');
         $this->client->request('POST', '/api/drinks', [
             'json' => [
                 'name' => $name,
                 'description' => 'test description',
                 'preparation' => 'test preparation',
-                'image' => '../images'
+                'image' => '../images',
+                'author' => '/api/users/' . $user->getId()
             ]
         ]);
     }
@@ -51,24 +52,27 @@ class DrinkTest extends CustomApiTestCase
 
     public function testPost(): void
     {
+        $user = $this->createUser('test', '12345');
         $this->client->request('POST', '/api/drinks', [
             'json' => [
                 'name' => 'mohito',
                 'description' => 'test description',
                 'preparation' => 'test preparation',
-                'image' => '../images'
+                'image' => '../images',
+                'author' => '/api/users/' . $user->getId()
             ]
         ]);
         $this->assertResponseStatusCodeSame(401);
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
 
-        $this->createUserAndLogIn($this->client, 'test', '12345');
+        $user = $this->createUserAndLogIn($this->client, 'test2', '12345');
         $this->client->request('POST', '/api/drinks', [
             'json' => [
                 'name' => 'mohito',
                 'description' => 'test description',
                 'preparation' => 'test preparation',
-                'image' => '../images'
+                'image' => '../images',
+                'author' => '/api/users/' . $user->getId()
             ]
         ]);
         $this->assertResponseStatusCodeSame(201);
@@ -82,7 +86,8 @@ class DrinkTest extends CustomApiTestCase
             'preparation' => 'test preparation',
             'image' => '../images',
             'products' => [],
-            'categories' => []
+            'categories' => [],
+            'author' => '/api/users/' . $user->getId()
         ]);
     }
 
@@ -171,8 +176,8 @@ class DrinkTest extends CustomApiTestCase
         $categoryFixture = new CategoryFixtures();
         $productFixture->load($this->entityManager);
         $categoryFixture->load($this->entityManager);
+        $user = $this->createUserAndLogIn($this->client, 'test', '12345');
 
-        $this->createUserAndLogIn($this->client, 'test', '12345');
         $this->client->request('POST', '/api/drinks', [
             'json' => [
                 'name' => 'drink1',
@@ -186,7 +191,8 @@ class DrinkTest extends CustomApiTestCase
                     '/api/products/wódka',
                     '/api/products/sok%20wiśniowy',
                     '/api/products/mięta'
-                ]
+                ],
+                'author' => '/api/users/' . $user->getId()
             ]
         ]);
 
@@ -234,8 +240,8 @@ class DrinkTest extends CustomApiTestCase
         $categoryFixture = new CategoryFixtures();
         $productFixture->load($this->entityManager);
         $categoryFixture->load($this->entityManager);
+        $user = $this->createUserAndLogIn($this->client, 'test', '12345');
 
-        $this->createUserAndLogIn($this->client, 'test', '12345');
         $this->client->request('POST', '/api/drinks', [
             'json' => [
                 'name' => 'drink1',
@@ -249,7 +255,8 @@ class DrinkTest extends CustomApiTestCase
                     '/api/products/wódka',
                     '/api/products/sok%20wiśniowy',
                     '/api/products/mięta'
-                ]
+                ],
+                'author' => '/api/users/' . $user->getId()
             ]
         ]);
 
@@ -267,7 +274,8 @@ class DrinkTest extends CustomApiTestCase
                     '/api/products/wódka',
                     '/api/products/rum',
                     '/api/products/kawa'
-                ]
+                ],
+                'author' => '/api/users/' . $user->getId()
             ]
         ]);
 
@@ -285,7 +293,8 @@ class DrinkTest extends CustomApiTestCase
                     '/api/products/wino%20białe',
                     '/api/products/mięta',
                     '/api/products/kawa'
-                ]
+                ],
+                'author' => '/api/users/' . $user->getId()
             ]
         ]);
 
@@ -351,8 +360,8 @@ class DrinkTest extends CustomApiTestCase
         $categoryFixture = new CategoryFixtures();
         $productFixture->load($this->entityManager);
         $categoryFixture->load($this->entityManager);
+        $user = $this->createUserAndLogIn($this->client, 'test', '12345');
 
-        $this->createUserAndLogIn($this->client, 'test', '12345');
         $this->client->request('POST', '/api/drinks', [
             'json' => [
                 'name' => 'drink1',
@@ -366,7 +375,8 @@ class DrinkTest extends CustomApiTestCase
                     '/api/products/wódka',
                     '/api/products/sok%20wiśniowy',
                     '/api/products/mięta'
-                ]
+                ],
+                'author' => '/api/users/' . $user->getId()
             ]
         ]);
 
@@ -391,12 +401,16 @@ class DrinkTest extends CustomApiTestCase
 
     public function test_pagination_work_when_its_enabled(): void
     {
+        $faker = Factory::create();
+        $user = $this->createUser('test', '12345');
+
         for ($i = 0; $i < 25; $i++) {
             $drink = new Drink();
-            $drink->setName('test');
+            $drink->setName($faker->word);
             $drink->setDescription('test');
             $drink->setPreparation('test');
             $drink->setImage('test');
+            $drink->setAuthor($user);
             $this->entityManager->persist($drink);
         }
 
@@ -425,6 +439,7 @@ class DrinkTest extends CustomApiTestCase
         $drink->setDescription($faker->sentence(80));
         $drink->setPreparation('test');
         $drink->setImage('test');
+        $drink->setAuthor($this->createUser('test', '12345'));
 
         $this->entityManager->persist($drink);
         $this->entityManager->flush();
@@ -444,6 +459,7 @@ class DrinkTest extends CustomApiTestCase
         $drink->setDescription('description');
         $drink->setPreparation('test');
         $drink->setImage('test');
+        $drink->setAuthor($this->createUser('test', '12345'));
 
         $this->entityManager->persist($drink);
         $this->entityManager->flush();
