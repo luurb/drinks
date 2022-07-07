@@ -2,7 +2,6 @@
 
 namespace App\Tests\Api;
 
-use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\User;
 use Faker\Factory;
 
@@ -68,7 +67,10 @@ class UserTest extends CustomApiTestCase
       $userRecord = $this->entityManager->getRepository(User::class)->findOneBy(['username' => 'test']);
       $userId = $userRecord->getId();
       $this->client->request('GET', "/api/users/$userId");
+      $this->assertResponseStatusCodeSame(401);
 
+      $this->logIn($this->client, 'test', 'test1234');
+      $this->client->request('GET', "/api/users/$userId");
       $this->assertResponseIsSuccessful();
       $this->assertJsonContains([
          '@context' => '/api/contexts/User',
@@ -93,21 +95,54 @@ class UserTest extends CustomApiTestCase
 
       $this->client->request('PATCH', "/api/users/$userId", [
          'json' => [
-            'username' => 'admin',
+            'username' => 'test',
             'password' => 'test1234'
          ],
          'headers' => [
             'content-type' => 'application/merge-patch+json'
          ]
       ]);
+      $this->assertResponseStatusCodeSame(401);
 
+      $this->logIn($this->client, 'test', 'test1234');
+      $this->client->request('PATCH', "/api/users/$userId", [
+         'json' => [
+            'username' => 'test',
+            'password' => 'test1234'
+         ],
+         'headers' => [
+            'content-type' => 'application/merge-patch+json'
+         ]
+      ]);
       $this->assertResponseIsSuccessful();
       $this->assertJsonContains([
          '@context' => '/api/contexts/User',
          '@type' => 'User',
-         'username' => 'admin',
+         'username' => 'test',
          'email' => 'test@example.com'
       ]);
+   }
+
+   public function testDelete(): void
+   {
+      $this->createUser('test', '12345');
+      $userRecord = $this->entityManager->getRepository(User::class)->findOneBy(['username' => 'test']);
+      $userId = $userRecord->getId();
+
+      //Anonymous usser
+      $this->client->request('DELETE', "/api/users/$userId");
+      $this->assertResponseStatusCodeSame(401);
+
+      //Logged user withour admin role
+      $this->logIn($this->client, 'test', '12345');
+      $this->client->request('DELETE', "/api/users/$userId");
+      $this->assertResponseStatusCodeSame(403);
+
+      //Logged user with admin role
+      $this->createUser('admin', '12345', ['ROLE_ADMIN']);
+      $this->logIn($this->client, 'admin', '12345');
+      $this->client->request('DELETE', "/api/users/$userId");
+      $this->assertResponseStatusCodeSame(204);
    }
 
    public function test_check_if_blank_validation_work(): void
