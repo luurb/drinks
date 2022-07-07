@@ -129,6 +129,19 @@ class DrinkTest extends CustomApiTestCase
             'preparation' => 'update preparation',
             'image' => 'update ../images'
         ]);
+
+        $user2 = $this->createUserAndLogIn($this->client, 'test2', '12345');
+
+        //User who is not owner of the drink cant modify it
+        $this->client->request('PUT', "/api/drinks/$drinkId", [
+            'json' => [
+                'name' => 'update',
+                'description' => 'update desc',
+                'preparation' => 'update preparation',
+                'image' => 'update ../images'
+            ]
+        ]);
+        $this->assertResponseStatusCodeSame(403);
     }
 
     public function testPatch(): void

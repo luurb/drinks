@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     itemOperations: [
         'get',
-        'put',
+        'put' => ['security' => "is_granted('ROLE_USER') and object.getAuthor() == user"],
         'patch',
         'delete'
     ]
