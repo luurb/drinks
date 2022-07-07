@@ -24,6 +24,12 @@ use Symfony\Component\Validator\Constraints as Assert;
     collectionOperations: [
         'get',
         'post' => ['security' => "is_granted('ROLE_USER')"]
+    ],
+    itemOperations: [
+        'get',
+        'put',
+        'patch',
+        'delete'
     ]
 )]
 #[ApiFilter(
