@@ -169,6 +169,22 @@ class DrinkTest extends CustomApiTestCase
             'preparation' => 'update preparation',
             'image' => 'update ../images'
         ]);
+
+        $user2 = $this->createUserAndLogIn($this->client, 'test2', '12345');
+
+        //User who is not owner of the drink cant modify it
+        $this->client->request('PATCH', "/api/drinks/$drinkId", [
+            'json' => [
+                'name' => 'update',
+                'description' => 'update desc',
+                'preparation' => 'update preparation',
+                'image' => 'update ../images'
+            ],
+            'headers' => [
+                'content-type' => 'application/merge-patch+json'
+            ]
+        ]);
+        $this->assertResponseStatusCodeSame(403);
     }
 
     public function testDelete(): void
@@ -180,7 +196,15 @@ class DrinkTest extends CustomApiTestCase
 
         $this->client->request('DELETE', "/api/drinks/$drinkId");
 
+        $this->assertResponseStatusCodeSame(403);
+
+        $adminUser = $this->createUser('admin', '12345', ['ROLE_ADMIN']);
+        $this->logIn($this->client, 'admin', '12345');
+
+        $this->client->request('DELETE', "/api/drinks/$drinkId");
+
         $this->assertResponseStatusCodeSame(204);
+
     }
 
     public function test_drink_returns_products_and_categories_in_format_with_names(): void

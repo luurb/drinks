@@ -28,8 +28,8 @@ use Symfony\Component\Validator\Constraints as Assert;
     itemOperations: [
         'get',
         'put' => ['security' => "is_granted('ROLE_USER') and object.getAuthor() == user"],
-        'patch',
-        'delete'
+        'patch' => ['security' => "is_granted('ROLE_USER') and object.getAuthor() == user"],
+        'delete' => ['security' => "is_granted('ROLE_ADMIN')"],
     ]
 )]
 #[ApiFilter(
