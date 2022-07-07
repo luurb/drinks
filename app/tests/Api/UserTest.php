@@ -80,23 +80,46 @@ class UserTest extends CustomApiTestCase
       ]);
    }
 
-   public function testPatch(): void
+   public function testPut(): void
    {
-      $this->client->request('POST', '/api/users', [
+      $userName = 'random';
+      $password = '12345';
+      $user = $this->createUser($userName, $password);
+
+      $userId = $user->getId();
+
+      $this->client->request('PUT', "/api/users/$userId", [
          'json' => [
             'username' => 'test',
-            'email' => 'test@example.com',
-            'password' => 'test1234'
          ]
       ]);
+      $this->assertResponseStatusCodeSame(401);
 
-      $userRecord = $this->entityManager->getRepository(User::class)->findOneBy(['username' => 'test']);
-      $userId = $userRecord->getId();
+      $this->logIn($this->client, $userName, $password);
+      $this->client->request('PUT', "/api/users/$userId", [
+         'json' => [
+            'username' => 'test',
+         ]
+      ]);
+      $this->assertResponseIsSuccessful();
+      $this->assertJsonContains([
+         '@context' => '/api/contexts/User',
+         '@type' => 'User',
+         'username' => 'test',
+      ]);
+   }
+
+   public function testPatch(): void
+   {
+      $userName = 'random';
+      $password = '12345';
+      $user = $this->createUser($userName, $password);
+
+      $userId = $user->getId();
 
       $this->client->request('PATCH', "/api/users/$userId", [
          'json' => [
             'username' => 'test',
-            'password' => 'test1234'
          ],
          'headers' => [
             'content-type' => 'application/merge-patch+json'
@@ -104,11 +127,10 @@ class UserTest extends CustomApiTestCase
       ]);
       $this->assertResponseStatusCodeSame(401);
 
-      $this->logIn($this->client, 'test', 'test1234');
+      $this->logIn($this->client, $userName, $password);
       $this->client->request('PATCH', "/api/users/$userId", [
          'json' => [
             'username' => 'test',
-            'password' => 'test1234'
          ],
          'headers' => [
             'content-type' => 'application/merge-patch+json'
@@ -119,7 +141,6 @@ class UserTest extends CustomApiTestCase
          '@context' => '/api/contexts/User',
          '@type' => 'User',
          'username' => 'test',
-         'email' => 'test@example.com'
       ]);
    }
 

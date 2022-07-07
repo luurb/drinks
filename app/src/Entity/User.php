@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
     collectionOperations: [
         'get' => ['security' => "is_granted('ROLE_ADMIN')"],
-        'post' 
+        'post' => ['validation_groups' => ['Default', 'create']]
     ],
     itemOperations: [
         'get' => ['security' => "is_granted('ROLE_USER')"],
@@ -73,8 +73,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Groups(['user:write'])]
     #[SerializedName('password')]
-    #[Assert\NotBlank]
-    #[Assert\Length(min: 4)]
+    #[Assert\NotBlank(groups: ['create'])]
+    #[Assert\Length(min: 4, groups: ['create'])]
     private $plainPassword;
 
     public function __construct()
