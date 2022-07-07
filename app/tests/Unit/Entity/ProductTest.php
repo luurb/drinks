@@ -24,11 +24,7 @@ class ProductTest extends DatabaseTestCase
 
     public function test_drink_can_be_added_and_received_by_product(): void 
     {
-        $drink = new Drink();
-        $drink->setName('mohito');
-        $drink->setDescription('test description');
-        $drink->setPreparation('test preparation');
-        $drink->setImage('test address');
+        $drink = $this->createDrink('mohito');
 
         $product = new Product();
         $product ->setName('słodki');

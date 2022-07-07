@@ -16,6 +16,8 @@ class DrinkTest extends DatabaseTestCase
         $drink->setDescription('test description');
         $drink->setPreparation('test preparation');
         $drink->setImage('test address');
+        $user = $this->createUser();
+        $drink->setAuthor($user);
         
         $this->entityManager->persist($drink);
         $this->entityManager->flush();
@@ -26,6 +28,7 @@ class DrinkTest extends DatabaseTestCase
         $this->assertSame('test description', $drinkRecord->getDescription());
         $this->assertSame('test preparation', $drinkRecord->getPreparation());
         $this->assertSame('test address', $drinkRecord->getImage());
+        $this->assertSame($user, $drinkRecord->getAuthor());
     }
 
     public function test_category_can_be_added_and_received(): void
@@ -35,6 +38,7 @@ class DrinkTest extends DatabaseTestCase
         $drink->setDescription('test description');
         $drink->setPreparation('test preparation');
         $drink->setImage('test address');
+        $drink->setAuthor($this->createUser());
 
         $category = new Category();
         $category->setName('słodki');
@@ -58,6 +62,7 @@ class DrinkTest extends DatabaseTestCase
         $drink->setDescription('test description');
         $drink->setPreparation('test preparation');
         $drink->setImage('test address');
+        $drink->setAuthor($this->createUser());
 
         $product= new Product();
         $product->setName('whiskey');
