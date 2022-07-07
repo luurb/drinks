@@ -14,11 +14,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ApiResource(
-    collectionOperations: ['get', 'post'],
+    collectionOperations: [
+        'get',
+        'post' => ['security' => "is_granted('ROLE_USER')"]
+    ],
     itemOperations: ['get']
 )]
 #[ApiFilter(
-    SearchFilter::class, properties: ['name' => 'partial']
+    SearchFilter::class,
+    properties: ['name' => 'partial']
 )]
 class Product
 {

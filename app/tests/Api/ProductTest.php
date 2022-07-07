@@ -2,10 +2,9 @@
 
 namespace App\Tests\Api;
 
-use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Product;
 
-class ProductTest extends ApiTestCase
+class ProductTest extends CustomApiTestCase
 {
     public function testGetProductByName(): void
     {
@@ -28,19 +27,29 @@ class ProductTest extends ApiTestCase
 
     public function testPost(): void
     {
-        static::createClient()->request('POST', '/api/products', [
+        $client = static::createClient();
+
+        $client->request('POST', '/api/products', [
+            'json' => [
+                'name' => 'whiskey',
+            ]
+        ]);
+
+        $this->assertResponseStatusCodeSame(401);
+        $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
+
+        $this->createUserAndLogIn($client, 'test', '12345');
+
+        $client->request('POST', '/api/products', [
             'json' => [
                 'name' => 'whiskey',
             ]
         ]);
 
         $this->assertResponseStatusCodeSame(201);
-        $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
         $this->assertJsonContains([
-            '@context' => '/api/contexts/Product',
             '@type' => 'Product',
-
-            'name' => 'whiskey',
+            'name' => 'whiskey'
         ]);
     }
 
