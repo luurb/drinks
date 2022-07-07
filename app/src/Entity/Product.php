@@ -18,7 +18,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
         'get',
         'post' => ['security' => "is_granted('ROLE_USER')"]
     ],
-    itemOperations: ['get']
+    itemOperations: [
+        'get',
+        'patch' => ['security' => "is_granted('ROLE_ADMIN')"],
+        'put' => ['security' => "is_granted('ROLE_ADMIN')"],
+        'delete' => ['security' => "is_granted('ROLE_ADMIN')"],
+        ]
 )]
 #[ApiFilter(
     SearchFilter::class,
