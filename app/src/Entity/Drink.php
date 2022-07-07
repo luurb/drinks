@@ -21,6 +21,10 @@ use Symfony\Component\Validator\Constraints as Assert;
         'pagination_items_per_page' => 20
     ],
     normalizationContext: ['groups' => ['drink:read']],
+    collectionOperations: [
+        'get',
+        'post' => ['security' => "is_granted('ROLE_USER')"]
+    ]
 )]
 #[ApiFilter(
     SearchFilter::class,

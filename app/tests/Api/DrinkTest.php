@@ -2,13 +2,13 @@
 
 namespace App\Tests\Api;
 
-use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
+use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\Client;
 use App\DataFixtures\CategoryFixtures;
 use App\DataFixtures\ProductFixtures;
 use App\Entity\Drink;
 use Faker\Factory;
 
-class DrinkTest extends ApiTestCase
+class DrinkTest extends CustomApiTestCase
 {
     private $client;
     private $entityManager;
@@ -18,6 +18,19 @@ class DrinkTest extends ApiTestCase
         parent::setUp();
         $this->client = static::createClient();
         $this->entityManager = $this->getContainer()->get('doctrine')->getManager();
+    }
+
+    public function createDrink(string $name): void
+    {
+        $this->createUserAndLogIn($this->client, 'test', '12345');
+        $this->client->request('POST', '/api/drinks', [
+            'json' => [
+                'name' => $name,
+                'description' => 'test description',
+                'preparation' => 'test preparation',
+                'image' => '../images'
+            ]
+        ]);
     }
 
     public function testGetCollection(): void
@@ -46,9 +59,19 @@ class DrinkTest extends ApiTestCase
                 'image' => '../images'
             ]
         ]);
-
-        $this->assertResponseStatusCodeSame(201);
+        $this->assertResponseStatusCodeSame(401);
         $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
+
+        $this->createUserAndLogIn($this->client, 'test', '12345');
+        $this->client->request('POST', '/api/drinks', [
+            'json' => [
+                'name' => 'mohito',
+                'description' => 'test description',
+                'preparation' => 'test preparation',
+                'image' => '../images'
+            ]
+        ]);
+        $this->assertResponseStatusCodeSame(201);
         $this->assertJsonContains([
             '@context' => '/api/contexts/Drink',
             '@type' => 'Drink',
@@ -65,15 +88,7 @@ class DrinkTest extends ApiTestCase
 
     public function testRetrieveDrink(): void
     {
-        $this->client->request('POST', '/api/drinks', [
-            'json' => [
-                'name' => 'mohito',
-                'description' => 'test description',
-                'preparation' => 'test preparation',
-                'image' => '../images'
-            ]
-        ]);
-
+        $this->createDrink('mohito');
         $drinkRecord = $this->entityManager->getRepository(Drink::class)->findOneBy(['name' => 'mohito']);
         $drinkId = $drinkRecord->getId();
         $this->client->request('GET', "/api/drinks/$drinkId");
@@ -89,15 +104,7 @@ class DrinkTest extends ApiTestCase
 
     public function testPut(): void
     {
-        $this->client->request('POST', '/api/drinks', [
-            'json' => [
-                'name' => 'mohito',
-                'description' => 'test description',
-                'preparation' => 'test preparation',
-                'image' => '../images'
-            ]
-        ]);
-
+        $this->createDrink('mohito');
         $drinkRecord = $this->entityManager->getRepository(Drink::class)->findOneBy(['name' => 'mohito']);
         $drinkId = $drinkRecord->getId();
 
@@ -121,15 +128,7 @@ class DrinkTest extends ApiTestCase
 
     public function testPatch(): void
     {
-        $this->client->request('POST', '/api/drinks', [
-            'json' => [
-                'name' => 'mohito',
-                'description' => 'test description',
-                'preparation' => 'test preparation',
-                'image' => '../images'
-            ]
-        ]);
-
+        $this->createDrink('mohito');
         $drinkRecord = $this->entityManager->getRepository(Drink::class)->findOneBy(['name' => 'mohito']);
         $drinkId = $drinkRecord->getId();
 
@@ -156,14 +155,7 @@ class DrinkTest extends ApiTestCase
 
     public function testDelete(): void
     {
-        $this->client->request('POST', '/api/drinks', [
-            'json' => [
-                'name' => 'mohito',
-                'description' => 'test',
-                'preparation' => 'test',
-                'image' => '../images'
-            ]
-        ]);
+        $this->createDrink('mohito');
 
         $drinkRecord = $this->entityManager->getRepository(Drink::class)->findOneBy(['name' => 'mohito']);
         $drinkId = $drinkRecord->getId();
@@ -180,6 +172,7 @@ class DrinkTest extends ApiTestCase
         $productFixture->load($this->entityManager);
         $categoryFixture->load($this->entityManager);
 
+        $this->createUserAndLogIn($this->client, 'test', '12345');
         $this->client->request('POST', '/api/drinks', [
             'json' => [
                 'name' => 'drink1',
@@ -242,6 +235,7 @@ class DrinkTest extends ApiTestCase
         $productFixture->load($this->entityManager);
         $categoryFixture->load($this->entityManager);
 
+        $this->createUserAndLogIn($this->client, 'test', '12345');
         $this->client->request('POST', '/api/drinks', [
             'json' => [
                 'name' => 'drink1',
@@ -358,6 +352,7 @@ class DrinkTest extends ApiTestCase
         $productFixture->load($this->entityManager);
         $categoryFixture->load($this->entityManager);
 
+        $this->createUserAndLogIn($this->client, 'test', '12345');
         $this->client->request('POST', '/api/drinks', [
             'json' => [
                 'name' => 'drink1',
