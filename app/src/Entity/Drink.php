@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use App\Repository\DrinkRepository;
@@ -39,6 +40,10 @@ use Symfony\Component\Validator\Constraints as Assert;
         'categories' => 'exact',
     ]
 
+)]
+#[ApiFilter(
+    BooleanFilter::class,
+    properties: ['isPublished']
 )]
 #[ApiFilter(PropertyFilter::class)]
 class Drink
