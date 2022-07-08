@@ -82,7 +82,7 @@ class AppFixtures extends Fixture implements FixtureGroupInterface
             $drink->setName($faker->word);
             $drink->setDescription($faker->sentence(40));
             $drink->setPreparation($faker->sentence(40));
-            $drink->setImage('../images/drinks/mojito.jpg');
+            $drink->setImage('http://localhost:8006/images/drinks/mojito.jpg');
             $drink->setAuthor($user);
             $drink->addCategory($categoryEntities[rand(0, count($categoryEntities) - 1)]);
             $drink->addProduct($productEntities[rand(0, count($productEntities) - 1)]);
