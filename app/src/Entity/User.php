@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         'post' => ['validation_groups' => ['Default', 'create']]
     ],
     itemOperations: [
-        'get' => ['security' => "is_granted('ROLE_USER')"],
+        'get' => ['security' => "is_granted('ROLE_USER') and object == user"],
         'put' => ['security' => "is_granted('ROLE_USER') and object == user"],
         'patch' => ['security' => "is_granted('ROLE_USER') and object == user"],
         'delete' => ['security' => "is_granted('ROLE_ADMIN')"],

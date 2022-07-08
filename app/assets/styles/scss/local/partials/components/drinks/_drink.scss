@@ -97,16 +97,16 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    line-height: 150%;
+    gap: 10px;
 }
 
 .drink__desc-text {
-    font-size: fonts.$small2;
     text-align: justify;
     display: -webkit-box;
     -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    line-height: 150%;
 }
 
 .drink__products-wrapper{
@@ -114,7 +114,7 @@
     width: 100%;
     padding-top: 10px;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 10px;
 }
 
@@ -123,12 +123,10 @@
 }
 
 .drink__products-box {
-    padding-top: 5px;
     display: flex;
     align-items: center;
     gap: 8px;
     flex-wrap: wrap;
-    line-height: 80%;
 }
 
 .drink__active-product {
