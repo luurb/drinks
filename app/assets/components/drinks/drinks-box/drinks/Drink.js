@@ -34,7 +34,7 @@ const Drink = React.forwardRef((props, ref) => {
                      {props.drink.products.map((product) => (
                         <span
                            key={product.id}
-                           className={product.active ? "drink__active-product" : ""}
+                           className={product.active ? "drink__active-product" : "drink__product"}
                         >
                            {product.name}
                         </span>

@@ -1,13 +1,19 @@
 :root {
-    --white: hsl(0, 0%, 100%);
-    --yellow: hsl(47, 90%, 53%);
-    --dark-pink: #8b4172;
-    --violet: #8158bb;
-    --light-violet: hsl(246, 58%, 61%);
-    --grey: hsl(306, 0%, 62%);
-    --black: hsl(0, 0%, 7%);
-    --green: hsl(111, 69%, 53%);
-    --blue: hsl(216, 68%, 61%);
-    --turquoise: hsl(166, 84%, 50%);
-    --red: hsl(0, 100%, 67%);
+   --white: hsl(0, 0%, 100%);
+   --yellow: hsl(47, 90%, 53%);
+   --dark-pink: #8b4172;
+   --violet: #8158bb;
+   --light-violet: hsl(246, 58%, 61%);
+   --grey: hsl(306, 0%, 62%);
+   --black: hsl(0, 0%, 7%);
+   --green: hsl(111, 69%, 53%);
+   --blue: hsl(216, 68%, 61%);
+   --turquoise: hsl(166, 84%, 50%);
+   --red: hsl(0, 100%, 67%);
+   --bg-gradient1: linear-gradient(
+      to top,
+      var(--dark-pink),
+      var(--light-violet),
+      var(--violet)
+   );
 }

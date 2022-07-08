@@ -114,12 +114,13 @@
     width: 100%;
     padding-top: 10px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 10px;
 }
 
 .drink__products-header {
     font-weight: 500;
+    padding-top: 5px;
 }
 
 .drink__products-box {
@@ -129,9 +130,18 @@
     flex-wrap: wrap;
 }
 
+.drink__product, 
+.drink__active-product {
+    background: var(--white);
+    padding: 5px;
+    box-shadow: 0 0 3px var(--grey);
+    border-radius: 5px;
+}
+
 .drink__active-product {
     color: var(--violet);
-    font-weight: 600;
+    font-weight: 500;
+    border: 2px solid;
 }
 
 .drink__glass {

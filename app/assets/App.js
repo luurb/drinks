@@ -6,6 +6,7 @@ import SingUpPage from './components/auth/singup/SingUpPage';
 import DashboardPage from './components/auth/dashboard/DashboardPage';
 import AuthContext from './components/auth/AuthContext';
 import Protected from './components/Protected';
+import DrinkPage from './components/drink-page/DrinkPage';
 
 function App() {
    const user = useContext(AuthContext).user;
@@ -14,6 +15,7 @@ function App() {
       <>
          <Routes>
             <Route path="drinki" element={<DrinksPage />} />
+            <Route path="drinki/:drinkId/:name" element={<DrinkPage />} />
             <Route
                path="login"
                element={user ? <DashboardPage /> : <LoginPage />}
