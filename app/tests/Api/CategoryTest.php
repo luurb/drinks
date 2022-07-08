@@ -5,19 +5,33 @@ namespace App\Tests\Api;
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Category;
 
-class CategoryTest extends ApiTestCase
+class CategoryTest extends CustomApiTestCase
 {
-    public function testGetCategoryByName(): void
+    private $client;
+    private $entityManager;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->client = static::createClient();
+        $this->entityManager = static::getContainer()->get('doctrine')->getManager();
+    }
+
+    public function createCategory(string $name): Category
     {
         $category = new Category();
-        $category->setName('słodki');
+        $category->setName($name);
+        $this->entityManager->persist($category);
+        $this->entityManager->flush();
 
-        $entityManager = static::getContainer()->get('doctrine')->getManager();
-        $entityManager->persist($category);
-        $entityManager->flush();
+        return $category;
+    }
 
-        static::createClient()->request('GET', '/api/categories/słodki');
+    public function testGetCategoryByName(): void
+    {
+        $this->createCategory('słodki');
 
+        $this->client->request('GET', '/api/categories/słodki');
         $this->assertResponseIsSuccessful();
         $this->assertJsonContains([
             '@context' => '/api/contexts/Category',
@@ -26,33 +40,138 @@ class CategoryTest extends ApiTestCase
         ]);
     }
 
-    public function testGetCollectionReturnNotFound(): void
+    public function testGetCollection(): void
     {
-        static::createClient()->request('GET', '/api/categories');
-        $this->assertResponseStatusCodeSame(404);
+        $this->client->request('GET', '/api/categories');
+        $this->assertResponseIsSuccessful();
     }
 
-    public function testPostNotAllowed(): void
+    public function testPost(): void
     {
-        static::createclient()->request('POST', '/api/categories');
-        $this->assertresponsestatuscodesame(405);
+        //Anonymous user
+        $this->client->request('POST', '/api/categories', [
+            'json' => [
+                'name' => 'test'
+            ]
+        ]);
+        $this->assertresponsestatuscodesame(401);
+
+        //Logged withour admin role
+        $this->createUserAndLogIn($this->client, 'test', '12345');
+        $this->client->request('POST', '/api/categories', [
+            'json' => [
+                'name' => 'test'
+            ]
+        ]);
+        $this->assertresponsestatuscodesame(403);
+
+        //Admin
+        $this->createUser('admin', '12345', ['ROLE_ADMIN']);
+        $this->logIn($this->client, 'admin', '12345');
+        $this->client->request('POST', '/api/categories', [
+            'json' => [
+                'name' => 'test'
+            ]
+        ]);
+        $this->assertResponseIsSuccessful();
     }
 
-    public function testPutNotAllowed(): void
+    public function testPut(): void
     {
-        static::createclient()->request('PUT', '/api/categories');
-        $this->assertresponsestatuscodesame(405);
+        $this->createCategory('słodki');
+
+        //Anonymous user
+        $this->client->request('PUT', '/api/categories/słodki', [
+            'json' => [
+                'name' => 'test'
+            ]
+        ]);
+        $this->assertresponsestatuscodesame(401);
+
+        //Logged withour admin role
+        $this->createUserAndLogIn($this->client, 'test', '12345');
+        $this->client->request('PUT', '/api/categories/słodki', [
+            'json' => [
+                'name' => 'test'
+            ]
+        ]);
+        $this->assertresponsestatuscodesame(403);
+
+        //Admin
+        $this->createUser('admin', '12345', ['ROLE_ADMIN']);
+        $this->logIn($this->client, 'admin', '12345');
+        $this->client->request('PUT', '/api/categories/słodki', [
+            'json' => [
+                'name' => 'test'
+            ]
+        ]);
+        $this->assertResponseIsSuccessful();
+        $this->assertJsonContains([
+            'name' => 'test'
+        ]);
     }
 
     public function testPatchNotAllowed(): void
     {
-        static::createclient()->request('PATCH', '/api/categories');
-        $this->assertresponsestatuscodesame(405);
+        $this->createCategory('słodki');
+
+        //Anonymous user
+        $this->client->request('PATCH', '/api/categories/słodki', [
+            'json' => [
+                'name' => 'test'
+            ],
+            'headers' => [
+                'content-type' => 'application/merge/patch+json'
+            ]
+        ]);
+        $this->assertresponsestatuscodesame(401);
+
+        //Logged withour admin role
+        $this->createUserAndLogIn($this->client, 'test', '12345');
+        $this->client->request('PATCH', '/api/categories/słodki', [
+            'json' => [
+                'name' => 'test'
+            ],
+            'headers' => [
+                'content-type' => 'application/merge-patch+json'
+            ]
+        ]);
+        $this->assertresponsestatuscodesame(403);
+
+        //Admin
+        $this->createUser('admin', '12345', ['ROLE_ADMIN']);
+        $this->logIn($this->client, 'admin', '12345');
+        $this->client->request('PATCH', '/api/categories/słodki', [
+            'json' => [
+                'name' => 'test'
+            ],
+            'headers' => [
+                'content-type' => 'application/merge-patch+json'
+            ]
+        ]);
+        $this->assertResponseIsSuccessful();
+        $this->assertJsonContains([
+            'name' => 'test'
+        ]);
     }
 
     public function testDeleteNotAllowed(): void
     {
-        static::createclient()->request('DELETE', '/api/categories');
-        $this->assertresponsestatuscodesame(405);
+        $this->createCategory('słodki');
+
+        //Anonymous
+        $this->client->request('DELETE', '/api/categories/słodki');
+        $this->assertResponseStatusCodeSame(401);
+
+        //Logged withour admin role
+        $this->createUserAndLogIn($this->client, 'test', '12345');
+        $this->client->request('DELETE', '/api/categories/słodki');
+        $this->assertResponseStatusCodeSame(403);
+
+        //Logged user with admin role
+        $this->createUser('admin', '12345', ['ROLE_ADMIN']);
+        $this->logIn($this->client, 'admin', '12345');
+        $this->client->request('DELETE', '/api/categories/słodki');
+        $this->assertResponseStatusCodeSame(204);
     }
 }

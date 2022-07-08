@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Action\NotFoundAction;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CategoryRepository;
@@ -14,13 +13,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ApiResource(
     collectionOperations: [
-        'get' => [
-            'controller' => NotFoundAction::class,
-            'read' => false,
-            'output' => false,
-        ],
+        'get',
+        'post' => ['security' => "is_granted('ROLE_ADMIN')"],
     ],
-    itemOperations: ['get'],
+    itemOperations: [
+        'get',
+        'put' => ['security' => "is_granted('ROLE_ADMIN')"],
+        'patch' => ['security' => "is_granted('ROLE_ADMIN')"],
+        'delete' => ['security' => "is_granted('ROLE_ADMIN')"],
+    ],
 )]
 class Category
 {
@@ -32,7 +33,7 @@ class Category
 
     #[ORM\Column(type: 'string', length: 255)]
     #[ApiProperty(identifier: true)]
-    #[Groups('drink:read')]
+    #[Groups(['drink:read'])]
     private $name;
 
     #[ORM\ManyToMany(targetEntity: Drink::class, mappedBy: 'categories')]
