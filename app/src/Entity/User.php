@@ -24,9 +24,9 @@ use Symfony\Component\Validator\Constraints as Assert;
         'post' => ['validation_groups' => ['Default', 'create']]
     ],
     itemOperations: [
-        'get' => ['security' => "is_granted('ROLE_USER') and object == user"],
-        'put' => ['security' => "is_granted('ROLE_USER') and object == user"],
-        'patch' => ['security' => "is_granted('ROLE_USER') and object == user"],
+        'get' => ['security' => "is_granted('ROLE_USER') and object == user or is_granted('ROLE_ADMIN')"],
+        'put' => ['security' => "is_granted('ROLE_USER') and object == user or is_granted('ROLE_ADMIN')"],
+        'patch' => ['security' => "is_granted('ROLE_USER') and object == user or is_granted('ROLE_ADMIN')"],
         'delete' => ['security' => "is_granted('ROLE_ADMIN')"],
     ]
 )]
@@ -58,13 +58,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $email;
 
     #[ORM\Column(type: 'json')]
+    #[Groups(['admin:read', 'admin:write'])]
     private $roles = [];
 
     #[ORM\Column(type: 'string')]
     private $password;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'admin:write'])]
     private $createdAt;
 
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Drink::class)]
@@ -154,7 +155,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
-         $this->plainPassword = null;
+        $this->plainPassword = null;
     }
 
     public function getEmail(): ?string
