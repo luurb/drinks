@@ -92,10 +92,14 @@ class Drink
     #[Groups('drink:read')]
     private $isPublished = false;
 
+    #[ORM\OneToMany(mappedBy: 'drink', targetEntity: Rating::class)]
+    private $ratings;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -229,6 +233,36 @@ class Drink
     public function setIsPublished(bool $isPublished): self
     {
         $this->isPublished = $isPublished;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Rating>
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Rating $rating): self
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings[] = $rating;
+            $rating->setDrink($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Rating $rating): self
+    {
+        if ($this->ratings->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getDrink() === $this) {
+                $rating->setDrink(null);
+            }
+        }
 
         return $this;
     }
