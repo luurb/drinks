@@ -2,7 +2,6 @@
 
 namespace App\Tests\Api;
 
-use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\Client;
 use App\DataFixtures\CategoryFixtures;
 use App\DataFixtures\ProductFixtures;
 use App\Entity\Drink;
@@ -52,18 +51,10 @@ class DrinkTest extends CustomApiTestCase
 
     public function testPost(): void
     {
-        $user = $this->createUser('test', '12345');
         $this->client->request('POST', '/api/drinks', [
-            'json' => [
-                'name' => 'mohito',
-                'description' => 'test description',
-                'preparation' => 'test preparation',
-                'image' => '../images',
-                'author' => '/api/users/' . $user->getId()
-            ]
+            'json' => []
         ]);
         $this->assertResponseStatusCodeSame(401);
-        $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
 
         $user = $this->createUserAndLogIn($this->client, 'test2', '12345');
         $this->client->request('POST', '/api/drinks', [
@@ -77,10 +68,6 @@ class DrinkTest extends CustomApiTestCase
         ]);
         $this->assertResponseStatusCodeSame(201);
         $this->assertJsonContains([
-            '@context' => '/api/contexts/Drink',
-            '@type' => 'Drink',
-            'name' => 'test',
-
             'name' => 'mohito',
             'description' => 'test description',
             'preparation' => 'test preparation',
@@ -88,11 +75,20 @@ class DrinkTest extends CustomApiTestCase
             'products' => [],
             'categories' => [],
             'author' => [
-                '@id' => '/api/users/' . $user->getId(),
-                '@type' => 'User',
                 'username' => $user->getUsername()
             ]
         ]);
+
+        //Auto set author
+        $this->client->request('POST', '/api/drinks', [
+            'json' => [
+                'name' => 'mohito',
+                'description' => 'test description',
+                'preparation' => 'test preparation',
+                'image' => '../images',
+            ]
+        ]);
+        $this->assertResponseIsSuccessful();
     }
 
     public function testRetrieveDrink(): void
@@ -120,18 +116,12 @@ class DrinkTest extends CustomApiTestCase
         $this->client->request('PUT', "/api/drinks/$drinkId", [
             'json' => [
                 'name' => 'update',
-                'description' => 'update desc',
-                'preparation' => 'update preparation',
-                'image' => 'update ../images'
             ]
         ]);
 
         $this->assertResponseIsSuccessful();
         $this->assertJsonContains([
             'name' => 'update',
-            'description' => 'update desc',
-            'preparation' => 'update preparation',
-            'image' => 'update ../images'
         ]);
 
         $user2 = $this->createUserAndLogIn($this->client, 'test2', '12345');
@@ -140,9 +130,6 @@ class DrinkTest extends CustomApiTestCase
         $this->client->request('PUT', "/api/drinks/$drinkId", [
             'json' => [
                 'name' => 'update',
-                'description' => 'update desc',
-                'preparation' => 'update preparation',
-                'image' => 'update ../images'
             ]
         ]);
         $this->assertResponseStatusCodeSame(403);
@@ -174,9 +161,6 @@ class DrinkTest extends CustomApiTestCase
         $this->client->request('PATCH', "/api/drinks/$drinkId", [
             'json' => [
                 'name' => 'update',
-                'description' => 'update desc',
-                'preparation' => 'update preparation',
-                'image' => 'update ../images'
             ],
             'headers' => [
                 'content-type' => 'application/merge-patch+json'
@@ -529,7 +513,7 @@ class DrinkTest extends CustomApiTestCase
             'isPublished' => false
         ], json_decode($response->getContent(), true));
 
-        $this->client->request('PUT', '/api/drinks/'. $drinkId ,[
+        $this->client->request('PUT', '/api/drinks/' . $drinkId, [
             'json' => [
                 'isPublished' => true
             ]
@@ -541,7 +525,7 @@ class DrinkTest extends CustomApiTestCase
         //Admin user can edit 
         $this->createUser('admin', 'admin', ['ROLE_ADMIN']);
         $this->logIn($this->client, 'admin', 'admin');
-        $this->client->request('PUT', '/api/drinks/'. $drinkId ,[
+        $this->client->request('PUT', '/api/drinks/' . $drinkId, [
             'json' => [
                 'isPublished' => true
             ]
@@ -550,5 +534,47 @@ class DrinkTest extends CustomApiTestCase
         $this->assertJsonContains([
             'isPublished' => true
         ]);
+    }
+
+    public function test_api_user_can_set_author_only_to_himself_but_admin_can_to_everyone(): void
+    {
+        $user = $this->createUserAndLogIn($this->client, 'test', '12345');
+        $otherUser = $this->createUser('test2', '12345');
+        $adminUser = $this->createUser('admin', 'admin', ['ROLE_ADMIN']);
+
+        $this->client->request('POST', '/api/drinks', [
+            'json' => [
+                'name' => 'mohito',
+                'description' => 'test',
+                'preparation' => 'test',
+                'image' => 'test',
+                'author' => '/api/users/' . $otherUser->getId()
+            ]
+        ]);
+        $this->assertResponseStatusCodeSame(422, 'Not passing currently logged in user');
+
+        $this->client->request('POST', '/api/drinks', [
+            'json' => [
+                'name' => 'mohito1',
+                'description' => 'test',
+                'preparation' => 'test',
+                'image' => 'test',
+                'author' => '/api/users/' . $user->getId()
+            ]
+        ]);
+        $this->assertResponseIsSuccessful();
+
+        $this->logIn($this->client, 'admin', 'admin');
+        $this->client->request('POST', '/api/drinks', [
+            'json' => [
+                'name' => 'mohito2',
+                'description' => 'test',
+                'preparation' => 'test',
+                'image' => 'test',
+                'author' => '/api/users/' . $adminUser->getId()
+            ]
+        ]);
+        $this->assertResponseIsSuccessful();
+
     }
 }

@@ -22,6 +22,8 @@ services:
     App\Serializer\AdminGroupsContextBuilder:
         decorates: 'api_platform.serializer.context_builder'
         arguments: [ '@App\Serializer\AdminGroupsContextBuilder.inner' ]
+    App\Doctrine\DrinkSetAuthorListener:
+        tags: [doctrine.orm.entity_listener]
 
 
 

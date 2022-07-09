@@ -8,6 +8,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use App\Repository\DrinkRepository;
+use App\Validator\IsValidAuthor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,6 +16,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DrinkRepository::class)]
+#[ORM\EntityListeners(['App\Doctrine\DrinkSetAuthorListener'])]
 #[ApiResource(
     attributes: [
         'pagination_enabled' => true,
@@ -40,7 +42,6 @@ use Symfony\Component\Validator\Constraints as Assert;
         'products' => 'exact',
         'categories' => 'exact',
     ]
-
 )]
 #[ApiFilter(
     BooleanFilter::class,
@@ -69,7 +70,6 @@ class Drink
     #[ORM\Column(type: 'text')]
     #[Groups(['drink:read', 'drink:write'])]
     #[Assert\NotBlank]
-    #[Assert\Length(min: 2, max: 50)]
     private $preparation;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -87,6 +87,7 @@ class Drink
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'drinks')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['drink:read', 'drink:write'])]
+    #[IsValidAuthor()]
     private $author;
 
     #[ORM\Column(type: 'boolean')]
