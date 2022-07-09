@@ -4,6 +4,7 @@ namespace App\Tests\Api;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\Client;
+use App\Entity\Drink;
 use App\Entity\User;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 

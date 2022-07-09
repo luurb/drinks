@@ -8,7 +8,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RatingRepository::class)]
-#[ApiResource()]
+#[ApiResource(
+    collectionOperations: [
+        'post' => ['security' => "is_granted('ROLE_USER')"]
+    ]
+)]
 class Rating
 {
     #[ORM\Id]
