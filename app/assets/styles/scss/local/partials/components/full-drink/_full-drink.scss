@@ -8,11 +8,13 @@
    align-items: flex-start;
    padding: 10px 4vw;
    width: 100vw;
-   height: 100vh;
+   height: 100%;
+   min-height: 100vh;
    background: var(--bg-gradient1);
 }
 
 .full-drink__wrapper {
+   padding-bottom: 20px;
    display: flex;
    flex-direction: column;
    align-items: center;
@@ -27,7 +29,7 @@
    display: flex;
    flex-direction: column;
    align-items: center;
-   gap: 10px;
+   gap: 20px;
    padding: 0 10px;
 }
 
@@ -69,6 +71,136 @@
 }
 
 .full-drink__desc {
+   padding: 5px;
+   background: var(--white);
+   line-height: 150%;
+   text-align: justify;
+   border-radius: 5px;
+}
+
+.full-drink__header {
+   font-size: fonts.$medium2;
+   font-weight: 600;
+   padding: 0 5px;
+   border-bottom: 5px solid var(--violet);
+   letter-spacing: 1px;
+}
+
+.full-drink__rating-header {
+   border-bottom: 5px solid var(--yellow);
+}
+
+.full-drink__comments-header {
+   border-bottom: 5px solid var(--dark-pink);
+}
+
+.full-drink__list {
+   list-style-type: none;
+   display: flex;
+   flex-direction: column;
+   gap: 15px;
+}
+
+.full-drink__list li::before {
+   font-family: 'Font Awesome 5 Free';
+   font-weight: 900;
+   content: '\f57b';
+   color: var(--violet);
+   padding-right: 5px;
+}
+
+.full-drink__rating-box {
+   font-size: fonts.$regular;
+   font-weight: 500;
+   width: 100%;
+   padding: 0 5px;
+   display: flex;
+   flex-direction: column;
+   justify-content: flex-start;
+   gap : 15px;
+
+   .fa-solid {
+      font-size: fonts.$medium;
+      color: var(--yellow);
+   }
+}
+
+.full-drink__rating{
+   display: flex;
+   align-items: center;
+   gap: 10px;
+}
+
+.full-drink__specific-rating {
+   width: 120px;
+   display: flex;
+   flex-direction: column;
+   justify-content: flex-start;
+   gap: 10px;
+}
+
+.full-drink__bars-box {
+   width: 100%;
+}
+
+.full-drink__rating-counter {
+   color: var(--grey);
+   padding-left: 5px;
+}
+
+.full-drink__rating-wrapper {
+   display: flex;
+   gap: 15px;
+}
+
+.full-drink__rating-bar {
+   background: var(--grey2);
+   width: 40%;
+   height: 15px;
+   margin-top: 5px;
+   border-radius: 10px;
+}
+
+.full-drink__comments-box {
+   color: var(--white);
+   background: var(--dark-pink);
+   width: calc(100% + 20px);
+   padding: 10px;
+   display: flex;
+   flex-direction: column;
+   gap: 15px;
+   position: relative;
+}
+
+.full-drink__comment-header {
+   font-size: fonts.$regular;
+   font-weight: 500;
+   color: var(--yellow);
+   display: flex;
+   justify-content: flex-start;
+   align-items: center;
+   gap: 20px;
+}
+
+.full-drink__comment-rating-box {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+}
+
+.full-drink__comment-title-box {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   font-size: fonts.$regular;
+}
+
+.full-drink__comment-date {
+   font-size: fonts.$small;
+   color: var(--grey2);
+}
+
+.full-drink__comment {
    line-height: 150%;
    text-align: justify;
 }
