@@ -157,9 +157,6 @@ class DrinkTest extends CustomApiTestCase
         $this->client->request('PATCH', "/api/drinks/$drinkId", [
             'json' => [
                 'name' => 'update',
-                'description' => 'update desc',
-                'preparation' => 'update preparation',
-                'image' => 'update ../images'
             ],
             'headers' => [
                 'content-type' => 'application/merge-patch+json'
@@ -169,9 +166,6 @@ class DrinkTest extends CustomApiTestCase
         $this->assertResponseIsSuccessful();
         $this->assertJsonContains([
             'name' => 'update',
-            'description' => 'update desc',
-            'preparation' => 'update preparation',
-            'image' => 'update ../images'
         ]);
 
         $user2 = $this->createUserAndLogIn($this->client, 'test2', '12345');
@@ -521,6 +515,40 @@ class DrinkTest extends CustomApiTestCase
                     'shortDescription' => 'description',
                 ]
             ],
+        ]);
+    }
+
+    public function test_admin_can_read_and_write_isPublished_property(): void
+    {
+        $this->createDrink('mohito');
+        $drinkRecord = $this->entityManager->getRepository(Drink::class)->findOneBy(['name' => 'mohito']);
+        $drinkId = $drinkRecord->getId();
+
+        $response = $this->client->request('GET', '/api/drinks/' . $drinkId);
+        $this->assertNotContains([
+            'isPublished' => false
+        ], json_decode($response->getContent(), true));
+
+        $this->client->request('PUT', '/api/drinks/'. $drinkId ,[
+            'json' => [
+                'isPublished' => true
+            ]
+        ]);
+        $this->assertJsonContains([
+            'isPublished' => false
+        ]);
+
+        //Admin user can edit 
+        $this->createUser('admin', 'admin', ['ROLE_ADMIN']);
+        $this->logIn($this->client, 'admin', 'admin');
+        $this->client->request('PUT', '/api/drinks/'. $drinkId ,[
+            'json' => [
+                'isPublished' => true
+            ]
+        ]);
+        $this->client->request('GET', '/api/drinks/' . $drinkId);
+        $this->assertJsonContains([
+            'isPublished' => true
         ]);
     }
 }

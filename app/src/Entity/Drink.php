@@ -22,14 +22,15 @@ use Symfony\Component\Validator\Constraints as Assert;
         'pagination_items_per_page' => 20
     ],
     normalizationContext: ['groups' => ['drink:read']],
+    denormalizationContext: ['groups' => ['drink:write']],
     collectionOperations: [
         'get',
         'post' => ['security' => "is_granted('ROLE_USER')"]
     ],
     itemOperations: [
         'get',
-        'put' => ['security' => "is_granted('ROLE_USER') and object.getAuthor() == user"],
-        'patch' => ['security' => "is_granted('ROLE_USER') and object.getAuthor() == user"],
+        'put' => ['security' => "object.getAuthor() == user or is_granted('ROLE_ADMIN')"],
+        'patch' => ['security' => "object.getAuthor() == user or is_granted('ROLE_ADMIN')"],
         'delete' => ['security' => "is_granted('ROLE_ADMIN')"],
     ]
 )]
@@ -55,44 +56,45 @@ class Drink
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups('drink:read')]
+    #[Groups(['drink:read', 'drink:write'])]
     #[Assert\NotBlank]
     #[Assert\Length(min: 2, max: 50)]
     private $name;
 
     #[ORM\Column(type: 'text')]
-    #[Groups('drink:read')]
+    #[Groups(['drink:read', 'drink:write'])]
     #[Assert\NotBlank]
     private $description;
 
     #[ORM\Column(type: 'text')]
-    #[Groups('drink:read')]
+    #[Groups(['drink:read', 'drink:write'])]
     #[Assert\NotBlank]
     #[Assert\Length(min: 2, max: 50)]
     private $preparation;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups('drink:read')]
+    #[Groups(['drink:read', 'drink:write'])]
     private $image;
 
     #[ORM\ManyToMany(targetEntity: Product::class, inversedBy: 'drinks')]
-    #[Groups('drink:read')]
+    #[Groups(['drink:read', 'drink:write'])]
     private $products;
 
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'drinks')]
-    #[Groups('drink:read')]
+    #[Groups(['drink:read', 'drink:write'])]
     private $categories;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'drinks')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups('drink:read')]
+    #[Groups(['drink:read', 'drink:write'])]
     private $author;
 
     #[ORM\Column(type: 'boolean')]
-    #[Groups('drink:read')]
+    #[Groups(['drink:read', 'admin:write'])]
     private $isPublished = false;
 
     #[ORM\OneToMany(mappedBy: 'drink', targetEntity: Rating::class)]
+    #[Groups(['drink:read'])]
     private $ratings;
 
     public function __construct()

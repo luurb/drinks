@@ -2,7 +2,6 @@
 
 namespace App\Tests\Api;
 
-use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Category;
 
 class CategoryTest extends CustomApiTestCase
@@ -111,7 +110,7 @@ class CategoryTest extends CustomApiTestCase
         ]);
     }
 
-    public function testPatchNotAllowed(): void
+    public function testPatch(): void
     {
         $this->createCategory('słodki');
 
@@ -155,7 +154,7 @@ class CategoryTest extends CustomApiTestCase
         ]);
     }
 
-    public function testDeleteNotAllowed(): void
+    public function testDelete(): void
     {
         $this->createCategory('słodki');
 

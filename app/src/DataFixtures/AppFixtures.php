@@ -80,8 +80,8 @@ class AppFixtures extends Fixture implements FixtureGroupInterface
         for ($i = 0; $i < 10; $i++) {
             $drink = new Drink();
             $drink->setName($faker->word);
-            $drink->setDescription($faker->sentence(40));
-            $drink->setPreparation($faker->sentence(40));
+            $drink->setDescription($faker->sentence(10));
+            $drink->setPreparation($faker->sentence(10));
             $drink->setImage('http://localhost:8006/images/drinks/mojito.jpg');
             $drink->setAuthor($user);
             $drink->addCategory($categoryEntities[rand(0, count($categoryEntities) - 1)]);
