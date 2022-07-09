@@ -15,6 +15,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ApiResource(
+    normalizationContext: ['product:read'],
+    denormalizationContext: ['product:write'],
     collectionOperations: [
         'get',
         'post' => ['security' => "is_granted('ROLE_USER')"]
@@ -40,18 +42,20 @@ class Product
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     #[ApiProperty(identifier: false)]
-    #[Groups('drink:read')]
+    #[Groups(['product:read', 'drink:read'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[ApiProperty(identifier: true)]
-    #[Groups('drink:read')]
+    #[Groups(['product:read', 'product:write', 'drink:read'])]
     private $name;
 
     #[ORM\ManyToMany(targetEntity: Drink::class, mappedBy: 'products')]
+    #[Groups(['product:read'])]
     private $drinks;
 
     #[ORM\Column(type: 'boolean')]
+    #[Groups(['product:read', 'admin:write', 'admin:read'])]
     private $isPublished = false;
 
     public function __construct()
