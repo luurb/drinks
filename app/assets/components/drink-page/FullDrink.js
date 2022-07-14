@@ -134,11 +134,11 @@ const FullDrink = ({ drink }) => {
                <div className="full-drink__comments-box">
                   <div className="full-drink__comment-header">
                      <div className="full-drink__comment-rating-box">
-                        <i class="fa-solid fa-whiskey-glass"></i>
-                        <i class="fa-solid fa-whiskey-glass"></i>
-                        <i class="fa-solid fa-whiskey-glass"></i>
-                        <i class="fa-solid fa-whiskey-glass white"></i>
-                        <i class="fa-solid fa-whiskey-glass white"></i>
+                        <i className="fa-solid fa-whiskey-glass"></i>
+                        <i className="fa-solid fa-whiskey-glass"></i>
+                        <i className="fa-solid fa-whiskey-glass"></i>
+                        <i className="fa-solid fa-whiskey-glass white"></i>
+                        <i className="fa-solid fa-whiskey-glass white"></i>
                      </div>
                      <span>kaczka6</span>
                   </div>
