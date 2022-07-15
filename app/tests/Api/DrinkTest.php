@@ -5,6 +5,7 @@ namespace App\Tests\Api;
 use App\DataFixtures\CategoryFixtures;
 use App\DataFixtures\ProductFixtures;
 use App\Entity\Drink;
+use App\Entity\Rating;
 use Faker\Factory;
 
 class DrinkTest extends CustomApiTestCase
@@ -576,5 +577,38 @@ class DrinkTest extends CustomApiTestCase
         ]);
         $this->assertResponseIsSuccessful();
 
+    }
+
+    public function test_get_avg_rating(): void
+    {
+        $drink = new Drink();
+        $drink->setName('mohito');
+        $drink->setDescription('description');
+        $drink->setPreparation('test');
+        $drink->setImage('test');
+        $drink->setAuthor($this->createUser('test', '12345'));
+
+        $user1 = $this->createUser('user1', '12345');
+        $user2 = $this->createUser('user2', '12345');
+
+        $rating1 = new Rating();
+        $rating1->setRating(4);
+        $rating1->setDrink($drink);
+        $rating1->setUser($user1);
+
+        $rating2 = new Rating();
+        $rating2->setRating(2);
+        $rating2->setDrink($drink);
+        $rating2->setUser($user2);
+
+        $this->entityManager->persist($drink);
+        $this->entityManager->persist($rating1);
+        $this->entityManager->persist($rating2);
+        $this->entityManager->flush();
+
+        $this->client->request('GET', '/api/drinks/' . $drink->getId());
+        $this->assertJsonContains([
+            'avgRating' => 3
+        ]);
     }
 }
