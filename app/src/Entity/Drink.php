@@ -8,7 +8,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use App\Repository\DrinkRepository;
-use App\Validator\IsValidAuthor;
+use App\Validator\IsValidUser;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -87,7 +87,7 @@ class Drink
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'drinks')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['drink:read', 'drink:write'])]
-    #[IsValidAuthor()]
+    #[IsValidUser()]
     private $author;
 
     #[ORM\Column(type: 'boolean')]

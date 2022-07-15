@@ -33,25 +33,61 @@ class RatingTest extends CustomApiTestCase
       return $drink;
    }
 
-   public function createRating(int $userRating): Rating
+   public function createRating(int $userRating, ?User $user = null): Rating
    {
+      if (!$user) {
+         $user = $this->createUserAndLogIn($this->client, 'test', '1234');
+      }
+
       $rating = new Rating();
       $rating->setRating($userRating);
+      $drink = $this->createDrink('mohito', $user);
+      $rating->setDrink($drink);
+      $rating->setUser($user);
       $this->entityManager->persist($rating);
       $this->entityManager->flush();
 
       return $rating;
    }
 
+   public function testRetrieveCollection(): void
+   {
+      $this->client->request('GET', '/api/ratings');
+      $this->assertResponseStatusCodeSame(401);
+
+      $this->createUser('admin', '1234', ['ROLE_ADMIN']);
+      $this->logIn($this->client, 'admin', '1234');
+
+      $this->client->request('GET', 'api/ratings');
+      $this->assertResponseIsSuccessful();
+   }
+
+   public function testRetrieveRating(): void
+   {
+      $rating = $this->createRating(3);
+
+      $this->client->request('GET', '/api/ratings/' . $rating->getId());
+      $this->assertResponseIsSuccessful();
+      $this->assertJsonContains([
+         'rating' => 3
+      ]);
+   }
+
    public function testPost(): void
    {
       $user = $this->createUserAndLogIn($this->client, 'test', '12345');
+      $user2 = $this->createUser('test2', 'test');
+
       $drink = $this->createDrink('mohito', $user);
 
-      $rating = new Rating();
-      $rating->setRating(2);
-      $rating->setDrink($drink);
-      $rating->setUser($user);
+      $this->client->request('POST', '/api/ratings', [
+         'json' => [
+            'rating' => 2,
+            'drink' => '/api/drinks/' . $drink->getId(),
+            'user' => '/api/users/' . $user2->getId()
+         ]
+      ]);
+      $this->assertResponseStatusCodeSame(422, 'Not passing currently logged in user');
 
       $this->client->request('POST', '/api/ratings', [
          'json' => [
@@ -61,5 +97,50 @@ class RatingTest extends CustomApiTestCase
          ]
       ]);
       $this->assertResponseStatusCodeSame(201);
+
+      $this->client->request('POST', '/api/ratings', [
+         'json' => [
+            'rating' => 3,
+            'drink' => '/api/drinks/' . $drink->getId(),
+            'user' => '/api/users/' . $user->getId()
+         ]
+      ]);
+      $this->assertResponseStatusCodeSame(422, 'This drink is already rated');
+   }
+
+   public function testPut(): void
+   {
+      $user = $this->createUserAndLogIn($this->client, 'test', 'test');
+      $rating = $this->createRating(3, $user);
+
+      $this->client->request('PUT', '/api/ratings/' . $rating->getId(), [
+         'json' => [
+            'rating' => 4
+         ]
+      ]);
+      $this->assertResponseIsSuccessful();
+      $this->assertJsonContains([
+         'rating' => 4
+      ]);
+
+      $this->createUserAndLogIn($this->client, 'test2', 'test');
+      $this->client->request('PUT', '/api/ratings/' . $rating->getId(), [
+         'json' => [
+            'rating' => 5
+         ]
+      ]);
+      $this->assertResponseStatusCodeSame(403);
+
+      $this->createUser('admin', '1234', ['ROLE_ADMIN']);
+      $this->logIn($this->client, 'admin', '1234');
+      $this->client->request('PUT', '/api/ratings/' . $rating->getId(), [
+         'json' => [
+            'rating' => 5
+         ]
+      ]);
+      $this->assertResponseIsSuccessful();
+      $this->assertJsonContains([
+         'rating' => 5
+      ]);
    }
 }

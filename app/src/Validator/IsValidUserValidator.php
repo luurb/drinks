@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class IsValidAuthorValidator extends ConstraintValidator
+class IsValidUserValidator extends ConstraintValidator
 {
     public function __construct(private Security $security)
     {
