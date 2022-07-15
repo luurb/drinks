@@ -6,6 +6,8 @@ use Faker\Factory;
 use App\Entity\Drink;
 use App\Entity\Product;
 use App\Entity\Category;
+use App\Entity\Rating;
+use App\Entity\Review;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
@@ -20,6 +22,10 @@ class AppFixtures extends Fixture implements FixtureGroupInterface
 
     public function load(ObjectManager $manager): void
     {
+        $categoryEntities = [];
+        $productEntities = [];
+        $userEntities = [];
+
         $faker = Factory::create();
 
         $products = [
@@ -51,9 +57,6 @@ class AppFixtures extends Fixture implements FixtureGroupInterface
             'mocny',
         ];
 
-        $categoryEntities = [];
-        $productEntities = [];
-
         foreach ($products as $productName) {
             $product = new Product();
             $product->setName($productName);
@@ -70,12 +73,16 @@ class AppFixtures extends Fixture implements FixtureGroupInterface
             $manager->persist($category);
         }
 
-        $user = new User();
-        $user->setEmail('fdsfds@test.com');
-        $user->setUsername('testfdfd');
-        $user->setPassword('$2y$13$OVjSLJPRFDxViv9Vvy2R3uoALdDapd6.Z6K8Po9k.DrJee8Ss7eD6');
-        $manager->persist($user);
-        $manager->flush();
+        for ($i = 0; $i < 5; $i++) {
+            $user = new User();
+            $user->setEmail('test' . $i . '@test.com');
+            $user->setUsername('test' . $i);
+            $user->setPassword('$2y$13$OVjSLJPRFDxViv9Vvy2R3uoALdDapd6.Z6K8Po9k.DrJee8Ss7eD6');
+
+            $userEntities[] = $user;
+
+            $manager->persist($user);
+        }
 
         for ($i = 0; $i < 10; $i++) {
             $drink = new Drink();
@@ -83,13 +90,46 @@ class AppFixtures extends Fixture implements FixtureGroupInterface
             $drink->setDescription($faker->sentence(10));
             $drink->setPreparation($faker->sentence(10));
             $drink->setImage('http://localhost:8006/images/drinks/mojito.jpg');
-            $drink->setAuthor($user);
+            $drink->setAuthor($userEntities[rand(0, count($userEntities) - 1)]);
             $drink->addCategory($categoryEntities[rand(0, count($categoryEntities) - 1)]);
             $drink->addProduct($productEntities[rand(0, count($productEntities) - 1)]);
             $drink->addProduct($productEntities[rand(0, count($productEntities) - 1)]);
             $drink->addProduct($productEntities[rand(0, count($productEntities) - 1)]);
             $drink->addProduct($productEntities[rand(0, count($productEntities) - 1)]);
 
+            for ($j = 0; $j < 5; $j++) {
+                $rating = new Rating();
+                $rating->setRating(rand(1, 5));
+                $rating->setDrink($drink);
+                $rating->setUser($userEntities[$j]);
+
+                $manager->persist($rating);
+            }
+
+            $review = new Review();
+            $review->setReview($faker->sentence(10));
+            $review->setTitle($faker->word);
+            $review->setDrink($drink);
+
+            $review1 = new Review();
+            $review1->setReview($faker->sentence(10));
+            $review1->setTitle($faker->word);
+            $review1->setDrink($drink);
+
+            $firstUser = rand(0, count($userEntities) - 1);
+            if ($firstUser == 0) {
+                $secondUser = $firstUser + 1;
+            } else if ($firstUser == 4) {
+                $secondUser = $firstUser - 1;
+            } else {
+                $secondUser = $firstUser + 1;
+            }
+
+            $review->setAuthor($userEntities[$firstUser]);
+            $review1->setAuthor($userEntities[$secondUser]);
+
+            $manager->persist($review);
+            $manager->persist($review1);
             $manager->persist($drink);
         }
 
