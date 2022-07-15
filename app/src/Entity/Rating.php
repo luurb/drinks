@@ -41,12 +41,14 @@ class Rating
     private $rating;
 
     #[ORM\ManyToOne(targetEntity: Drink::class, inversedBy: 'ratings')]
+    #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank]
     #[Groups(['rating:write'])]
     #[CanBeRated(groups: ['postValidation'])]
     private $drink;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'ratings')]
+    #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank]
     #[Groups(['rating:write'])]
     #[IsValidUser()]

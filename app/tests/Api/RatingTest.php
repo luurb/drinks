@@ -58,7 +58,7 @@ class RatingTest extends CustomApiTestCase
       $this->createUser('admin', '1234', ['ROLE_ADMIN']);
       $this->logIn($this->client, 'admin', '1234');
 
-      $this->client->request('GET', 'api/ratings');
+      $this->client->request('GET', '/api/ratings');
       $this->assertResponseIsSuccessful();
    }
 

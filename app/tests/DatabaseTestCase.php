@@ -19,11 +19,14 @@ abstract class DatabaseTestCase extends KernelTestCase
         $this->entityManager = $kernel->getContainer()->get('doctrine')->getManager();
     }
 
-    protected function createUser(): User
+    protected function createUser(
+        string $name = 'test',
+        string $email = 'test@test.com'
+    ): User
     {
         $user = new User();
-        $user->setEmail('test@test.com');
-        $user->setUsername('test');
+        $user->setEmail($email);
+        $user->setUsername($name);
         $user->setPassword('12345');
         $this->entityManager->persist($user);
         $this->entityManager->flush();
