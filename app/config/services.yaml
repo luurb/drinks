@@ -24,7 +24,10 @@ services:
         arguments: [ '@App\Serializer\AdminGroupsContextBuilder.inner' ]
     App\Doctrine\DrinkSetAuthorListener:
         tags: [doctrine.orm.entity_listener]
-
+    App\DataProvider\DrinkDataProvider:
+        bind:
+            $collectionDataProvider: '@api_platform.doctrine.orm.default.collection_data_provider'
+            $itemDataProvider: '@api_platform.doctrine.orm.default.item_data_provider'
 
 
 

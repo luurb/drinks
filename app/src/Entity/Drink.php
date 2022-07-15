@@ -99,7 +99,11 @@ class Drink
     private $ratings;
 
     #[ORM\OneToMany(mappedBy: 'drink', targetEntity: Review::class)]
+    #[Groups(['drink:read'])]
     private $reviews;
+
+    #[Groups(['drink:read'])]
+    private $avgRating = 0;
 
     public function __construct()
     {
@@ -303,4 +307,21 @@ class Drink
 
         return $this;
     }
+
+    public function setAvgRating(float $avgRating): self
+    {
+        $this->avgRating = $avgRating;
+
+        return $this;
+    }
+
+    public function getAvgRating(): ?float
+    {
+        if ($this->avgRating === null) {
+            throw new \LogicException('The avgRating field has to been initialized');
+        }
+
+        return $this->avgRating;
+    }
+
 }
