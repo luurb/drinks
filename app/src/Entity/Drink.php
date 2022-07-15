@@ -105,6 +105,9 @@ class Drink
     #[Groups(['drink:read'])]
     private $avgRating = 0;
 
+    #[Groups(['drink:read'])]
+    private $ratingsStats = [];
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -324,4 +327,15 @@ class Drink
         return $this->avgRating;
     }
 
+    public function getRatingsStats(): array
+    {
+        return $this->ratingsStats;
+    }
+
+    public function setRatingsStat(array $ratingStat): self
+    {
+        $this->ratingsStats = $ratingStat;
+
+        return $this;
+    }
 }

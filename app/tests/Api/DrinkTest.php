@@ -601,14 +601,27 @@ class DrinkTest extends CustomApiTestCase
         $rating2->setDrink($drink);
         $rating2->setUser($user2);
 
+        $rating3 = new Rating();
+        $rating3->setRating(4);
+        $rating3->setDrink($drink);
+        $rating3->setUser($user2);
+
         $this->entityManager->persist($drink);
         $this->entityManager->persist($rating1);
         $this->entityManager->persist($rating2);
+        $this->entityManager->persist($rating3);
         $this->entityManager->flush();
 
         $this->client->request('GET', '/api/drinks/' . $drink->getId());
         $this->assertJsonContains([
-            'avgRating' => 3
+            'avgRating' => 3.33,
+            'ratingsStats' => [
+                1 => 0,
+                2 => 1,
+                3 => 0,
+                4 => 2,
+                5 => 0
+            ]
         ]);
     }
 }

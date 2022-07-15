@@ -57,27 +57,49 @@ final class DrinkDataProvider implements
       }
 
       $drink->setAvgRating($this->getAvgRating($drink));
+      $drink->setRatingsStat($this->getRatingStats($drink));
 
       return $drink;
    }
 
 
-   private function getAvgRating(Drink $drink)
+   private function getAvgRating(Drink $drink): float
    {
       $queryBuilder = $this->doctrine->getManagerForClass(Rating::class)
          ->getRepository(Rating::class)->createQueryBuilder('rating');
-      
+
       $avgRating = $queryBuilder
-         ->andWhere('rating.drink = :drinkId')
-         ->setParameter('drinkId', $drink)
+         ->andWhere('rating.drink = :drink')
+         ->setParameter('drink', $drink)
          ->select('AVG(rating.rating)')
          ->getQuery()
          ->getSingleScalarResult();
-      
+
       if (!$avgRating) {
          $avgRating = 0.0;
       }
 
       return round($avgRating, 2);
+   }
+
+   private function getRatingStats(Drink $drink): array
+   {
+      $ratingStats = [];
+
+      $queryBuilder = $this->doctrine->getManagerForClass(Rating::class)
+         ->getRepository(Rating::class)->createQueryBuilder('rating')
+         ->andWhere('rating.drink = :drink')
+         ->andWhere('rating.rating = :rating')
+         ->select('COUNT(rating.id)');
+
+      for ($i = 1; $i < 6; $i++) {
+         $ratingStats[$i] = $queryBuilder
+            ->setParameter('drink', $drink)
+            ->setParameter('rating', $i)
+            ->getQuery()
+            ->getSingleScalarResult();
+      }
+
+      return $ratingStats;
    }
 }
