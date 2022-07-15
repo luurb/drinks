@@ -33,9 +33,14 @@ class ReviewTest extends CustomApiTestCase
       return $drink;
    }
 
-   public function createReview(string $reviewText, string $title): Review
-   {
-      $user = $this->createUser('test', '1234');
+   public function createReview(
+      string $reviewText,
+      string $title,
+      ?User $user = null
+   ): Review {
+      if (!$user) {
+         $user = $this->createUser('test', '1234');
+      }
       $drink = $this->createDrink('mohito', $user);
 
       $review = new Review();
@@ -122,5 +127,99 @@ class ReviewTest extends CustomApiTestCase
          ]
       ]);
       $this->assertResponseStatusCodeSame(422, 'This drink is already reviewed');
+   }
+
+   public function testPut(): void
+   {
+      $user = $this->createUserAndLogIn($this->client, 'user', '1234');
+      $review = $this->createReview('review', 'title', $user);
+
+      $this->client->request('PUT', '/api/reviews/' . $review->getId(), [
+         'json' => [
+            'title' => 'newTitle'
+         ]
+      ]);
+      $this->assertResponseIsSuccessful();
+      $this->assertJsonContains([
+         'title' => 'newTitle'
+      ]);
+
+      $this->createUserAndLogIn($this->client, 'test2', 'test');
+      $this->client->request('PUT', '/api/reviews/' . $review->getId(), [
+         'json' => [
+            'title' => 'test2'
+         ]
+      ]);
+      $this->assertResponseStatusCodeSame(403);
+
+      $this->createUser('admin', '1234', ['ROLE_ADMIN']);
+      $this->logIn($this->client, 'admin', '1234');
+      $this->client->request('PUT', '/api/reviews/' . $review->getId(), [
+         'json' => [
+            'title' => 'test2'
+         ]
+      ]);
+      $this->assertResponseIsSuccessful();
+      $this->assertJsonContains([
+         'title' => 'test2'
+      ]);
+   }
+
+   public function testPatch(): void
+   {
+      $user = $this->createUserAndLogIn($this->client, 'user', '1234');
+      $review = $this->createReview('review', 'title', $user);
+
+      $this->client->request('PATCH', '/api/reviews/' . $review->getId(), [
+         'json' => [
+            'title' => 'newTitle'
+         ],
+         'headers' => [
+            'content-type' => 'application/merge-patch+json'
+         ]
+      ]);
+      $this->assertResponseIsSuccessful();
+      $this->assertJsonContains([
+         'title' => 'newTitle'
+      ]);
+
+      $this->createUserAndLogIn($this->client, 'test2', 'test');
+      $this->client->request('PATCH', '/api/reviews/' . $review->getId(), [
+         'json' => [
+            'title' => 'newTitle'
+         ],
+         'headers' => [
+            'content-type' => 'application/merge-patch+json'
+         ]
+      ]);
+      $this->assertResponseStatusCodeSame(403);
+
+      $this->createUser('admin', '1234', ['ROLE_ADMIN']);
+      $this->logIn($this->client, 'admin', '1234');
+      $this->client->request('PATCH', '/api/reviews/' . $review->getId(), [
+         'json' => [
+            'title' => 'test2'
+         ],
+         'headers' => [
+            'content-type' => 'application/merge-patch+json'
+         ]
+      ]);
+      $this->assertResponseIsSuccessful();
+      $this->assertJsonContains([
+         'title' => 'test2'
+      ]);
+   }
+
+   public function testDelete(): void
+   {
+      $user = $this->createUserAndLogIn($this->client, 'user', '12345');
+      $review= $this->createReview('review', 'title', $user);
+      $this->client->request('DELETE', '/api/reviews/' . $review->getId());
+      $this->assertResponseStatusCodeSame(403);
+
+      $this->createUser('admin', 'admin', ['ROLE_ADMIN']);
+      $this->logIn($this->client, 'admin', 'admin');
+      $this->client->request('DELETE', '/api/reviews/' . $review->getId());
+      $this->assertResponseStatusCodeSame(204);
    }
 }

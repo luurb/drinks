@@ -7,10 +7,13 @@ use App\Repository\ReviewRepository;
 use App\Validator\CanBeReviewed;
 use App\Validator\IsValidUser;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ReviewRepository::class)]
 #[ApiResource(
+    normalizationContext: ['groups' => ['review:read']],
+    denormalizationContext: ['groups' => ['review:write']],
     collectionOperations: [
         'get' => ['security' => "is_granted('ROLE_ADMIN')"],
         'post' => [
@@ -20,6 +23,9 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     itemOperations: [
         'get' => ['security' => "is_granted('ROLE_USER')"],
+        'put' => ['security' => "object.getAuthor() == user or is_granted('ROLE_ADMIN')"],
+        'patch' => ['security' => "object.getAuthor() == user or is_granted('ROLE_ADMIN')"],
+        'delete' => ['security' => "is_granted('ROLE_ADMIN')"]
     ]
 )]
 class Review
@@ -31,25 +37,30 @@ class Review
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
+    #[Groups(['review:read', 'review:write'])]
     private $review;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
+    #[Groups(['review:read', 'review:write'])]
     private $title;
 
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Groups(['review:read'])]
     private $createdAt;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'reviews')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank]
     #[IsValidUser()]
+    #[Groups(['review:read', 'review:write'])]
     private $author;
 
     #[ORM\ManyToOne(targetEntity: Drink::class, inversedBy: 'reviews')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank]
     #[CanBeReviewed(groups: ['postValidation'])]
+    #[Groups(['review:read', 'review:write'])]
     private $drink;
 
     public function __construct()
