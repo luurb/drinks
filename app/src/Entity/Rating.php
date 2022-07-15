@@ -23,7 +23,9 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     itemOperations: [
         'get',
-        'put' => ['security' => "object.getUser() == user or is_granted('ROLE_ADMIN')"]
+        'put' => ['security' => "object.getUser() == user or is_granted('ROLE_ADMIN')"],
+        'patch' => ['security' => "object.getUser() == user or is_granted('ROLE_ADMIN')"],
+        'delete' => ['security' => "is_granted('ROLE_ADMIN')"]
     ]
 )]
 class Rating

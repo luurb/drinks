@@ -143,4 +143,61 @@ class RatingTest extends CustomApiTestCase
          'rating' => 5
       ]);
    }
+
+   public function testPatch(): void
+   {
+      $user = $this->createUserAndLogIn($this->client, 'test', 'test');
+      $rating = $this->createRating(3, $user);
+
+      $this->client->request('PATCH', '/api/ratings/' . $rating->getId(), [
+         'json' => [
+            'rating' => 4
+         ],
+         'headers' => [
+            'content-type' => 'application/merge-patch+json'
+         ]
+      ]);
+      $this->assertResponseIsSuccessful();
+      $this->assertJsonContains([
+         'rating' => 4
+      ]);
+
+      $this->createUserAndLogIn($this->client, 'test2', 'test');
+      $this->client->request('PATCH', '/api/ratings/' . $rating->getId(), [
+         'json' => [
+            'rating' => 5 
+         ],
+         'headers' => [
+            'content-type' => 'application/merge-patch+json'
+         ]
+      ]);
+      $this->assertResponseStatusCodeSame(403);
+
+      $this->createUser('admin', '1234', ['ROLE_ADMIN']);
+      $this->logIn($this->client, 'admin', '1234');
+      $this->client->request('PATCH', '/api/ratings/' . $rating->getId(), [
+         'json' => [
+            'rating' => 5 
+         ],
+         'headers' => [
+            'content-type' => 'application/merge-patch+json'
+         ]
+      ]);
+      $this->assertResponseIsSuccessful();
+      $this->assertJsonContains([
+         'rating' => 5
+      ]);
+   }
+
+   public function testDelete(): void
+   {
+      $rating = $this->createRating(3);
+      $this->client->request('DELETE', '/api/ratings/' . $rating->getId());
+      $this->assertResponseStatusCodeSame(403);
+
+      $this->createUser('admin', 'admin', ['ROLE_ADMIN']);
+      $this->logIn($this->client, 'admin', 'admin');
+      $this->client->request('DELETE', '/api/ratings/' . $rating->getId());
+      $this->assertResponseStatusCodeSame(204);
+   }
 }
