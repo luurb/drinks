@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ]
     ],
     itemOperations: [
-        'get',
+        'get' => ['normalization_context' => ['groups' => ['review:read:get']]],
         'put' => ['security' => "object.getAuthor() == user or is_granted('ROLE_ADMIN')"],
         'patch' => ['security' => "object.getAuthor() == user or is_granted('ROLE_ADMIN')"],
         'delete' => ['security' => "is_granted('ROLE_ADMIN')"]
@@ -37,31 +37,34 @@ class Review
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
-    #[Groups(['review:read', 'review:write'])]
+    #[Groups(['review:read', 'review:write', 'review:read:get'])]
     private $review;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
-    #[Groups(['review:read', 'review:write'])]
+    #[Groups(['review:read', 'review:write', 'review:read:get'])]
     private $title;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    #[Groups(['review:read'])]
+    #[Groups(['review:read', 'review:read:get'])]
     private $createdAt;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'reviews')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank]
     #[IsValidUser()]
-    #[Groups(['review:read', 'review:write'])]
+    #[Groups(['review:read', 'review:write', 'review:read:get'])]
     private $author;
 
     #[ORM\ManyToOne(targetEntity: Drink::class, inversedBy: 'reviews')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank]
     #[CanBeReviewed(groups: ['postValidation'])]
-    #[Groups(['review:read', 'review:write'])]
+    #[Groups(['review:read', 'review:write', 'review:read:get'])]
     private $drink;
+
+    #[Groups(['review:read', 'review:read:get'])]
+    private $drinkRating = 0;
 
     public function __construct()
     {
@@ -122,6 +125,18 @@ class Review
     public function setDrink(?Drink $drink): self
     {
         $this->drink = $drink;
+
+        return $this;
+    }
+
+    public function getDrinkRating(): ?int
+    {
+        return $this->drinkRating;
+    }
+
+    public function setDrinkRating(int $drinkRating): self
+    {
+        $this->drinkRating = $drinkRating;
 
         return $this;
     }

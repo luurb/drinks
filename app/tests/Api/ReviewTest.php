@@ -3,6 +3,7 @@
 namespace App\Tests\Api;
 
 use App\Entity\Drink;
+use App\Entity\Rating;
 use App\Entity\Review;
 use App\Entity\User;
 
@@ -217,5 +218,39 @@ class ReviewTest extends CustomApiTestCase
       $this->logIn($this->client, 'admin', 'admin');
       $this->client->request('DELETE', '/api/reviews/' . $review->getId());
       $this->assertResponseStatusCodeSame(204);
+   }
+
+   public function test_get_correct_drink_rating(): void
+   {
+      $user = $this->createUser('test', '1234');
+      $drink = $this->createDrink('mohito', $user);
+
+      $review = new Review();
+      $review->setReview('review');
+      $review->setTitle('title');
+      $review->setAuthor($user);
+      $review->setDrink($drink);
+
+      $this->entityManager->persist($review);
+      $this->entityManager->flush();
+
+      $this->client->request('GET', '/api/reviews/' . $review->getId());
+      $this->assertJsonContains([
+         'drinkRating' => 0
+      ]);
+
+      $rating = new Rating();
+      $rating->setRating(4);
+      $rating->setDrink($drink);
+      $rating->setUser($user);
+
+      $this->entityManager->persist($rating);
+      $this->entityManager->flush();
+
+      $this->client->request('GET', '/api/reviews/' . $review->getId());
+      $this->assertJsonContains([
+         'drinkRating' => 4
+      ]);
+
    }
 }
