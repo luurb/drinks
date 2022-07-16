@@ -1,9 +1,12 @@
 import React, { useCallback } from 'react';
 import SocialWrapper from './SocialWrapper';
+import { Link } from 'react-router-dom';
 
 const Drink = React.forwardRef((props, ref) => {
+   const getLink = () => `/drinki/${props.drink.id}/${props.drink.name}`;
+
    return (
-      <div className="drink" ref={ref}>
+      <Link className="drink" to={getLink()} ref={ref}>
          <div className="drink__top">
             <div className="drink__name-box">
                <div className="drink__categories-box">
@@ -53,7 +56,7 @@ const Drink = React.forwardRef((props, ref) => {
                </div>
             </div>
          </div>
-      </div>
+      </Link>
    );
 });
 
