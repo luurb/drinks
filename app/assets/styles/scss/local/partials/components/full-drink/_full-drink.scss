@@ -154,6 +154,18 @@
    gap: 10px;
 }
 
+.full-drink__rating-numbers-box {
+   width: 50px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   gap: 5px;
+}
+
+.full-drink__rating-number {
+   padding: 0 5px;
+}
+
 .full-drink__specific-rating {
    width: 120px;
    display: flex;
@@ -168,7 +180,6 @@
 
 .full-drink__rating-counter {
    color: var(--grey);
-   padding-left: 5px;
 }
 
 .full-drink__rating-wrapper {
@@ -184,10 +195,17 @@
    border-radius: 10px;
 }
 
+.full-drink__comments-wrapper {
+   background: var(--grey);
+   width: calc(100% + 20px);
+   display: flex;
+   flex-direction: column;
+   gap: 1px;
+}
+
 .full-drink__comments-box {
    color: var(--white);
    background: var(--dark-pink);
-   width: calc(100% + 20px);
    padding: 10px;
    display: flex;
    flex-direction: column;

@@ -33,6 +33,7 @@ class Review
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['review:read:get'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
