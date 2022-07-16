@@ -17,7 +17,11 @@ const Drink = React.forwardRef((props, ref) => {
                </div>
                <span className="drink__name">{props.drink.name}</span>
             </div>
-            <SocialWrapper />
+            <SocialWrapper
+               avgRating={props.drink.avgRating}
+               ratingsNumber={props.drink.ratingsNumber}
+               reviewsNumber={props.drink.reviewsNumber}
+            />
          </div>
          <div className="drink__bottom">
             <img
@@ -27,14 +31,20 @@ const Drink = React.forwardRef((props, ref) => {
                loading="lazy"
             />
             <div className="drink__desc">
-               <div className="drink__desc-text">{props.drink.shortDescription}</div>
+               <div className="drink__desc-text">
+                  {props.drink.shortDescription}
+               </div>
                <div className="drink__products-wrapper">
                   <span className="drink__products-header">Składniki:</span>
                   <div className="drink__products-box">
                      {props.drink.products.map((product) => (
                         <span
                            key={product.id}
-                           className={product.active ? "drink__active-product" : "drink__product"}
+                           className={
+                              product.active
+                                 ? 'drink__active-product'
+                                 : 'drink__product'
+                           }
                         >
                            {product.name}
                         </span>
