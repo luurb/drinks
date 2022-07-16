@@ -6,7 +6,12 @@ const Drink = React.forwardRef((props, ref) => {
    const getLink = () => `/drinki/${props.drink.id}/${props.drink.name}`;
 
    return (
-      <Link className="drink" to={getLink()} ref={ref}>
+      <Link
+         className="drink"
+         to={getLink()}
+         state={{ products: props.drink.products }}
+         ref={ref}
+      >
          <div className="drink__top">
             <div className="drink__name-box">
                <div className="drink__categories-box">

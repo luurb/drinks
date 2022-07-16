@@ -1,9 +1,66 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const FullDrink = ({ drink }) => {
+   const location = useLocation();
+   const { products } = location.state || {};
+   const categoriesColors = [
+      {
+         name: 'słodki',
+         color: 'yellow',
+      },
+      {
+         name: 'kwaśny',
+         color: 'green',
+      },
+      {
+         name: 'orzeźwiający',
+         color: 'blue',
+      },
+      {
+         name: 'lekki',
+         color: 'turquoise',
+      },
+      {
+         name: 'mocny',
+         color: 'red',
+      },
+   ];
+
+   const getCategoryColor = (categoryToFind) =>
+      categoriesColors.find((category) => category.name == categoryToFind.name)
+         .color;
+
+   const getReviewText = (reviewsNumber) => {
+      switch (reviewsNumber) {
+         case 1:
+            return 'opinia';
+         case 2:
+         case 3:
+         case 4:
+            return 'opinie';
+         default:
+            return 'opinii';
+      }
+   };
+
+   const getRatingText = (ratingNumber) => {
+      switch (ratingNumber) {
+         case 1:
+            return 'ocena';
+         case 2:
+         case 3:
+         case 4:
+            return 'oceny';
+         default:
+            return 'ocen';
+      }
+   };
+
    return (
       <div className="full-drink">
          {console.log(drink)}
+         {console.log(products)}
          <div className="full-drink__wrapper">
             <img
                className="full-drink__img"
@@ -17,22 +74,55 @@ const FullDrink = ({ drink }) => {
                      <div
                         key={index}
                         className="full-drink__disc"
-                        style={{ background: `var(--red)` }}
+                        style={{
+                           background: `var(--${getCategoryColor(category)})`,
+                        }}
                      ></div>
                   ))}
                   {drink.name}
                </div>
+               <div className="full-drink__social-wrapper">
+                  <span className="full-drink__author">
+                     @{drink.author.username}
+                  </span>
+                  <div className="drink__social-box">
+                     <i className="fa-solid fa-whiskey-glass"></i>
+                     <span>{drink.ratingsNumber}</span>
+                     <span className="drink__rate-text d-block">
+                        {getRatingText(drink.ratingsNumber)}
+                     </span>
+                  </div>
+                  <div className="drink__social-box">
+                     <i className="fa-solid fa-comment"></i>
+                     <span>{drink.reviewsNumber}</span>
+                     <span className="drink__comment-text d-block">
+                        {getReviewText(drink.reviewsNumber)}
+                     </span>
+                  </div>
+               </div>
                <div className="full-drink__products">
                   <span>Składniki:</span>
                   <div className="drink__products-box">
-                     {drink.products.map((product) => (
-                        <div
-                           key={product.id}
-                           className="drink__product full-drink__product"
-                        >
-                           {product.name}
-                        </div>
-                     ))}
+                     {products
+                        ? products.map((product) => (
+                             <div
+                              key={product.id}
+                              className={
+                                 product.active
+                                    ? 'drink__active-product full-drink__product'
+                                    : 'drink__product full-drink__product'}
+                             >
+                                {product.name}
+                             </div>
+                          ))
+                        : drink.products.map((product) => (
+                             <div
+                                key={product.id}
+                                className="drink__product full-drink__product"
+                             >
+                                {product.name}
+                             </div>
+                          ))}
                   </div>
                </div>
                <p className="full-drink__desc">{drink.description}</p>
@@ -129,7 +219,7 @@ const FullDrink = ({ drink }) => {
                   </div>
                </div>
                <div className="full-drink__header full-drink__comments-header">
-                  Komentarze
+                  Opinie
                </div>
                <div className="full-drink__comments-box">
                   <div className="full-drink__comment-header">

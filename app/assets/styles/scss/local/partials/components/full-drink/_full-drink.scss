@@ -51,15 +51,37 @@
    text-transform: capitalize;
 }
 
+.full-drink__social-wrapper {
+   font-size: fonts.$regular;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   gap: 10px;
+
+   .fa-whiskey-glass {
+      color: var(--yellow);
+   }
+
+   .fa-comment {
+      color: var(--grey);
+   }
+}
+
+.full-drink__author {
+   font-weight: 500;
+}
+
 .full-drink__disc {
-   width: 20px;
-   height: 20px;
+   width: 18px;
+   height: 18px;
    border-radius: 50%;
 }
 
 .full-drink__products {
+   width: 100%;
+   padding: 0 5px;
    display: flex;
-   justify-content: center;
+   justify-content: flex-start;
    align-items: flex-start;
    gap: 10px;
 
@@ -71,6 +93,7 @@
 }
 
 .full-drink__desc {
+   width: 100%;
    padding: 5px;
    background: var(--white);
    line-height: 150%;
