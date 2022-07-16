@@ -110,6 +110,12 @@ class Drink
     #[Groups(['drink:read:get'])]
     private $ratingsStats = [];
 
+    #[Groups(['drink:read', 'drink:read:get'])]
+    private $reviewsNumber = 0;
+
+    #[Groups(['drink:read', 'drink:read:get'])]
+    private $ratingsNumber = 0;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -337,6 +343,30 @@ class Drink
     public function setRatingsStat(array $ratingStat): self
     {
         $this->ratingsStats = $ratingStat;
+
+        return $this;
+    }
+
+    public function getReviewsNumber(): ?int
+    {
+        return $this->reviewsNumber;
+    }
+
+    public function setReviewsNumber(int $reviewsNumber): self
+    {
+        $this->reviewsNumber = $reviewsNumber;
+
+        return $this;
+    }
+
+    public function getRatingsNumber(): ?int
+    {
+        return $this->ratingsNumber;
+    }
+
+    public function setRatingsNumber(int $ratingsNumber): self
+    {
+        $this->ratingsNumber = $ratingsNumber;
 
         return $this;
     }

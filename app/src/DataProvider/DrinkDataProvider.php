@@ -9,6 +9,7 @@ use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Entity\Drink;
 use App\Entity\Rating;
+use App\Entity\Review;
 use Doctrine\Persistence\ManagerRegistry;
 
 final class DrinkDataProvider implements
@@ -38,6 +39,8 @@ final class DrinkDataProvider implements
 
       foreach ($drinks as $drink) {
          $drink->setAvgRating($this->getAvgRating($drink));
+         $drink->setReviewsNumber($this->getReviewsNumber($drink));
+         $drink->setRatingsNumber($this->getRatingsNumber($drink));
       }
 
       return $drinks;
@@ -57,7 +60,10 @@ final class DrinkDataProvider implements
       }
 
       $drink->setAvgRating($this->getAvgRating($drink));
+      $ratingsStats = $this->getRatingStats($drink);
       $drink->setRatingsStat($this->getRatingStats($drink));
+      $drink->setRatingsNumber(array_sum($ratingsStats));
+      $drink->setReviewsNumber($this->getReviewsNumber($drink));
 
       return $drink;
    }
@@ -101,5 +107,31 @@ final class DrinkDataProvider implements
       }
 
       return $ratingStats;
+   }
+
+   private function getReviewsNumber(Drink $drink): int
+   {
+      $reviewsNumber = $this->doctrine->getManagerForClass(Review::class)
+         ->getRepository(Review::class)->createQueryBuilder('review')
+         ->andWhere('review.drink = :drink')
+         ->setParameter('drink', $drink)
+         ->select('COUNT(review.id)')
+         ->getQuery()
+         ->getSingleScalarResult();
+
+      return $reviewsNumber;
+   }
+
+   private function getRatingsNumber(Drink $drink): int
+   {
+      $ratingsNumber = $this->doctrine->getManagerForClass(Rating::class)
+         ->getRepository(Rating::class)->createQueryBuilder('rating')
+         ->andWhere('rating.drink = :drink')
+         ->setParameter('drink', $drink)
+         ->select('COUNT(rating.id)')
+         ->getQuery()
+         ->getSingleScalarResult();
+
+      return $ratingsNumber;
    }
 }

@@ -6,6 +6,7 @@ use App\DataFixtures\CategoryFixtures;
 use App\DataFixtures\ProductFixtures;
 use App\Entity\Drink;
 use App\Entity\Rating;
+use App\Entity\Review;
 use Faker\Factory;
 
 class DrinkTest extends CustomApiTestCase
@@ -579,7 +580,7 @@ class DrinkTest extends CustomApiTestCase
 
     }
 
-    public function test_get_avg_rating(): void
+    public function test_get_avg_rating_and_number_of_ratings(): void
     {
         $drink = new Drink();
         $drink->setName('mohito');
@@ -621,7 +622,43 @@ class DrinkTest extends CustomApiTestCase
                 3 => 0,
                 4 => 2,
                 5 => 0
-            ]
+            ],
+            'ratingsNumber' => 3
+        ]);
+    }
+
+    public function test_get_number_of_reviews(): void
+    {
+        $drink = new Drink();
+        $drink->setName('mohito');
+        $drink->setDescription('description');
+        $drink->setPreparation('test');
+        $drink->setImage('test');
+        $drink->setAuthor($this->createUser('test', '12345'));
+
+        $user1 = $this->createUser('user1', '12345');
+        $user2 = $this->createUser('user2', '12345');
+
+        $review1 = new Review();
+        $review1->setDrink($drink);
+        $review1->setReview('review');
+        $review1->setTitle('title');
+        $review1->setAuthor($user1);
+
+        $review2 = new Review();
+        $review2->setDrink($drink);
+        $review2->setReview('review');
+        $review2->setTitle('title');
+        $review2->setAuthor($user2);
+
+        $this->entityManager->persist($drink);
+        $this->entityManager->persist($review1);
+        $this->entityManager->persist($review2);
+        $this->entityManager->flush();
+
+        $this->client->request('GET', '/api/drinks/' . $drink->getId());
+        $this->assertJsonContains([
+            'reviewsNumber' => 2
         ]);
     }
 }
