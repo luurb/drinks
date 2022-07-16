@@ -42,12 +42,12 @@ class Product
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     #[ApiProperty(identifier: false)]
-    #[Groups(['product:read', 'drink:read'])]
+    #[Groups(['product:read', 'drink:read', 'drink:read:get'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     #[ApiProperty(identifier: true)]
-    #[Groups(['product:read', 'product:write', 'drink:read'])]
+    #[Groups(['product:read', 'product:write', 'drink:read', 'drink:read:get'])]
     private $name;
 
     #[ORM\ManyToMany(targetEntity: Drink::class, mappedBy: 'products')]

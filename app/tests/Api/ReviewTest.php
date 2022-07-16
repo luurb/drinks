@@ -72,10 +72,6 @@ class ReviewTest extends CustomApiTestCase
       $review = $this->createReview('review', 'test');
 
       $this->client->request('GET', '/api/reviews/' . $review->getId());
-      $this->assertResponseStatusCodeSame(401);
-
-      $this->createUserAndLogIn($this->client, 'user', '12345');
-      $this->client->request('GET', '/api/reviews/' . $review->getId());
       $this->assertResponseIsSuccessful();
       $this->assertJsonContains([
          'title' => 'test'

@@ -39,7 +39,7 @@ class Category
 
     #[ORM\Column(type: 'string', length: 255)]
     #[ApiProperty(identifier: true)]
-    #[Groups(['drink:read'])]
+    #[Groups(['drink:read', 'drink:read:get'])]
     private $name;
 
     #[ORM\ManyToMany(targetEntity: Drink::class, mappedBy: 'categories')]

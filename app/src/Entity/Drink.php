@@ -30,7 +30,9 @@ use Symfony\Component\Validator\Constraints as Assert;
         'post' => ['security' => "is_granted('ROLE_USER')"]
     ],
     itemOperations: [
-        'get',
+        'get' => [
+            'normalization_context' => ['groups' => ['drink:read:get']]
+        ],
         'put' => ['security' => "object.getAuthor() == user or is_granted('ROLE_ADMIN')"],
         'patch' => ['security' => "object.getAuthor() == user or is_granted('ROLE_ADMIN')"],
         'delete' => ['security' => "is_granted('ROLE_ADMIN')"],
@@ -53,59 +55,59 @@ class Drink
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups('drink:read')]
+    #[Groups('drink:read', 'drink:read:get')]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['drink:read', 'drink:write'])]
+    #[Groups(['drink:read', 'drink:write', 'drink:read:get'])]
     #[Assert\NotBlank]
     #[Assert\Length(min: 2, max: 50)]
     private $name;
 
     #[ORM\Column(type: 'text')]
-    #[Groups(['drink:read', 'drink:write'])]
+    #[Groups(['drink:read', 'drink:write', 'drink:read:get'])]
     #[Assert\NotBlank]
     private $description;
 
     #[ORM\Column(type: 'text')]
-    #[Groups(['drink:read', 'drink:write'])]
+    #[Groups(['drink:read', 'drink:write', 'drink:read:get'])]
     #[Assert\NotBlank]
     private $preparation;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['drink:read', 'drink:write'])]
+    #[Groups(['drink:read', 'drink:write', 'drink:read:get'])]
     private $image;
 
     #[ORM\ManyToMany(targetEntity: Product::class, inversedBy: 'drinks')]
-    #[Groups(['drink:read', 'drink:write'])]
+    #[Groups(['drink:read', 'drink:write', 'drink:read:get'])]
     private $products;
 
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'drinks')]
-    #[Groups(['drink:read', 'drink:write'])]
+    #[Groups(['drink:read', 'drink:write', 'drink:read:get'])]
     private $categories;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'drinks')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['drink:read', 'drink:write'])]
+    #[Groups(['drink:read', 'drink:write', 'drink:read:get'])]
     #[IsValidUser()]
     private $author;
 
     #[ORM\Column(type: 'boolean')]
-    #[Groups(['drink:read', 'admin:write'])]
+    #[Groups(['drink:read', 'admin:write', 'drink:read:get'])]
     private $isPublished = false;
 
     #[ORM\OneToMany(mappedBy: 'drink', targetEntity: Rating::class)]
-    #[Groups(['drink:read'])]
+    #[Groups(['admin:read'])]
     private $ratings;
 
     #[ORM\OneToMany(mappedBy: 'drink', targetEntity: Review::class)]
-    #[Groups(['drink:read'])]
+    #[Groups(['drink:read', 'drink:read:get'])]
     private $reviews;
 
-    #[Groups(['drink:read'])]
+    #[Groups(['drink:read', 'drink:read:get'])]
     private $avgRating = 0;
 
-    #[Groups(['drink:read'])]
+    #[Groups(['drink:read:get'])]
     private $ratingsStats = [];
 
     public function __construct()
@@ -138,7 +140,7 @@ class Drink
         return $this->description;
     }
 
-    #[Groups('drink:read')]
+    #[Groups(['drink:read', 'drink:read:get'])]
     public function getShortDescription(): ?string
     {
         if (strlen($this->description) < 180) {
