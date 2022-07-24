@@ -8,7 +8,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
 
     form {
         text-align: center;
@@ -16,7 +16,7 @@
 }
 
 .search__header {
-    font-size: fonts.$medium;
+    font-size: fonts.$medium2;
     font-weight: 500;
 }
 
@@ -27,7 +27,7 @@
 
 .search__input {
     border: 2px solid var(--violet);
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .search__input,
@@ -50,7 +50,7 @@
     left: -2px;
     background: var(--white);
     border: 2px solid var(--violet);
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .search__products-wrapper {

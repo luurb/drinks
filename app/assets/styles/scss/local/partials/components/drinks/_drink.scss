@@ -7,12 +7,12 @@
     width: calc(100% - 10px);
     padding-bottom: 10px;
     border-radius: 5px;
-    box-shadow: 0 0 5px var(--grey);
+    box-shadow: 0 0 10px 2px var(--grey);
 }
 
 .drink__top {
     width: 100%;
-    padding: 8px;
+    padding: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -25,9 +25,9 @@
 }
 
 .drink__name {
-    position: relative;
-    font-size: fonts.$regular;
+    font-size: fonts.$medium;
     font-weight: 500;
+    position: relative;
     text-transform: capitalize;
     cursor: pointer;
 }
@@ -45,6 +45,7 @@
 }
 
 .drink__social-wrapper{
+    font-size: fonts.$regular;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -225,7 +226,7 @@
         width: 325px;
         position: absolute;
         right: 0;
-        top: -45px;
+        top: -52px;
         border-radius: 10px;
     }
 

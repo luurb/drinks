@@ -90,7 +90,7 @@ const FullDrink = ({ drink }) => {
       let ratings = [];
       for (let i = 5; i > 0; i--) {
          ratings.push(
-            <div className="full-drink__rating" key={i}>
+            <div className="full-drink__specific-rating" key={i}>
                <i className="fa-solid fa-whiskey-glass"></i>
                <div className="full-drink__rating-numbers-box">
                   <span className="full-drink__rating-number">{i}</span>
@@ -98,6 +98,7 @@ const FullDrink = ({ drink }) => {
                      ({drink.ratingsStats[i]})
                   </span>
                </div>
+               <div className="full-drink__bar-box">{returnRatingBars(i)}</div>
             </div>
          );
       }
@@ -105,24 +106,19 @@ const FullDrink = ({ drink }) => {
       return ratings;
    };
 
-   const returnRatingBars = () => {
-      let bars = [];
-      for (let i = 5; i > 0; i--) {
-         let width =
-            drink.ratingsNumber == 0
-               ? 0
-               : drink.ratingsStats[i] / drink.ratingsNumber;
-         width *= 100;
-         bars.push(
-            <div
-               className="full-drink__rating-bar"
-               style={{ width: `${width}%` }}
-               key={i}
-            ></div>
-         );
-      }
-
-      return bars;
+   const returnRatingBars = (i) => {
+      let width =
+         drink.ratingsNumber == 0
+            ? 0
+            : drink.ratingsStats[i] / drink.ratingsNumber;
+      width *= 100;
+      return (
+         <div
+            className="full-drink__rating-bar"
+            style={{ width: `${width}%` }}
+            key={i}
+         ></div>
+      );
    };
 
    return (
@@ -211,14 +207,7 @@ const FullDrink = ({ drink }) => {
                      {returnRatingIcons()}
                      <span>3 na 5 ocen</span>
                   </div>
-                  <div className="full-drink__rating-wrapper">
-                     <div className="full-drink__specific-rating">
-                        {returnSpecificRating()}
-                     </div>
-                     <div className="full-drink__specific-rating full-drink__bars-box">
-                        {returnRatingBars()}
-                     </div>
-                  </div>
+                  {returnSpecificRating()}
                </div>
                <div className="full-drink__header full-drink__comments-header">
                   Opinie

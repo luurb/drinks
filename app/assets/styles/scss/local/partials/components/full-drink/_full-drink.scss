@@ -140,7 +140,7 @@
    display: flex;
    flex-direction: column;
    justify-content: flex-start;
-   gap : 15px;
+   gap: 15px;
 
    .fa-solid {
       font-size: fonts.$medium;
@@ -148,14 +148,15 @@
    }
 }
 
-.full-drink__rating{
+.full-drink__rating {
+   height: 20px;
    display: flex;
    align-items: center;
    gap: 10px;
 }
 
 .full-drink__rating-numbers-box {
-   width: 50px;
+   min-width: 50px;
    display: flex;
    justify-content: space-between;
    align-items: center;
@@ -167,14 +168,13 @@
 }
 
 .full-drink__specific-rating {
-   width: 120px;
+   width: 100%;
    display: flex;
-   flex-direction: column;
    justify-content: flex-start;
    gap: 10px;
 }
 
-.full-drink__bars-box {
+.full-drink__bar-box {
    width: 100%;
 }
 
@@ -190,8 +190,7 @@
 .full-drink__rating-bar {
    background: var(--grey2);
    width: 40%;
-   height: 15px;
-   margin-top: 5px;
+   height: 20px;
    border-radius: 10px;
 }
 
@@ -244,4 +243,14 @@
 .full-drink__comment {
    line-height: 150%;
    text-align: justify;
+}
+
+@media (min-width: breakpoints.$tablet) {
+   .full-drink__comments-wrapper {
+      width: 100%;
+   }
+
+   .full-drink__comments-box {
+      border-radius: 5px;
+   }
 }
