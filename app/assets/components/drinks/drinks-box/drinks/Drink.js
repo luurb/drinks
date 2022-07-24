@@ -12,30 +12,28 @@ const Drink = React.forwardRef((props, ref) => {
          state={{ products: props.drink.products }}
          ref={ref}
       >
-         <div className="drink__top">
-            <div className="drink__name-box">
-               <div className="drink__categories-box">
-                  {props.drink.categories.map((category, index) => (
-                     <div
-                        key={index}
-                        className="drink__category-disc"
-                        style={{ background: `var(--${category.color})` }}
-                     ></div>
-                  ))}
-               </div>
-               <span className="drink__name">{props.drink.name}</span>
-            </div>
-            <SocialWrapper
-               avgRating={props.drink.avgRating}
-               ratingsNumber={props.drink.ratingsNumber}
-               reviewsNumber={props.drink.reviewsNumber}
-            />
-         </div>
          <img
             className="drink__img"
             src={props.drink.image}
             alt="Zdjęcie drinka"
             loading="lazy"
+         />
+         <div className="drink__name-box">
+            <div className="drink__categories-box">
+               {props.drink.categories.map((category, index) => (
+                  <div
+                     key={index}
+                     className="drink__category-disc"
+                     style={{ background: `var(--${category.color})` }}
+                  ></div>
+               ))}
+            </div>
+            <span className="drink__name">{props.drink.name}</span>
+         </div>
+         <SocialWrapper
+            avgRating={props.drink.avgRating}
+            ratingsNumber={props.drink.ratingsNumber}
+            reviewsNumber={props.drink.reviewsNumber}
          />
          <div className="drink__desc">
             <div className="drink__desc-text">

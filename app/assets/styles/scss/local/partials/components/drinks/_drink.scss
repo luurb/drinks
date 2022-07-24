@@ -5,20 +5,25 @@
     //10px for scrollbar
     background: var(--white);
     width: calc(100% - 10px);
+    max-width: 500px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 10px;
     border-radius: 5px;
-    box-shadow: 0 0 10px 2px var(--grey);
+    box-shadow: 0 0 5px 1px var(--grey);
 }
 
 .drink__top {
+    font-size: fonts.$regular;
     width: 100%;
     padding: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .drink__name-box {
@@ -28,7 +33,7 @@
 }
 
 .drink__name {
-    font-size: fonts.$medium;
+    font-size: fonts.$medium2;
     font-weight: 500;
     position: relative;
     text-transform: capitalize;
@@ -48,7 +53,7 @@
 }
 
 .drink__social-wrapper{
-    font-size: fonts.$regular;
+    font-size: fonts.$small;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -66,18 +71,10 @@
     font-weight: 500;
 }
 
-.drink__rate-text {
-    display: none;
-}
-
 .drink__social-box {
     display: flex;
     align-items: center;
     gap: 5px;
-}
-
-.drink__comment-text {
-    display: none;
 }
 
 .drink__img {
@@ -105,7 +102,6 @@
 
 .drink__products-wrapper{
     width: 100%;
-    padding-top: 10px;
     display: flex;
     align-items: flex-start;
     gap: 10px;
@@ -184,8 +180,8 @@
 }
 
 @media (min-width: breakpoints.$tablet) {
-    .drink {
-        max-width: 350px;
+    .drink__top {
+        padding: 15px 10px;
     }
 
     .drink__bottom {
@@ -195,28 +191,10 @@
 
 @media (min-width: breakpoints.$desktop-small) {
     .drink {
-        //height: calc(320px / 1.56);
-        max-width: 100%;
-        display: grid;
-        grid-template-areas: 
-            'top image'
-            'desc image';
-        grid-template-columns: 1fr auto;
-        grid-template-rows: 50px auto;
-    }
-
-    .drink__top {
-        grid-area: top;
-    }
-
-    .drink__img {
-        max-height: 235px;
-        grid-area: image;
-        border-radius: 5px;
+        max-width: calc(50% - 15px);
     }
 
     .drink__desc {
-        grid-area: desc;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -224,11 +202,6 @@
 
     .drink__products-box {
         padding-top: 0;
-    }
-
-    .drink__comment-text,
-    .drink__rate-text {
-        display: inline-block;
     }
 
     .drink__category-disc {

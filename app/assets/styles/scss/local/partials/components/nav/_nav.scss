@@ -5,7 +5,7 @@
     font-size: fonts.$medium;
     font-weight: 600;
     color: var(--white);
-    max-width: 1440px;
+    max-width: 1400px;
     position: relative;
     display: flex;
     justify-content: space-between;
@@ -88,6 +88,12 @@
         justify-content: flex-end;
         position: unset;
         padding-bottom: 0;
+    }
+}
+
+@media (min-width: breakpoints.$desktop) {
+    .nav {
+        padding: 15px;
     }
 }
 
