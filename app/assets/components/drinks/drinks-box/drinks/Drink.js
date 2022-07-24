@@ -31,33 +31,31 @@ const Drink = React.forwardRef((props, ref) => {
                reviewsNumber={props.drink.reviewsNumber}
             />
          </div>
-         <div className="drink__bottom">
-            <img
-               className="drink__img"
-               src={props.drink.image}
-               alt="Zdjęcie drinka"
-               loading="lazy"
-            />
-            <div className="drink__desc">
-               <div className="drink__desc-text">
-                  {props.drink.shortDescription}
-               </div>
-               <div className="drink__products-wrapper">
-                  <span className="drink__products-header">Składniki:</span>
-                  <div className="drink__products-box">
-                     {props.drink.products.map((product) => (
-                        <span
-                           key={product.id}
-                           className={
-                              product.active
-                                 ? 'drink__active-product'
-                                 : 'drink__product'
-                           }
-                        >
-                           {product.name}
-                        </span>
-                     ))}
-                  </div>
+         <img
+            className="drink__img"
+            src={props.drink.image}
+            alt="Zdjęcie drinka"
+            loading="lazy"
+         />
+         <div className="drink__desc">
+            <div className="drink__desc-text">
+               {props.drink.shortDescription}
+            </div>
+            <div className="drink__products-wrapper">
+               <span className="drink__products-header">Składniki:</span>
+               <div className="drink__products-box">
+                  {props.drink.products.map((product) => (
+                     <span
+                        key={product.id}
+                        className={
+                           product.active
+                              ? 'drink__active-product'
+                              : 'drink__product'
+                        }
+                     >
+                        {product.name}
+                     </span>
+                  ))}
                </div>
             </div>
          </div>

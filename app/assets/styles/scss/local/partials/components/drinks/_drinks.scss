@@ -84,10 +84,6 @@
     overflow-y: auto;
   }
 
-  .drinks__top {
-    justify-content: space-around;
-  }
-
   .drinks__wrapper::-webkit-scrollbar {
     width: 5px;
   }
@@ -104,11 +100,6 @@
 @media (min-width: breakpoints.$desktop-small) {
   .drinks {
     max-width: 100%;
-  }
-
-  .drinks__top {
-    font-size: fonts.$medium;
-    justify-content: space-between;
   }
 
   .drinks__sort-options-box {
