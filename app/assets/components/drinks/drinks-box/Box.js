@@ -42,6 +42,7 @@ const Box = () => {
    const [sortFunc, setSortFunc] = useState(sortByRelevance);
    const [isLoaded, setIsLoaded] = useState(false);
    const [pageLoaded, setPageLoaded] = useState(true);
+   const [isScrollUpDisplayed, setIsScrollUpDisplayed] = useState(false);
    const currentPageRef = useRef(1);
    const paginationRef = useRef(true);
    const drinksTotalItemsRef = useRef(0);
@@ -99,8 +100,10 @@ const Box = () => {
 
    const getUri = () => {
       let uri = `/api/drinks?page=${currentPageRef.current}&pagination=${paginationRef.current}&`;
-      uri += 'properties[]=id&properties[]=name&properties[]=shortDescription&properties[]=image&';
-      uri += 'properties[]=categories&properties[]=products&properties[]=reviewsNumber&';
+      uri +=
+         'properties[]=id&properties[]=name&properties[]=shortDescription&properties[]=image&';
+      uri +=
+         'properties[]=categories&properties[]=products&properties[]=reviewsNumber&';
       uri += 'properties[]=ratingsNumber&properties[]=avgRating&';
 
       products.forEach((product) => {
@@ -166,7 +169,6 @@ const Box = () => {
          switch (sortOption.name) {
             case 'trafność':
                return sortByRelevance;
-               break;
             default:
                return sortByRelevance;
          }
@@ -186,6 +188,10 @@ const Box = () => {
       return 0;
    };
 
+   const setScrollUp = () => {
+      setIsScrollUpDisplayed(!isScrollUpDisplayed);
+   };
+
    return (
       <div className="drinks-box__box">
          <Search
@@ -193,15 +199,25 @@ const Box = () => {
             setProducts={setProducts}
             categories={categories}
             setCategories={setCategories}
+            setScrollUp={setScrollUp}
          />
          <DrinksBox
-            drinks={drinks.sort((a, b) => sortFunc(a, b)).slice(0, 20 * currentPageRef.current)}
+            drinks={drinks
+               .sort((a, b) => sortFunc(a, b))
+               .slice(0, 20 * currentPageRef.current)}
             setSortFuncBySelectedOption={setSortFuncBySelectedOption}
             isLoaded={isLoaded}
             pageLoaded={pageLoaded}
             drinksTotalItems={drinksTotalItemsRef.current}
             updateDrinks={updateDrinks}
          />
+         <div
+            className={
+               isScrollUpDisplayed ? 'flex' : 'none' + ' drinks-box__scroll-up'
+            }
+         >
+            <i className="fa-solid fa-angles-up"></i>
+         </div>
       </div>
    );
 };

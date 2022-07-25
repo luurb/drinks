@@ -1,13 +1,37 @@
 import React from 'react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import SearchResult from './SearchResult';
 import axios from 'axios';
 
-const SearchBox = ({ addProduct, products}) => {
+const SearchBox = ({ addProduct, products, setScrollUp }) => {
    const [isOpen, setIsOpen] = useState(false);
+   const [fetchedProducts, setFetchedProducts] = useState([]);
    const input = useRef(null);
    const setEvent = useRef(true);
-   const [fetchedProducts, setFetchedProducts] = useState([]);
+
+   const observerRef = useRef();
+   const searchBoxRef = useCallback((node) => {
+      const widthBreakpoint = 500;
+
+      if (!node) return;
+      if (observerRef.current) observerRef.current.disconnect();
+
+      const options = {
+         root: null,
+         rootMargin: '5px',
+         threshold: 0.5,
+      };
+
+      observerRef.current = new IntersectionObserver((entries) => {
+         if (window.innerWidth < widthBreakpoint) return;
+
+         if (entries[0].boundingClientRect.top < 0) {
+            //setScrollUp();
+         }
+      }, options);
+
+      observerRef.current.observe(node);
+   });
 
    //Close search box after click somewhere on window
    useEffect(() => {
@@ -57,8 +81,9 @@ const SearchBox = ({ addProduct, products}) => {
 
    //Return products filtered by already selected ones
    const checkIfAlreadyAdded = (data) => {
-      return data.filter((product) =>
-         !products.some((selected) => selected.name == product.name)
+      return data.filter(
+         (product) =>
+            !products.some((selected) => selected.name == product.name)
       );
    };
 
@@ -67,9 +92,9 @@ const SearchBox = ({ addProduct, products}) => {
    return (
       <form>
          <label htmlFor="search" className="search__header">
-            Wybierz składniki 
+            Wybierz składniki
          </label>
-         <div className="search__box">
+         <div className="search__box" ref={searchBoxRef}>
             <input
                type="text"
                id="search"

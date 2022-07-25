@@ -4,7 +4,13 @@ import Category from './Category';
 import SearchBox from './SearchBox';
 import { useRef } from 'react';
 
-const Search = ({ products, setProducts, categories, setCategories }) => {
+const Search = ({
+   products,
+   setProducts,
+   categories,
+   setCategories,
+   setScrollUp,
+}) => {
    const counterRef = useRef(1);
 
    const addProduct = (name) => {
@@ -18,7 +24,11 @@ const Search = ({ products, setProducts, categories, setCategories }) => {
 
    return (
       <div className="search">
-         <SearchBox addProduct={addProduct} products={products} />
+         <SearchBox
+            addProduct={addProduct}
+            products={products}
+            setScrollUp={setScrollUp}
+         />
          {products.length > 0 && (
             <div className="search__products-wrapper">
                {products.map((product) => (
