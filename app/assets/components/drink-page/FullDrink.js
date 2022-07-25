@@ -125,98 +125,102 @@ const FullDrink = ({ drink }) => {
       <div className="full-drink">
          {console.log(drink)}
          <div className="full-drink__wrapper">
-            <img
-               className="full-drink__img"
-               src={drink.image}
-               alt="Zdjęcie drinka"
-               loading="lazy"
-            />
-            <div className="full-drink__text-box">
-               <div className="full-drink__name">
-                  {drink.categories.map((category, index) => (
-                     <div
-                        key={index}
-                        className="full-drink__disc"
-                        style={{
-                           background: `var(--${getCategoryColor(category)})`,
-                        }}
-                     ></div>
-                  ))}
-                  {drink.name}
-               </div>
-               <div className="full-drink__social-wrapper">
-                  <span className="full-drink__author">
-                     @{drink.author.username}
-                  </span>
-                  <div className="drink__social-box">
-                     <i className="fa-solid fa-whiskey-glass"></i>
-                     <span>{drink.ratingsNumber}</span>
-                     <span className="drink__rate-text d-block">
-                        {getRatingText(drink.ratingsNumber)}
-                     </span>
-                  </div>
-                  <div className="drink__social-box">
-                     <i className="fa-solid fa-comment"></i>
-                     <span>{drink.reviewsNumber}</span>
-                     <span className="drink__comment-text d-block">
-                        {getReviewText(drink.reviewsNumber)}
-                     </span>
-                  </div>
-               </div>
-               <div className="full-drink__products">
-                  <span>Składniki:</span>
-                  <div className="drink__products-box">
-                     {products
-                        ? products.map((product) => (
-                             <div
-                                key={product.id}
-                                className={
-                                   product.active
-                                      ? 'drink__active-product full-drink__product'
-                                      : 'drink__product full-drink__product'
-                                }
-                             >
-                                {product.name}
-                             </div>
-                          ))
-                        : drink.products.map((product) => (
-                             <div
-                                key={product.id}
-                                className="drink__product full-drink__product"
-                             >
-                                {product.name}
-                             </div>
-                          ))}
-                  </div>
-               </div>
-               <p className="full-drink__desc">{drink.description}</p>
-               <div className="full-drink__header">Przygotowanie</div>
-               <ul className="full-drink__list full-drink__desc">
-                  {drink.preparation
-                     .split('***')
-                     .slice(1)
-                     .map((paragraph, index) => (
-                        <li key={index}>{paragraph}</li>
+            <div className="full-drink__box">
+               <img
+                  className="full-drink__img"
+                  src={drink.image}
+                  alt="Zdjęcie drinka"
+                  loading="lazy"
+               />
+               <div className="full-drink__text-box">
+                  <div className="full-drink__name">
+                     {drink.categories.map((category, index) => (
+                        <div
+                           key={index}
+                           className="full-drink__disc"
+                           style={{
+                              background: `var(--${getCategoryColor(
+                                 category
+                              )})`,
+                           }}
+                        ></div>
                      ))}
-               </ul>
-               <div className="full-drink__header full-drink__rating-header">
-                  Oceny od barmanów
-               </div>
-               <div className="full-drink__rating-box">
-                  <div className="full-drink__rating">
-                     {returnRatingIcons()}
-                     <span>3 na 5 ocen</span>
+                     {drink.name}
                   </div>
-                  {returnSpecificRating()}
-               </div>
-               <div className="full-drink__header full-drink__comments-header">
-                  Opinie
-               </div>
-               <div className="full-drink__comments-wrapper">
-                  {reviews &&
-                     reviews.map((review) => (
-                        <Review review={review} key={review.id} />
-                     ))}
+                  <div className="full-drink__social-wrapper">
+                     <span className="full-drink__author">
+                        @{drink.author.username}
+                     </span>
+                     <div className="drink__social-box">
+                        <i className="fa-solid fa-whiskey-glass"></i>
+                        <span>{drink.ratingsNumber}</span>
+                        <span className="drink__rate-text d-block">
+                           {getRatingText(drink.ratingsNumber)}
+                        </span>
+                     </div>
+                     <div className="drink__social-box">
+                        <i className="fa-solid fa-comment"></i>
+                        <span>{drink.reviewsNumber}</span>
+                        <span className="drink__comment-text d-block">
+                           {getReviewText(drink.reviewsNumber)}
+                        </span>
+                     </div>
+                  </div>
+                  <div className="full-drink__products">
+                     <span>Składniki:</span>
+                     <div className="drink__products-box">
+                        {products
+                           ? products.map((product) => (
+                                <div
+                                   key={product.id}
+                                   className={
+                                      product.active
+                                         ? 'drink__active-product full-drink__product'
+                                         : 'drink__product full-drink__product'
+                                   }
+                                >
+                                   {product.name}
+                                </div>
+                             ))
+                           : drink.products.map((product) => (
+                                <div
+                                   key={product.id}
+                                   className="drink__product full-drink__product"
+                                >
+                                   {product.name}
+                                </div>
+                             ))}
+                     </div>
+                  </div>
+                  <p className="full-drink__desc">{drink.description}</p>
+                  <div className="full-drink__header">Przygotowanie</div>
+                  <ul className="full-drink__list full-drink__desc">
+                     {drink.preparation
+                        .split('***')
+                        .slice(1)
+                        .map((paragraph, index) => (
+                           <li key={index}>{paragraph}</li>
+                        ))}
+                  </ul>
+                  <div className="full-drink__header full-drink__rating-header">
+                     Oceny od barmanów
+                  </div>
+                  <div className="full-drink__rating-box">
+                     <div className="full-drink__rating">
+                        {returnRatingIcons()}
+                        <span>3 na 5 ocen</span>
+                     </div>
+                     {returnSpecificRating()}
+                  </div>
+                  <div className="full-drink__header full-drink__comments-header">
+                     Opinie
+                  </div>
+                  <div className="full-drink__comments-wrapper">
+                     {reviews &&
+                        reviews.map((review) => (
+                           <Review review={review} key={review.id} />
+                        ))}
+                  </div>
                </div>
             </div>
          </div>
